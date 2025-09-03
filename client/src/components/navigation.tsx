@@ -7,9 +7,10 @@ import { PHOTOGRAPHER_INFO } from "@/lib/constants";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About Me", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "Services", href: "/services" },
+  { label: "Videos", href: "/videos" },
+  { label: "Testimonials", href: "/testimonials" },
   { label: "Contact", href: "/contact" }
 ];
 
@@ -46,14 +47,6 @@ export default function Navigation() {
                   </span>
                 </Link>
               ))}
-              <Link href="/contact">
-                <Button 
-                  className="bg-accent text-accent-foreground hover:bg-accent/90"
-                  data-testid="button-contact-cta"
-                >
-                  Contact
-                </Button>
-              </Link>
             </div>
           </div>
           

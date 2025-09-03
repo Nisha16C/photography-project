@@ -1,21 +1,21 @@
 import { motion } from "framer-motion";
-import { DUMMY_IMAGES } from "@/lib/constants";
+import { LOCAL_IMAGES } from "@/lib/constants";
 
 const featuredImages = [
   {
-    src: DUMMY_IMAGES.portfolio[0],
+    src: LOCAL_IMAGES.portfolio[0],
     alt: "Elegant bridal portrait",
     title: "Wedding Photography",
     subtitle: "Capturing eternal love stories"
   },
   {
-    src: DUMMY_IMAGES.portfolio[1], 
+    src: LOCAL_IMAGES.portfolio[1], 
     alt: "Romantic pre-wedding couple shoot",
     title: "Pre-Wedding",
     subtitle: "Romantic storytelling sessions"
   },
   {
-    src: DUMMY_IMAGES.portfolio[2],
+    src: LOCAL_IMAGES.portfolio[2],
     alt: "Happy family portrait",
     title: "Family Photography", 
     subtitle: "Treasured family moments"

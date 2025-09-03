@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Phone, Mail, MapPin } from "lucide-react";
-import { SiWhatsapp } from "react-icons/si";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { SiWhatsapp, SiInstagram, SiYoutube } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -124,19 +124,56 @@ export default function Contact() {
                 </div>
               </div>
               
-              {/* WhatsApp CTA */}
+              {/* Business Hours */}
+              <div className="flex items-start">
+                <div className="bg-accent p-3 rounded-lg mr-4">
+                  <Clock className="w-6 h-6 text-accent-foreground" />
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1">Business Hours</h3>
+                  <p className="text-muted-foreground">Mon - Sat: 9:00 AM - 9:00 PM</p>
+                  <p className="text-sm text-muted-foreground">Sunday: By appointment only</p>
+                </div>
+              </div>
+              
+              {/* Social Media & WhatsApp */}
               <div className="mt-8">
-                <a 
-                  href={`${PHOTOGRAPHER_INFO.whatsapp}?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-testid="link-whatsapp"
-                >
-                  <Button className="bg-green-500 text-white hover:bg-green-600 inline-flex items-center">
-                    <SiWhatsapp className="w-5 h-5 mr-2" />
-                    WhatsApp Us
-                  </Button>
-                </a>
+                <h3 className="font-semibold mb-4">Connect With Us</h3>
+                <div className="flex flex-wrap gap-4">
+                  <a 
+                    href={`${PHOTOGRAPHER_INFO.whatsapp}?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="link-whatsapp"
+                  >
+                    <Button className="bg-green-500 text-white hover:bg-green-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
+                      <SiWhatsapp className="w-5 h-5 mr-2" />
+                      WhatsApp
+                    </Button>
+                  </a>
+                  <a 
+                    href={PHOTOGRAPHER_INFO.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="link-instagram"
+                  >
+                    <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
+                      <SiInstagram className="w-5 h-5 mr-2" />
+                      Instagram
+                    </Button>
+                  </a>
+                  <a 
+                    href={PHOTOGRAPHER_INFO.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="link-youtube"
+                  >
+                    <Button className="bg-red-500 text-white hover:bg-red-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
+                      <SiYoutube className="w-5 h-5 mr-2" />
+                      YouTube
+                    </Button>
+                  </a>
+                </div>
               </div>
             </motion.div>
             
@@ -344,6 +381,52 @@ export default function Contact() {
               </Form>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Google Maps Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl sm:text-3xl font-playfair font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Find Us on Map
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Located in the heart of Satna, Madhya Pradesh, we're easily accessible for consultations and meetings.
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            className="relative rounded-2xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117743.03449669226!2d80.73270109453122!3d24.570344184712048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39823e9b9f18c2df%3A0x13a8ddbf0f14b5a!2sSatna%2C%20Madhya%20Pradesh%2C%20India!5e0!3m2!1sen!2sus!4v1694623729000!5m2!1sen!2sus"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full"
+              data-testid="google-maps-embed"
+            />
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+              <div className="flex items-center text-sm">
+                <MapPin className="w-4 h-4 mr-2 text-accent" />
+                <span className="font-medium">Satna, Madhya Pradesh</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>
