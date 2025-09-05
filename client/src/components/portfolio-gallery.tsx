@@ -1,32 +1,43 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Lightbox from "./lightbox";
 import { api } from "@/lib/api";
-import { LOCAL_IMAGES } from "@/lib/constants";
-import type { Category } from "@shared/schema";
-
-const allImages = LOCAL_IMAGES.portfolio.map((src, index) => ({
-  src,
-  alt: `Photography work ${index + 1}`,
-  category: index % 4 === 0 ? "wedding" : index % 4 === 1 ? "pre-wedding" : index % 4 === 2 ? "family" : "baby-shower"
-}));
-
-const filters = [
-  { label: "All", value: "all" },
-  { label: "Wedding", value: "wedding" },
-  { label: "Pre-Wedding", value: "pre-wedding" },
-  { label: "Engagement", value: "engagement" },
-  { label: "Haldi", value: "haldi" },
-  { label: "Mehndi", value: "mehndi" },
-  { label: "Baby Shower", value: "baby-shower" },
-  { label: "Family", value: "family" }
-];
+import { LOCAL_IMAGES, PORTFOLIO_CATEGORIES } from "@/lib/constants";
 
 export default function PortfolioGallery() {
-  const [activeFilter, setActiveFilter] = useState("all");
+  const [location, setLocation] = useLocation();
+  const search = location.split("?")[1] || "";
+  const params = useMemo(() => new URLSearchParams(search), [search]);
+  const urlCategory = params.get("category");
+
+  // local selected category state so UI buttons control gallery
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(urlCategory || null);
+
+  // keep local selection in sync when URL changes (e.g. clicking FeaturedWork links)
+  useEffect(() => {
+    setSelectedCategory(urlCategory || null);
+  }, [urlCategory]);
+
+  // images is an array of { src, alt? }
+  const images = useMemo(() => {
+    // if there's an explicit URL param category prefer that
+    const active = selectedCategory || urlCategory;
+    if (active && PORTFOLIO_CATEGORIES[active]) {
+      return PORTFOLIO_CATEGORIES[active];
+    }
+    // default: show all images (flattened)
+    return LOCAL_IMAGES.portfolio || [];
+  }, [selectedCategory, urlCategory]);
+
+  // build category list for buttons (preserve order)
+  const categoryList = useMemo(() => {
+    return ["All", ...Object.keys(PORTFOLIO_CATEGORIES || {})];
+  }, []);
+
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
@@ -34,10 +45,6 @@ export default function PortfolioGallery() {
     queryKey: ["/api/categories"],
     queryFn: api.categories.getAll,
   });
-
-  const filteredImages = activeFilter === "all" 
-    ? allImages 
-    : allImages.filter(img => img.category === activeFilter);
 
   const openLightbox = (src: string, index: number) => {
     setLightboxImage(src);
@@ -49,15 +56,15 @@ export default function PortfolioGallery() {
   };
 
   const nextImage = () => {
-    const nextIndex = (lightboxIndex + 1) % filteredImages.length;
+    const nextIndex = (lightboxIndex + 1) % images.length;
     setLightboxIndex(nextIndex);
-    setLightboxImage(filteredImages[nextIndex].src);
+    setLightboxImage(images[nextIndex].src);
   };
 
   const prevImage = () => {
-    const prevIndex = lightboxIndex === 0 ? filteredImages.length - 1 : lightboxIndex - 1;
+    const prevIndex = lightboxIndex === 0 ? images.length - 1 : lightboxIndex - 1;
     setLightboxIndex(prevIndex);
-    setLightboxImage(filteredImages[prevIndex].src);
+    setLightboxImage(images[prevIndex].src);
   };
 
   if (categoriesLoading) {
@@ -104,33 +111,32 @@ export default function PortfolioGallery() {
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8" data-testid="portfolio-subtitle">
             Explore our diverse collection of wedding, pre-wedding, and family photography capturing life's most precious moments with artistic vision.
           </p>
-          
-          {/* Category Filters */}
-          <motion.div 
-            className="flex flex-wrap justify-center gap-3 mb-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            {filters.map((filter) => (
-              <Button
-                key={filter.value}
-                variant={activeFilter === filter.value ? "default" : "secondary"}
-                size="sm"
-                onClick={() => setActiveFilter(filter.value)}
-                className={
-                  activeFilter === filter.value
-                    ? "bg-gradient-to-r from-accent to-accent/80 text-accent-foreground shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-                    : "bg-card text-muted-foreground hover:bg-gradient-to-r hover:from-accent hover:to-accent/80 hover:text-accent-foreground hover:shadow-lg hover:scale-105 transition-all duration-200"
-                }
-                data-testid={`filter-${filter.value}`}
-              >
-                {filter.label}
-              </Button>
-            ))}
-          </motion.div>
         </motion.div>
+        
+        {/* Category buttons - generated from assets */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {categoryList.map((cat) => {
+            const isAll = cat === "All";
+            const active = (isAll && !selectedCategory && !urlCategory) || (!isAll && (selectedCategory === cat || urlCategory === cat));
+            return (
+              <button
+                key={cat}
+                onClick={() => {
+                  // update local state + route so selection is shareable / deep-linkable
+                  const newCat = isAll ? null : cat;
+                  setSelectedCategory(newCat);
+                  setLocation(newCat ? `/portfolio?category=${encodeURIComponent(newCat)}` : "/portfolio", { replace: false });
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  active ? "bg-accent text-accent-foreground" : "bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                }`}
+                data-testid={`category-btn-${cat}`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
         
         {/* Masonry Gallery */}
         <motion.div 
@@ -138,28 +144,28 @@ export default function PortfolioGallery() {
           layout
         >
           <AnimatePresence>
-            {filteredImages.map((image, index) => (
+            {images.map((image, index) => (
               <motion.div
-                key={`${activeFilter}-${index}`}
+                key={`${selectedCategory || urlCategory || "All"}-${index}`}
                 className="masonry-item cursor-pointer group relative overflow-hidden rounded-lg"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
                 whileHover={{ scale: 1.02 }}
-                onClick={() => openLightbox(image.src, index)}
+                onClick={() => openLightbox((image as any).src || (image as unknown as string), index)}
                 data-testid={`gallery-item-${index}`}
               >
                 <div className="relative overflow-hidden rounded-lg shadow-lg group-hover:shadow-2xl transition-all duration-300">
                   <img 
-                    src={image.src}
-                    alt={image.alt}
+                    src={(image as any).src || (image as unknown as string)}
+                    alt={(image as any).alt || `portfolio-${index}`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <div className="absolute bottom-4 left-4 text-white">
-                      <p className="text-sm font-medium capitalize">{image.category.replace('-', ' ')}</p>
+                      <p className="text-sm font-medium capitalize">{/* optional category label */}</p>
                     </div>
                   </div>
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -180,7 +186,7 @@ export default function PortfolioGallery() {
       <Lightbox
         isOpen={!!lightboxImage}
         imageSrc={lightboxImage || ""}
-        imageAlt={filteredImages[lightboxIndex]?.alt || ""}
+        imageAlt={images[lightboxIndex]?.alt || ""}
         onClose={closeLightbox}
         onNext={nextImage}
         onPrev={prevImage}

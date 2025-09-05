@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Controller } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +20,7 @@ import { insertContactSchema } from "@shared/schema";
 import type { InsertContact } from "@shared/schema";
 
 export default function Contact() {
+  const phoneDigits = (PHOTOGRAPHER_INFO.phone || "").replace(/\D/g, "");
   const { toast } = useToast();
   const queryClient = useQueryClient();
   
@@ -53,6 +57,35 @@ export default function Contact() {
   });
 
   const onSubmit = (data: InsertContact) => {
+    // build email body (opens user's mail client with prefilled message; user must press Send)
+    const lines = [
+      "New enquiry from website:",
+      `Name: ${data.name || "-"}`,
+      `Phone: ${data.phone || "-"}`,
+      `Email: ${data.email || "-"}`,
+      `Event Type: ${data.eventType || "-"}`,
+      `Event Date: ${data.eventDate || "-"}`,
+      `City: ${data.city || "-"}`,
+      `Budget: ${data.budget || "-"}`,
+      `Message: ${data.message || "-"}`,
+    ];
+
+    const subject = `Website enquiry — ${data.name || "Visitor"}`;
+    const body = encodeURIComponent(lines.join("\n"));
+    const mailtoUrl = `mailto:${PHOTOGRAPHER_INFO.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+    // Try to open default mail client (works on desktop & mobile). Also keep saving to backend.
+    try {
+      window.location.href = mailtoUrl;
+    } catch (err) {
+      toast({
+        title: "Could not open mail client",
+        description: "Please copy the details and send an email manually.",
+        variant: "destructive",
+      });
+    }
+
+    // still send to backend (keeps record / notifications)
     contactMutation.mutate(data);
   };
 
@@ -73,6 +106,7 @@ export default function Contact() {
             <h1 className="text-3xl sm:text-4xl font-playfair font-bold mb-4" data-testid="contact-title">
               Get In Touch
             </h1>
+            
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto" data-testid="contact-subtitle">
               Ready to capture your special moments? Let's discuss your photography needs and create something beautiful together.
             </p>
@@ -97,7 +131,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
                     <p className="text-muted-foreground" data-testid="contact-phone">{PHOTOGRAPHER_INFO.phone}</p>
-                    <p className="text-sm text-muted-foreground">Available 9 AM - 9 PM</p>
+                    <p className="text-sm text-muted-foreground">Available 24 X 7</p>
                   </div>
                 </div>
                 
@@ -139,41 +173,66 @@ export default function Contact() {
               {/* Social Media & WhatsApp */}
               <div className="mt-8">
                 <h3 className="font-semibold mb-4">Connect With Us</h3>
-                <div className="flex flex-wrap gap-4">
-                  <a 
+                <motion.div 
+                  className="flex flex-wrap gap-4"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, staggerChildren: 0.05 }}
+                >
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
+                    href={`tel:${phoneDigits}`}
+                    data-testid="link-call"
+                    className="inline-flex"
+                  >
+                    <Button className="bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Call
+                    </Button>
+                  </motion.a>
+
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
                     href={`${PHOTOGRAPHER_INFO.whatsapp}?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="link-whatsapp"
+                    className="inline-flex"
                   >
                     <Button className="bg-green-500 text-white hover:bg-green-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
                       <SiWhatsapp className="w-5 h-5 mr-2" />
                       WhatsApp
                     </Button>
-                  </a>
-                  <a 
+                  </motion.a>
+
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
                     href={PHOTOGRAPHER_INFO.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="link-instagram"
+                    className="inline-flex"
                   >
                     <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
                       <SiInstagram className="w-5 h-5 mr-2" />
                       Instagram
                     </Button>
-                  </a>
-                  <a 
+                  </motion.a>
+
+                  <motion.a
+                    whileHover={{ scale: 1.03 }}
                     href={PHOTOGRAPHER_INFO.youtube}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="link-youtube"
+                    className="inline-flex"
                   >
                     <Button className="bg-red-500 text-white hover:bg-red-600 hover:scale-105 transition-all duration-200 inline-flex items-center shadow-lg">
                       <SiYoutube className="w-5 h-5 mr-2" />
                       YouTube
                     </Button>
-                  </a>
-                </div>
+                  </motion.a>
+                </motion.div>
               </div>
             </motion.div>
             
@@ -258,26 +317,30 @@ export default function Contact() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Event Type *</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger data-testid="select-event-type">
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                              data-testid="select-event-type"
+                            >
+                              <SelectTrigger>
                                 <SelectValue placeholder="Select event type" />
                               </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="wedding">Wedding</SelectItem>
-                              <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
-                              <SelectItem value="engagement">Engagement</SelectItem>
-                              <SelectItem value="haldi">Haldi Ceremony</SelectItem>
-                              <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
-                              <SelectItem value="baby-shower">Baby Shower</SelectItem>
-                              <SelectItem value="maternity">Maternity</SelectItem>
-                              <SelectItem value="newborn">Newborn</SelectItem>
-                              <SelectItem value="family">Family Portrait</SelectItem>
-                              <SelectItem value="corporate">Corporate Event</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
+                              <SelectContent>
+                                <SelectItem value="wedding">Wedding</SelectItem>
+                                <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
+                                <SelectItem value="engagement">Engagement</SelectItem>
+                                <SelectItem value="haldi">Haldi Ceremony</SelectItem>
+                                <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
+                                <SelectItem value="baby-shower">Baby Shower</SelectItem>
+                                <SelectItem value="maternity">Maternity</SelectItem>
+                                <SelectItem value="newborn">Newborn</SelectItem>
+                                <SelectItem value="family">Family Portrait</SelectItem>
+                                <SelectItem value="corporate">Corporate Event</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -290,10 +353,24 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Event Date</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="date" 
-                              {...field} 
-                              data-testid="input-event-date"
+                            <Controller
+                              control={form.control}
+                              name="eventDate"
+                              render={({ field: ctlField }) => (
+                                <DatePicker
+                                  selected={ctlField.value ? new Date(ctlField.value) : null}
+                                  onChange={(d) => {
+                                    // store ISO date (yyyy-mm-dd) in form
+                                    if (!d) return ctlField.onChange("");
+                                    const iso = d.toISOString().slice(0, 10);
+                                    ctlField.onChange(iso);
+                                  }}
+                                  placeholderText="Select event date"
+                                  className="w-full px-3 py-2 border rounded-md"
+                                  dateFormat="dd MMM yyyy"
+                                  data-testid="input-event-date"
+                                />
+                              )}
                             />
                           </FormControl>
                           <FormMessage />
@@ -327,12 +404,14 @@ export default function Contact() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Budget Range</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger data-testid="select-budget">
-                                <SelectValue placeholder="Select budget range" />
-                              </SelectTrigger>
-                            </FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            data-testid="select-budget"
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select budget range" />
+                            </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="10000-25000">₹10,000 - ₹25,000</SelectItem>
                               <SelectItem value="25000-50000">₹25,000 - ₹50,000</SelectItem>
@@ -365,14 +444,16 @@ export default function Contact() {
                     )}
                   />
                   
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                    disabled={contactMutation.isPending}
-                    data-testid="button-submit-contact"
-                  >
-                    {contactMutation.isPending ? "Sending..." : "Send Message"}
-                  </Button>
+                  <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                      disabled={contactMutation.isPending}
+                      data-testid="button-submit-contact"
+                    >
+                      {contactMutation.isPending ? "Sending..." : "Send Message"}
+                    </Button>
+                  </motion.div>
                   
                   <p className="text-sm text-muted-foreground text-center">
                     We'll get back to you within 24 hours with a personalized quote.

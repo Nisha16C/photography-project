@@ -6,7 +6,7 @@ export const dummyImages = {
       category: "wedding"
     },
     {
-      src: "https://images.unsplash.com/photo-1583900985737-6d0495555783?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=900", 
+      src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=800", 
       alt: "Groom in traditional sherwani",
       category: "wedding"
     }
@@ -18,7 +18,7 @@ export const dummyImages = {
       category: "pre-wedding"
     },
     {
-      src: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=800",
+      src: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-photos%2Findian-wedding&psig=AOvVaw1mOzsSgPtjQargtmh1yySz&ust=1756966840157000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPjUodb5u48DFQAAAAAdAAAAABAE",
       alt: "Romantic sunset couple silhouette",
       category: "pre-wedding"  
     }

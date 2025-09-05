@@ -61,11 +61,34 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  const initialHost = process.env.HOST || "0.0.0.0";
+
+  // Helper to start listening (don't set reusePort by default on Windows)
+  function startListening(host: string) {
+    server.listen({ port, host }, () => {
+      log(`serving on ${host}:${port}`);
+    });
+  }
+
+  // Handle errors and fallback if binding 0.0.0.0 is not supported (ENOTSUP)
+  server.on("error", (err: NodeJS.ErrnoException) => {
+    if (err && err.code === "ENOTSUP" && initialHost === "0.0.0.0") {
+      log("ENOTSUP when binding 0.0.0.0 — falling back to 127.0.0.1");
+      // try localhost instead
+      startListening("127.0.0.1");
+      return;
+    }
+    console.error("Server error:", err);
+    process.exit(1);
   });
+
+  // Log when listening
+  server.on("listening", () => {
+    const addr = server.address();
+    const hostStr = typeof addr === "object" && addr ? addr.address : initialHost;
+    log(`Server listening on ${hostStr}:${port} (NODE_ENV=${process.env.NODE_ENV})`);
+  });
+
+  // initial attempt
+  startListening(initialHost);
 })();

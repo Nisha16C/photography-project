@@ -109,7 +109,7 @@ export default function HeroSlideshow() {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-3 text-base backdrop-blur-sm"
+                className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground hover:from-accent/90 hover:to-accent/70 px-8 py-3 text-base shadow-lg"
                 data-testid="button-book-session"
               >
                 Book a Session

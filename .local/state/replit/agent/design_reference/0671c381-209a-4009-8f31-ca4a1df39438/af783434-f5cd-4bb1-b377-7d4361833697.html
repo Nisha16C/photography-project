@@ -1,0 +1,1134 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himanshu Chaurasiya - Professional Photographer | Wedding & Event Photography</title>
+    <meta name="description" content="Professional photographer Himanshu Chaurasiya specializing in weddings, pre-wedding, haldi, mehndi, baby shower, maternity, and family photography in Satna, Madhya Pradesh.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/heroicons@2.0.18/24/outline/index.js" type="module"></script>
+    <script src="https://unpkg.com/heroicons@2.0.18/24/solid/index.js" type="module"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    popover: {
+                        DEFAULT: "var(--popover)",
+                        foreground: "var(--popover-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    destructive: {
+                        DEFAULT: "var(--destructive)",
+                        foreground: "var(--destructive-foreground)",
+                    },
+                    border: "var(--border)",
+                    input: "var(--input)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    playfair: ["Playfair Display", "serif"],
+                    inter: ["Inter", "sans-serif"],
+                }
+            },
+        }
+    };
+    </script>
+    
+    <style>
+        :root {
+            --background: hsl(210 40% 96%);
+            --foreground: hsl(210 10% 20%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(210 10% 20%);
+            --popover: hsl(0 0% 100%);
+            --popover-foreground: hsl(210 10% 20%);
+            --primary: hsl(210 10% 10%);
+            --primary-foreground: hsl(0 0% 98%);
+            --secondary: hsl(43 74% 49%);
+            --secondary-foreground: hsl(210 10% 10%);
+            --muted: hsl(210 40% 96%);
+            --muted-foreground: hsl(215 16% 47%);
+            --accent: hsl(43 74% 49%);
+            --accent-foreground: hsl(210 10% 10%);
+            --destructive: hsl(0 84% 60%);
+            --destructive-foreground: hsl(0 0% 98%);
+            --border: hsl(214 32% 91%);
+            --input: hsl(214 32% 91%);
+            --ring: hsl(210 10% 10%);
+            --radius: 0.5rem;
+        }
+        
+        .hero-slideshow {
+            background: linear-gradient(45deg, rgba(26, 26, 26, 0.7), rgba(212, 175, 55, 0.3));
+        }
+        
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+        }
+        
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-foreground font-inter">
+    <!-- Navigation -->
+    <!-- @COMPONENT: Navigation [responsive navbar with mobile menu] -->
+    <nav class="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-playfair font-semibold text-primary">Himanshu Chaurasiya</h1>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-foreground hover:text-accent transition-colors duration-200">Home</a>
+                        <a href="#about" class="text-foreground hover:text-accent transition-colors duration-200">About</a>
+                        <a href="#portfolio" class="text-foreground hover:text-accent transition-colors duration-200">Portfolio</a>
+                        <a href="#services" class="text-foreground hover:text-accent transition-colors duration-200">Services</a>
+                        <a href="#testimonials" class="text-foreground hover:text-accent transition-colors duration-200">Testimonials</a>
+                        <a href="#contact" class="bg-accent text-accent-foreground px-4 py-2 rounded-md hover:bg-accent/90 transition-colors duration-200">Contact</a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-foreground hover:text-accent p-2" data-event="click:toggleMobileMenu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 bg-background border-t border-border">
+                <a href="#home" class="block px-3 py-2 text-foreground hover:text-accent">Home</a>
+                <a href="#about" class="block px-3 py-2 text-foreground hover:text-accent">About</a>
+                <a href="#portfolio" class="block px-3 py-2 text-foreground hover:text-accent">Portfolio</a>
+                <a href="#services" class="block px-3 py-2 text-foreground hover:text-accent">Services</a>
+                <a href="#testimonials" class="block px-3 py-2 text-foreground hover:text-accent">Testimonials</a>
+                <a href="#contact" class="block px-3 py-2 text-foreground hover:text-accent">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: Navigation -->
+
+    <!-- Hero Section -->
+    <!-- @COMPONENT: HeroSlideshow [auto-rotating hero with featured work] -->
+    <section id="home" class="relative h-screen overflow-hidden">
+        <div class="hero-slideshow absolute inset-0">
+            <!-- Beautiful couple portrait during golden hour wedding ceremony -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000" 
+                 style="background-image: url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')">
+            </div>
+        </div>
+        
+        <div class="relative z-10 flex items-center justify-center h-full">
+            <div class="text-center text-white px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-playfair font-bold mb-6">
+                    Capturing Life's Most
+                    <span class="text-accent">Beautiful Moments</span>
+                </h1>
+                <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                    Professional wedding and event photography that tells your unique story through stunning visuals and heartfelt emotions.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#portfolio" class="bg-accent text-accent-foreground px-8 py-3 rounded-md font-medium hover:bg-accent/90 transition-colors duration-200">
+                        View Portfolio
+                    </a>
+                    <a href="#contact" class="border border-white text-white px-8 py-3 rounded-md font-medium hover:bg-white hover:text-primary transition-colors duration-200">
+                        Book a Session
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            <div class="animate-bounce text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSlideshow -->
+
+    <!-- Featured Work Section -->
+    <!-- @COMPONENT: FeaturedWork [showcase of best photography] -->
+    <section class="py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-4">Featured Work</h2>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    A glimpse into some of our most cherished moments captured for couples and families across Madhya Pradesh.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Wedding Photography -->
+                <div class="group cursor-pointer" data-event="click:openLightbox">
+                    <!-- Elegant bridal portrait with traditional Indian jewelry and intricate henna -->
+                    <div class="relative overflow-hidden rounded-lg aspect-[4/5]">
+                        <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000" 
+                             alt="Elegant bridal portrait" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <h3 class="text-xl font-playfair font-semibold mb-2">Wedding Photography</h3>
+                                <p class="text-sm">Capturing eternal love stories</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pre-Wedding -->
+                <div class="group cursor-pointer" data-event="click:openLightbox">
+                    <!-- Romantic couple holding hands during golden hour outdoor pre-wedding shoot -->
+                    <div class="relative overflow-hidden rounded-lg aspect-[4/5]">
+                        <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000" 
+                             alt="Romantic pre-wedding couple shoot" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <h3 class="text-xl font-playfair font-semibold mb-2">Pre-Wedding</h3>
+                                <p class="text-sm">Romantic storytelling sessions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Family Photography -->
+                <div class="group cursor-pointer" data-event="click:openLightbox">
+                    <!-- Happy Indian family with children in traditional clothing during celebration -->
+                    <div class="relative overflow-hidden rounded-lg aspect-[4/5]">
+                        <img src="https://images.unsplash.com/photo-1609220136736-443140cffec6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000" 
+                             alt="Happy family portrait" 
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <h3 class="text-xl font-playfair font-semibold mb-2">Family Photography</h3>
+                                <p class="text-sm">Treasured family moments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FeaturedWork -->
+
+    <!-- About Section -->
+    <!-- @COMPONENT: About [photographer bio and information] -->
+    <section id="about" class="py-16 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <!-- Professional photographer portrait with camera in studio setting -->
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=800" 
+                         alt="Himanshu Chaurasiya - Professional Photographer" 
+                         class="rounded-lg shadow-xl w-full" />
+                </div>
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-6">Meet Himanshu Chaurasiya</h2>
+                    <p class="text-lg text-muted-foreground mb-6">
+                        With over 8 years of experience in wedding and event photography, I specialize in capturing the authentic emotions and beautiful moments that make your special day unforgettable. Based in Satna, Madhya Pradesh, I bring a unique blend of traditional and contemporary styles to every shoot.
+                    </p>
+                    <p class="text-lg text-muted-foreground mb-6">
+                        My passion lies in storytelling through photography - whether it's the nervous excitement before a ceremony, the joy of a family celebration, or the intimate moments between couples. Every image I capture is crafted to preserve the emotions and memories that matter most.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="text-center p-4 bg-card rounded-lg">
+                            <h3 class="text-2xl font-bold text-accent">500+</h3>
+                            <p class="text-sm text-muted-foreground">Weddings Captured</p>
+                        </div>
+                        <div class="text-center p-4 bg-card rounded-lg">
+                            <h3 class="text-2xl font-bold text-accent">8+</h3>
+                            <p class="text-sm text-muted-foreground">Years Experience</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="flex items-center text-muted-foreground">
+                            <svg class="w-5 h-5 mr-3 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                            </svg>
+                            himanshu2015@gmail.com
+                        </p>
+                        <p class="flex items-center text-muted-foreground">
+                            <svg class="w-5 h-5 mr-3 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                            </svg>
+                            +91 7400823680
+                        </p>
+                        <p class="flex items-center text-muted-foreground">
+                            <svg class="w-5 h-5 mr-3 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Dhawari, Lane No. 1, Satna, Madhya Pradesh
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: About -->
+
+    <!-- Portfolio Section -->
+    <!-- @COMPONENT: Portfolio [masonry gallery with filtering] -->
+    <section id="portfolio" class="py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-4">Portfolio</h2>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
+                    Explore our diverse collection of wedding, pre-wedding, and family photography capturing life's most precious moments.
+                </p>
+                
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button class="filter-btn active px-4 py-2 rounded-full bg-accent text-accent-foreground font-medium" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="wedding">Wedding</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="pre-wedding">Pre-Wedding</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="haldi">Haldi</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="mehndi">Mehndi</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="baby-shower">Baby Shower</button>
+                    <button class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors" data-filter="family">Family</button>
+                </div>
+            </div>
+            
+            <!-- Masonry Gallery -->
+            <div class="masonry-grid" id="gallery">
+                <!-- Wedding Photos -->
+                <!-- Traditional Indian bride getting ready with intricate gold jewelry -->
+                <div class="masonry-item gallery-item" data-category="wedding" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=800" 
+                         alt="Traditional Indian bride" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Groom in traditional sherwani during baraat ceremony -->
+                <div class="masonry-item gallery-item" data-category="wedding" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1583900985737-6d0495555783?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=900" 
+                         alt="Groom in traditional sherwani" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Pre-wedding Photos -->
+                <!-- Couple walking hand in hand through beautiful garden pathway -->
+                <div class="masonry-item gallery-item" data-category="pre-wedding" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400" 
+                         alt="Pre-wedding couple in garden" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Romantic sunset silhouette of couple embracing -->
+                <div class="masonry-item gallery-item" data-category="pre-wedding" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=800" 
+                         alt="Romantic sunset couple silhouette" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Haldi Ceremony -->
+                <!-- Bride covered in turmeric paste during traditional haldi ceremony -->
+                <div class="masonry-item gallery-item" data-category="haldi" data-event="click:openLightbox">
+                    <img src="https://pixabay.com/get/g9ec18db05dd9c2bab39bc3df726b55bb5c14df995f6e3f3e6904072a0925edec7ea42479396572c8935f1aeebeeef86f654841bded90449a51c340c8b90d7423_1280.jpg" 
+                         alt="Haldi ceremony celebration" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Mehndi Ceremony -->
+                <!-- Close-up of intricate henna designs on hands with bangles -->
+                <div class="masonry-item gallery-item" data-category="mehndi" data-event="click:openLightbox">
+                    <img src="https://pixabay.com/get/gff54b84d3c675adde4a19a5f5ad049c520b9c7605d148bd836caea805a9a47ead2d100964c520383c51cc006a85282ed60bc0874a8ba2f491d1d4db14c802d74_1280.jpg" 
+                         alt="Intricate mehndi designs" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Baby Shower -->
+                <!-- Expecting mother in flowing dress holding baby shoes outdoors -->
+                <div class="masonry-item gallery-item" data-category="baby-shower" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1555252333-9f8e92e65df9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=900" 
+                         alt="Baby shower maternity photo" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Family Photos -->
+                <!-- Multi-generational Indian family in traditional attire during festival -->
+                <div class="masonry-item gallery-item" data-category="family" data-event="click:openLightbox">
+                    <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600" 
+                         alt="Multi-generational family portrait" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+                
+                <!-- Additional Wedding Photos -->
+                <!-- Wedding ceremony mandap decorated with flowers and lights -->
+                <div class="masonry-item gallery-item" data-category="wedding" data-event="click:openLightbox">
+                    <img src="https://pixabay.com/get/g18bcbd73f6f456b68c169e05bcca5fcc25ae9d19a9be98e6606e748f462fc34527456672e6070fd236077e8d07068f19699debee1d08c27299f13ba4d3e93755_1280.jpg" 
+                         alt="Wedding ceremony mandap" class="w-full rounded-lg hover:shadow-lg transition-shadow duration-300 cursor-pointer" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Portfolio -->
+
+    <!-- Services Section -->
+    <!-- @COMPONENT: Services [service packages and pricing] -->
+    <section id="services" class="py-16 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-4">Services & Packages</h2>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Comprehensive photography services tailored to capture every special moment of your celebration.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Wedding Package -->
+                <div class="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-playfair font-semibold mb-2">Complete Wedding</h3>
+                        <p class="text-3xl font-bold text-accent mb-2">₹45,000</p>
+                        <p class="text-sm text-muted-foreground">Starting price</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Pre-wedding shoot
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Haldi & Mehndi coverage
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Wedding ceremony & reception
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            500+ edited photos
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Online gallery & USB drive
+                        </li>
+                    </ul>
+                    <button class="w-full bg-accent text-accent-foreground py-2 rounded-md hover:bg-accent/90 transition-colors duration-200">
+                        Get Quote
+                    </button>
+                </div>
+                
+                <!-- Pre-Wedding Package -->
+                <div class="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-playfair font-semibold mb-2">Pre-Wedding Shoot</h3>
+                        <p class="text-3xl font-bold text-accent mb-2">₹15,000</p>
+                        <p class="text-sm text-muted-foreground">Starting price</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            4-6 hour photo session
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Multiple location options
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            100+ edited photos
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Online gallery access
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            High-resolution downloads
+                        </li>
+                    </ul>
+                    <button class="w-full bg-accent text-accent-foreground py-2 rounded-md hover:bg-accent/90 transition-colors duration-200">
+                        Book Now
+                    </button>
+                </div>
+                
+                <!-- Family & Events Package -->
+                <div class="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-playfair font-semibold mb-2">Family & Events</h3>
+                        <p class="text-3xl font-bold text-accent mb-2">₹12,000</p>
+                        <p class="text-sm text-muted-foreground">Starting price</p>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Baby shower coverage
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Maternity shoots
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Family portraits
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Corporate events
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-accent mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            Flexible packages
+                        </li>
+                    </ul>
+                    <button class="w-full bg-accent text-accent-foreground py-2 rounded-md hover:bg-accent/90 transition-colors duration-200">
+                        Inquire Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Services -->
+
+    <!-- Testimonials Section -->
+    <!-- @COMPONENT: Testimonials [client reviews and feedback] -->
+    <section id="testimonials" class="py-16 bg-background">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-4">What Clients Say</h2>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Read testimonials from couples and families who have trusted us to capture their most precious moments.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-card rounded-lg p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-muted-foreground mb-4">
+                        "Himanshu captured our wedding beautifully! Every photo tells a story and the emotions are so genuine. His professionalism and attention to detail made our special day even more memorable."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Happy bride and groom in traditional Indian wedding attire -->
+                        <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                             alt="Priya & Rahul" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                        <div>
+                            <h4 class="font-semibold" data-bind="testimonial.clientName">Priya & Rahul</h4>
+                            <p class="text-sm text-muted-foreground" data-bind="testimonial.eventType">Wedding</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-card rounded-lg p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-muted-foreground mb-4">
+                        "Amazing work on our baby shower! Himanshu made everyone feel comfortable and captured such natural, beautiful moments. The photos are absolutely perfect and we'll treasure them forever."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Smiling expectant mother in elegant maternity dress -->
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                             alt="Sneha Sharma" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                        <div>
+                            <h4 class="font-semibold" data-bind="testimonial.clientName">Sneha Sharma</h4>
+                            <p class="text-sm text-muted-foreground" data-bind="testimonial.eventType">Baby Shower</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-card rounded-lg p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-accent">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-muted-foreground mb-4">
+                        "Our pre-wedding shoot was absolutely magical! Himanshu's creative vision and guidance helped us feel relaxed and natural. The locations and lighting were perfect."
+                    </p>
+                    <div class="flex items-center">
+                        <!-- Young couple smiling together in casual outdoor setting -->
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                             alt="Anjali & Vikash" class="w-12 h-12 rounded-full mr-4 object-cover" />
+                        <div>
+                            <h4 class="font-semibold" data-bind="testimonial.clientName">Anjali & Vikash</h4>
+                            <p class="text-sm text-muted-foreground" data-bind="testimonial.eventType">Pre-Wedding</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Testimonials -->
+
+    <!-- Contact Section -->
+    <!-- @COMPONENT: ContactForm [booking form with validation] -->
+    <section id="contact" class="py-16 bg-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-playfair font-bold mb-4">Get In Touch</h2>
+                <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Ready to capture your special moments? Let's discuss your photography needs and create something beautiful together.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div>
+                    <h3 class="text-2xl font-playfair font-semibold mb-6">Let's Connect</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-accent p-3 rounded-lg mr-4">
+                                <svg class="w-6 h-6 text-accent-foreground" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Phone</h4>
+                                <p class="text-muted-foreground">+91 7400823680</p>
+                                <p class="text-sm text-muted-foreground">Available 9 AM - 9 PM</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-accent p-3 rounded-lg mr-4">
+                                <svg class="w-6 h-6 text-accent-foreground" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Email</h4>
+                                <p class="text-muted-foreground">himanshu2015@gmail.com</p>
+                                <p class="text-sm text-muted-foreground">We'll respond within 24 hours</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-accent p-3 rounded-lg mr-4">
+                                <svg class="w-6 h-6 text-accent-foreground" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Location</h4>
+                                <p class="text-muted-foreground">Dhawari, Lane No. 1, Satna, Madhya Pradesh</p>
+                                <p class="text-sm text-muted-foreground">Serving across Madhya Pradesh</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- WhatsApp CTA -->
+                    <div class="mt-8">
+                        <a href="https://wa.me/917400823680?text=Hi%20Himanshu,%20I'm%20interested%20in%20your%20photography%20services" 
+                           target="_blank" 
+                           class="inline-flex items-center bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.309"/>
+                            </svg>
+                            WhatsApp Us
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div>
+                    <form class="space-y-6" data-event="submit:handleContactForm">
+                        <!-- @STATE: formData:object = {} -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium mb-2">Name *</label>
+                                <input type="text" id="name" name="name" required 
+                                       class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" 
+                                       placeholder="Your full name" />
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium mb-2">Phone *</label>
+                                <input type="tel" id="phone" name="phone" required 
+                                       class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" 
+                                       placeholder="+91 9876543210" />
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium mb-2">Email *</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" 
+                                   placeholder="your@email.com" />
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="event-type" class="block text-sm font-medium mb-2">Event Type *</label>
+                                <select id="event-type" name="event-type" required 
+                                        class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+                                    <option value="">Select event type</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="pre-wedding">Pre-Wedding</option>
+                                    <option value="engagement">Engagement</option>
+                                    <option value="haldi">Haldi Ceremony</option>
+                                    <option value="mehndi">Mehndi Ceremony</option>
+                                    <option value="baby-shower">Baby Shower</option>
+                                    <option value="maternity">Maternity</option>
+                                    <option value="newborn">Newborn</option>
+                                    <option value="family">Family Portrait</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="event-date" class="block text-sm font-medium mb-2">Event Date</label>
+                                <input type="date" id="event-date" name="event-date" 
+                                       class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" />
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="city" class="block text-sm font-medium mb-2">City</label>
+                                <input type="text" id="city" name="city" 
+                                       class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" 
+                                       placeholder="Event city" />
+                            </div>
+                            <div>
+                                <label for="budget" class="block text-sm font-medium mb-2">Budget Range</label>
+                                <select id="budget" name="budget" 
+                                        class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+                                    <option value="">Select budget range</option>
+                                    <option value="10000-25000">₹10,000 - ₹25,000</option>
+                                    <option value="25000-50000">₹25,000 - ₹50,000</option>
+                                    <option value="50000-100000">₹50,000 - ₹1,00,000</option>
+                                    <option value="100000+">₹1,00,000+</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" 
+                                      class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent" 
+                                      placeholder="Tell us about your event, special requirements, or any questions you have..."></textarea>
+                        </div>
+                        
+                        <!-- Hidden honeypot field for spam protection -->
+                        <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
+                        
+                        <button type="submit" 
+                                class="w-full bg-accent text-accent-foreground py-3 px-6 rounded-lg font-medium hover:bg-accent/90 transition-colors duration-200">
+                            Send Message
+                        </button>
+                        
+                        <p class="text-sm text-muted-foreground text-center">
+                            We'll get back to you within 24 hours with a personalized quote.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ContactForm -->
+
+    <!-- Footer -->
+    <!-- @COMPONENT: Footer [site footer with links and contact info] -->
+    <footer class="bg-primary text-primary-foreground py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-playfair font-semibold mb-4">Himanshu Chaurasiya</h3>
+                    <p class="text-primary-foreground/80 mb-4">
+                        Professional photographer specializing in weddings, events, and family photography across Madhya Pradesh.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary-foreground/80 hover:text-accent transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-primary-foreground/80 hover:text-accent transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-primary-foreground/80 hover:text-accent transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.346-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-primary-foreground/80 hover:text-accent transition-colors">Home</a></li>
+                        <li><a href="#about" class="text-primary-foreground/80 hover:text-accent transition-colors">About</a></li>
+                        <li><a href="#portfolio" class="text-primary-foreground/80 hover:text-accent transition-colors">Portfolio</a></li>
+                        <li><a href="#services" class="text-primary-foreground/80 hover:text-accent transition-colors">Services</a></li>
+                        <li><a href="#contact" class="text-primary-foreground/80 hover:text-accent transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-primary-foreground/80">
+                        <p>+91 7400823680</p>
+                        <p>himanshu2015@gmail.com</p>
+                        <p>Dhawari, Lane No. 1<br>Satna, Madhya Pradesh</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/60">
+                <p>&copy; 2024 Himanshu Chaurasiya Photography. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- Lightbox -->
+    <!-- @COMPONENT: Lightbox [image gallery lightbox viewer] -->
+    <div class="lightbox" id="lightbox">
+        <div class="absolute top-4 right-4 z-10">
+            <button class="text-white hover:text-accent text-3xl p-2" data-event="click:closeLightbox">×</button>
+        </div>
+        <div class="flex items-center justify-center w-full h-full p-4">
+            <img id="lightbox-image" src="" alt="" class="max-w-full max-h-full object-contain" />
+        </div>
+        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-accent text-3xl p-2" data-event="click:previousImage">‹</button>
+        <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-accent text-3xl p-2" data-event="click:nextImage">›</button>
+    </div>
+    <!-- @END_COMPONENT: Lightbox -->
+
+    <script>
+    (function() {
+        // TODO: Implement React-based state management, API integration, and form handling
+        
+        // Mobile menu toggle
+        document.querySelector('[data-event="click:toggleMobileMenu"]').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Portfolio filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active button
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-accent', 'text-accent-foreground');
+                    btn.classList.add('bg-muted', 'text-muted-foreground');
+                });
+                this.classList.add('bg-accent', 'text-accent-foreground');
+                this.classList.remove('bg-muted', 'text-muted-foreground');
+                
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightbox-image');
+        let currentImageIndex = 0;
+        let images = [];
+        
+        // Collect all gallery images
+        galleryItems.forEach((item, index) => {
+            const img = item.querySelector('img');
+            images.push({
+                src: img.src,
+                alt: img.alt
+            });
+            
+            item.addEventListener('click', function() {
+                currentImageIndex = index;
+                showLightbox();
+            });
+        });
+        
+        function showLightbox() {
+            lightboxImage.src = images[currentImageIndex].src;
+            lightboxImage.alt = images[currentImageIndex].alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Lightbox controls
+        document.querySelector('[data-event="click:closeLightbox"]').addEventListener('click', closeLightbox);
+        
+        document.querySelector('[data-event="click:previousImage"]').addEventListener('click', function() {
+            currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
+            showLightbox();
+        });
+        
+        document.querySelector('[data-event="click:nextImage"]').addEventListener('click', function() {
+            currentImageIndex = currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
+            showLightbox();
+        });
+        
+        // Close lightbox on outside click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (lightbox.classList.contains('active')) {
+                switch(e.key) {
+                    case 'Escape':
+                        closeLightbox();
+                        break;
+                    case 'ArrowLeft':
+                        document.querySelector('[data-event="click:previousImage"]').click();
+                        break;
+                    case 'ArrowRight':
+                        document.querySelector('[data-event="click:nextImage"]').click();
+                        break;
+                }
+            }
+        });
+        
+        // Contact form handling
+        document.querySelector('[data-event="submit:handleContactForm"]').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // TODO: Implement form validation using Zod
+            // TODO: Add reCAPTCHA verification
+            // TODO: Send form data to backend API
+            // TODO: Show success/error messages
+            // TODO: Send email notifications
+            
+            // Basic form validation placeholder
+            const name = this.querySelector('#name').value.trim();
+            const email = this.querySelector('#email').value.trim();
+            const phone = this.querySelector('#phone').value.trim();
+            const eventType = this.querySelector('#event-type').value;
+            
+            if (!name || !email || !phone || !eventType) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            // Honeypot check
+            if (this.querySelector('[name="website"]').value !== '') {
+                // Likely spam, silently ignore
+                return;
+            }
+            
+            // Show success message (placeholder)
+            alert('Thank you for your inquiry! We\'ll get back to you within 24 hours.');
+            this.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Intersection Observer for animations (placeholder for Framer Motion)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+    })();
+    </script>
+</body>
+</html>
