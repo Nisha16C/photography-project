@@ -3,15 +3,14 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import { PHOTOGRAPHER_INFO } from "@/lib/constants";
-import { Camera } from "lucide-react";
+// import { PHOTOGRAPHER_INFO } from "@/lib/constants"; // unused
+import logo from "@/assets/images/logo.svg"; // Import as URL
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About Me", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Videos", href: "/videos" },
-  // { label: "Testimonials", href: "/testimonials" },
   { label: "Contact", href: "/contact" }
 ];
 
@@ -25,14 +24,8 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <Camera className="w-6 h-6 mr-2 text-accent-foreground" />
-
-              <h1
-                className="text-xl font-playfair font-semibold text-primary transition-colors cursor-pointer"
-                data-testid="logo-link"
-              >
-                Himanshu Photography
-              </h1>
+              <img src={logo} alt="Himanshu Photography" className="h-12 mr-2" />
+              
             </Link>
           </div>
 
