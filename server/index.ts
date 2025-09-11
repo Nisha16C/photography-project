@@ -1,94 +1,291 @@
-import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { createServer } from 'http';
+import { createServer as createViteServer } from 'vite';
+import { storage } from './storage';
+import { insertContactSchema } from '@shared/schema';
+import { ZodError } from 'zod';
+import path from 'path';
+import fs from 'fs';
+import viteConfig from '../vite.config';
+import { nanoid } from 'nanoid';
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Logger function
+function log(message: string, source = 'server') {
+  const formattedTime = new Date().toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
 
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
+// Create HTTP server
+const httpServer = createServer();
 
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+// API route handlers
+const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
+  // Categories
+  'GET /api/categories': async () => {
+    try {
+      const categories = await storage.getCategories();
+      return new Response(JSON.stringify(categories), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ message: 'Failed to fetch categories' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+
+  // Photos
+  'GET /api/photos': async (req) => {
+    try {
+      const url = new URL(req.url);
+      const category = url.searchParams.get('category') || undefined;
+      const featured = url.searchParams.has('featured')
+        ? url.searchParams.get('featured') === 'true'
+        : undefined;
+
+      const photos = await storage.getPhotos(category, featured);
+      return new Response(JSON.stringify(photos), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ message: 'Failed to fetch photos' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+
+  // Services
+  'GET /api/services': async () => {
+    try {
+      const services = await storage.getServices();
+      return new Response(JSON.stringify(services), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ message: 'Failed to fetch services' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+
+  // Testimonials
+  'GET /api/testimonials': async () => {
+    try {
+      const testimonials = await storage.getTestimonials(true);
+      return new Response(JSON.stringify(testimonials), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ message: 'Failed to fetch testimonials' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+
+  // Contact form submission
+  'POST /api/contact': async (req) => {
+    try {
+      const data = await req.json();
+      
+      // Check honeypot field
+      if (data.website) {
+        // Likely spam, silently ignore
+        return new Response(JSON.stringify({ message: 'Thank you for your message' }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
       }
 
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+      const validatedData = insertContactSchema.parse(data);
+      const contact = await storage.createContact(validatedData);
+      
+      // TODO: Send email notification to photographer
+      // TODO: Send confirmation email to client
+      
+      return new Response(JSON.stringify({
+        message: "Thank you for your inquiry! We'll get back to you within 24 hours.",
+        contactId: contact.id
+      }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return new Response(JSON.stringify({
+          message: 'Validation failed',
+          errors: error.errors
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } else {
+        return new Response(JSON.stringify({ message: 'Failed to submit contact form' }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+        });
       }
+    }
+  },
+};
 
-      log(logLine);
+// Start the server
+(async () => {
+  // Create Vite server
+  const vite = await createViteServer({
+    ...viteConfig,
+    configFile: false,
+    server: {
+      middlewareMode: true,
+      hmr: { server: httpServer },
+      allowedHosts: true,
+    },
+    appType: 'custom',
+  });
+
+  // Handle requests
+  httpServer.on('request', async (req, res) => {
+    const url = new URL(req.url || '', `http://${req.headers.host}`);
+    const method = req.method || 'GET';
+    const pathname = url.pathname;
+    
+    // Log API requests
+    if (pathname.startsWith('/api')) {
+      const start = Date.now();
+      res.on('finish', () => {
+        const duration = Date.now() - start;
+        let logLine = `${method} ${pathname} ${res.statusCode} in ${duration}ms`;
+        if (logLine.length > 80) {
+          logLine = logLine.slice(0, 79) + '…';
+        }
+        log(logLine);
+      });
+    }
+
+    // Handle API requests
+    if (pathname.startsWith('/api')) {
+      const handler = apiHandlers[`${method} ${pathname}`];
+      if (handler) {
+        try {
+          // Convert Node.js request to fetch API Request
+          const chunks: Buffer[] = [];
+          for await (const chunk of req) {
+            chunks.push(Buffer.from(chunk));
+          }
+          const body = Buffer.concat(chunks).toString('utf-8');
+          
+          const request = new Request(url.toString(), {
+            method,
+            headers: req.headers as any,
+            body: body.length > 0 ? body : undefined,
+          });
+
+          const response = await handler(request);
+          
+          // Convert fetch API Response to Node.js response
+          res.statusCode = response.status;
+          response.headers.forEach((value, key) => {
+            res.setHeader(key, value);
+          });
+          
+          const responseBody = await response.text();
+          res.end(responseBody);
+        } catch (error) {
+          console.error('Error handling API request:', error);
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ message: 'Internal Server Error' }));
+        }
+        return;
+      }
+    }
+
+    // Let Vite handle all other requests (static files, SPA routes, etc.)
+    try {
+      // Use Vite's middleware to handle the request
+      const viteMiddleware = vite.middlewares as any;
+      viteMiddleware(req, res, async () => {
+        // If Vite doesn't handle it, serve the SPA index.html
+        try {
+          const isDev = process.env.NODE_ENV === 'development';
+          
+          if (isDev) {
+            // In development, use the client template and transform it
+            const clientTemplate = path.resolve(
+              import.meta.dirname,
+              '..',
+              'client',
+              'index.html',
+            );
+            
+            let template = await fs.promises.readFile(clientTemplate, 'utf-8');
+            template = template.replace(
+              `src="/src/main.tsx"`,
+              `src="/src/main.tsx?v=${nanoid()}"`,
+            );
+            const page = await vite.transformIndexHtml(url.pathname, template);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'text/html');
+            res.end(page);
+          } else {
+            // In production, serve the built index.html
+            const distPath = path.resolve(import.meta.dirname, '..', 'dist', 'public');
+            const indexPath = path.resolve(distPath, 'index.html');
+            
+            if (fs.existsSync(indexPath)) {
+              const content = await fs.promises.readFile(indexPath, 'utf-8');
+              res.statusCode = 200;
+              res.setHeader('Content-Type', 'text/html');
+              res.end(content);
+            } else {
+              throw new Error(`Could not find the build file: ${indexPath}`);
+            }
+          }
+        } catch (e) {
+          vite.ssrFixStacktrace(e as Error);
+          console.error(e);
+          res.statusCode = 500;
+          res.end('Internal Server Error');
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      res.statusCode = 500;
+      res.end('Internal Server Error');
     }
   });
 
-  next();
-});
-
-(async () => {
-  const server = await registerRoutes(app);
-
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
+  // Start listening
   const port = parseInt(process.env.PORT || '5000', 10);
-  const initialHost = process.env.HOST || "0.0.0.0";
+  const initialHost = process.env.HOST || '0.0.0.0';
 
-  // Helper to start listening (don't set reusePort by default on Windows)
+  // Helper to start listening
   function startListening(host: string) {
-    server.listen({ port, host }, () => {
-      log(`serving on ${host}:${port}`);
+    httpServer.listen({ port, host }, () => {
+      log(`Server listening on ${host}:${port} (NODE_ENV=${process.env.NODE_ENV})`);
     });
   }
 
   // Handle errors and fallback if binding 0.0.0.0 is not supported (ENOTSUP)
-  server.on("error", (err: NodeJS.ErrnoException) => {
-    if (err && err.code === "ENOTSUP" && initialHost === "0.0.0.0") {
-      log("ENOTSUP when binding 0.0.0.0 — falling back to 127.0.0.1");
+  httpServer.on('error', (err: NodeJS.ErrnoException) => {
+    if (err && err.code === 'ENOTSUP' && initialHost === '0.0.0.0') {
+      log('ENOTSUP when binding 0.0.0.0 — falling back to 127.0.0.1');
       // try localhost instead
-      startListening("127.0.0.1");
+      startListening('127.0.0.1');
       return;
     }
-    console.error("Server error:", err);
+    console.error('Server error:', err);
     process.exit(1);
   });
 
-  // Log when listening
-  server.on("listening", () => {
-    const addr = server.address();
-    const hostStr = typeof addr === "object" && addr ? addr.address : initialHost;
-    log(`Server listening on ${hostStr}:${port} (NODE_ENV=${process.env.NODE_ENV})`);
-  });
-
-  // initial attempt
+  // Initial attempt
   startListening(initialHost);
 })();
