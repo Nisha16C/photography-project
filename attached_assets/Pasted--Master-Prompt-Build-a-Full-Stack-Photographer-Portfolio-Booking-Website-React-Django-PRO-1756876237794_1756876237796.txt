@@ -1,0 +1,178 @@
+# Master Prompt: Build a Full-Stack Photographer Portfolio & Booking Website (React + Django) ## PROJECT GOAL
+Design and develop a high-performance, mobile-first website for a professional photographer to showcase all information, photos, and videos; promote services (e.g., weddings, baby shower, haldi, mehndi, engagements, pre-wedding, maternity, newborn, family, corporate events); and convert visitors into bookings via an integrated contact/booking flow.
+
+## AUDIENCE & BRAND
+Target users: Couples, families, event planners, and brand managers in India.
+Tone & vibe: Elegant, modern, artistic. Minimal UI with bold imagery. Premium yet friendly.
+Brand elements: Photographer’s logo, brand colors (primary, secondary, accent), clean typography (e.g., Playfair Display + Inter).
+
+## TECH STACK
+Frontend: React (Vite or Next.js-style routing in React Router), TypeScript preferred, Tailwind CSS, Framer Motion for animations, React Query for data fetching, React Hook Form + Zod for forms.
+UI components: Headless UI / Radix + custom components; lightbox (e.g., yet-another-react-lightbox) or custom; Masonry layout with CSS Grid.
+Backend: Django 5 + Django REST Framework (DRF). Django Admin as CMS with custom ModelAdmin forms.
+Storage: S3-compatible (AWS S3/MinIO) for images/videos via django-storages; local media for dev.
+Database: PostgreSQL.
+Auth: Django auth + JWT (djangorestframework-simplejwt) for admin/editor APIs.
+Payments (optional but desirable): Razorpay integration for booking deposit.
+Email/SMS/IM: Email via SMTP/SendGrid; WhatsApp CTA deep link; optional SMS via Twilio/MSG91.
+Analytics: Google Analytics 4 + privacy-friendly alternative (Plausible/Umami).
+
+## CORE PAGES & ROUTES
+Home
+
+Hero slideshow with featured shoots (autoplay, swipe, pause on hover)
+Value props (e.g., "Cinematic Wedding Stories", "Baby Shower Moments", etc.)
+Featured galleries & videos
+Testimonials carousel
+Call-to-Action (CTA) blocks: View Portfolio, Check Availability, Book a Call, WhatsApp
+About
+
+Photographer bio, awards, exhibitions, press mentions
+Style & approach, gear list (optional), behind-the-scenes images
+Downloadable media kit (PDF)
+Portfolio (Photos)
+
+Category filters: Wedding, Pre-Wedding, Engagement, Haldi, Mehndi, Baby Shower, Maternity, Newborn, Family, Corporate, Fashion, Travel, etc.
+Masonry grid, infinite scroll, lazy-loading, hover captions, quick view
+Lightbox with keyboard nav, swipe, EXIF/shot info toggle, next/prev
+Multi-select compare (optional)
+Tagging & search
+Videos
+
+Grid of video thumbnails (self-hosted short reels + embedded YouTube/Vimeo)
+Lightbox player; auto quality select; previews
+Filters by category/event type
+Services & Packages
+
+Service descriptions (e.g., full wedding coverage, haldi/mehndi ceremony, baby shower, maternity, corporate)
+Package cards with inclusions, starting price, add-ons (drone, extra hours, second shooter)
+FAQ accordion
+CTA to check availability / request quote
+Testimonials & Reviews
+
+Client stories with photos, ratings, event type, location, date
+Admin-moderated submissions
+Blog / Stories (optional but preferred)
+
+SEO-friendly posts: case studies, venue spotlights, tips
+Contact / Booking
+
+Lead form: name, email, phone (with country code), city, event type, event date(s) with date picker, estimated budget, message
+File upload (moodboard/reference)
+WhatsApp deep link button
+Availability checker (simple calendar UI)
+Optional: collect booking deposit via Razorpay (create order, capture payment, send receipt)
+Gallery Detail Page
+
+Slideshow of a specific shoot; story text; team credits; location; vendors; share buttons
+Legal
+
+Terms & Conditions, Privacy Policy, Cookie preferences (GDPR/India PDP compliance)
+
+## ADMIN (Django CMS) REQUIREMENTS
+Secure Django Admin with custom ModelAdmins.
+CRUD for: Categories, Tags, Photos, Albums (shoots), Videos, Services, Packages, Add-ons, Testimonials, Blog posts, FAQs, Lead submissions, Availability blocks, Venues.
+Bulk upload images (drag & drop), auto-generate thumbnails, lossless compression, optional watermark toggle, alt text & captions required.
+Reorder galleries via drag-and-drop ordering.
+Video support: URL embeds + optional upload of short reels.
+Publishing workflow: draft, scheduled publish, archive.
+SEO fields per object: title, meta description, canonical, Open Graph, Twitter Card.
+Slug generation with uniqueness; redirects for changed slugs.
+Lead inbox with status (new, contacted, booked, closed) + notes.
+Export leads to CSV.
+
+## DATA MODEL (ILLUSTRATIVE)
+Category: name, slug, description, cover_image
+Tag: name, slug
+Album (Shoot): title, slug, date, location, event_type (FK Category), description, hero_image, tags (M2M), is_featured, gallery (M2M Photo)
+Photo: image, caption, alt_text, exif(json), taken_at, orientation, palette(json), is_featured, photographer_notes
+Video: title, slug, thumbnail, url_or_file, provider(enum: youtube/vimeo/self), duration, categories, tags
+Service: title, slug, description, base_price, deliverables(json)
+Package: title, price, description, includes(json), add_ons(M2M AddOn)
+AddOn: title, price, description
+Testimonial: client_name, event_type, rating, body, date, location, photo(optional)
+Lead: name, email, phone, city, event_type, event_date, budget_range, message, source, status, notes
+AvailabilityBlock: start_date, end_date, status(enum: available/unavailable/hold)
+BlogPost: title, slug, body, cover_image, published_at, tags
+
+## API ENDPOINTS (DRF)
+/api/v1/portfolio/photos?category=...&tag=...&page=...
+/api/v1/portfolio/albums/:slug (includes photos & story)
+/api/v1/videos?category=...&page=...
+/api/v1/services /api/v1/packages
+/api/v1/testimonials
+/api/v1/leads (POST) → validates + sends email to studio + stores in DB
+/api/v1/availability?month=YYYY-MM → dates blocked/available
+/api/v1/seo/:slug → meta data for given route
+/api/v1/upload (auth) → admin media upload
+/api/v1/payment/razorpay/order (POST) & /payment/webhook (Razorpay webhook)
+
+## FRONTEND UX & ANIMATIONS (Framer Motion)
+Smooth page transitions (fade/slide), parallax hero, staggered grid reveals.
+Hover micro-interactions on cards; magnetic buttons for CTAs.
+Lightbox transitions with spring physics.
+Reduced-motion setting respected via prefers-reduced-motion.
+Skeleton loaders for gallery cards; optimistic UI for form submits.
+
+## FORMS & CONVERSION
+Contact/Booking form with strong validation (Zod), server-side validation fallback.
+reCAPTCHA or hCaptcha. Honeypot field to reduce spam.
+WhatsApp CTA: prefilled message text including event type/date.
+On success: thank-you page + email confirmation to lead + notification to studio.
+Optional: meeting scheduler link (Calendly) after form submit.
+
+## PERFORMANCE & MEDIA
+Image optimization: generate multiple sizes (thumb, card, hd, 4k); serve AVIF/WebP with fallback; lazy-load & priority hints for LCP image.
+Video: use HLS/DASH for self-hosted; poster images; lazy-load embeds.
+CDN for static & media; caching headers; HTTP/2 or HTTP/3; preconnect/preload critical assets.
+Lighthouse targets: Perf ≥ 90, SEO ≥ 95, Accessibility ≥ 95, Best Practices ≥ 95.
+
+## SEO & DISCOVERABILITY
+Semantic HTML; correct heading structure.
+Structured data (JSON-LD): Organization, LocalBusiness, Product (packages), Service, ImageObject, VideoObject, BreadcrumbList.
+Dynamic meta titles/descriptions per page; Open Graph and Twitter Cards.
+Clean readable URLs; sitemap.xml & robots.txt; canonical tags.
+Blog for long-tail keywords; internal linking; venue/location pages (city-based landing pages for weddings, haldi, mehndi, baby shower, etc.).
+
+## ACCESSIBILITY
+WCAG 2.2 AA: alt text required, color contrast, focus states, skip links, keyboard navigation, ARIA labels, captions/transcripts for videos where applicable.
+
+## SECURITY
+HTTPS everywhere; CSRF protection for forms; rate limiting for /leads.
+Validate all uploads (MIME/size/extension). Store secrets in env vars.
+JWT expiry & refresh; Django Admin IP allowlist (optional).
+
+## INTERNATIONALIZATION
+English primary; optional Hindi switch (i18n-ready strings & content fields).
+
+## DEVOPS & DELIVERY
+Dockerized dev & prod; .env templates; Makefile or npm scripts.
+CI/CD pipeline (GitLab/GitHub Actions): run tests, linting, type-checks, build, deploy.
+Deploy targets: Render/Heroku/Fly.io for app; CloudFront/Cloudflare for CDN.
+
+## ANALYTICS & INSIGHTS
+GA4 + event tracking (CTA clicks, form submit, WhatsApp click, lightbox views).
+Heatmap recording optional (e.g., Hotjar/FullStory) with consent banner.
+
+## ACCEPTANCE CRITERIA (HIGH-LEVEL)
+All core pages implemented with responsive design and fast LCP.
+Admin can upload photos/videos, create albums, and feature content on Home.
+Portfolio grid loads fast with lazy-loading and has working filters + lightbox.
+Videos page supports both embeds and self-hosted clips.
+Contact/Booking form validates, stores lead, sends email, and shows success page; WhatsApp CTA works.
+Availability calendar shows blocked dates from backend.
+SEO metadata and JSON-LD render correctly; sitemap and robots available.
+Lighthouse scores meet targets on a mid-range mobile device.
+All animations feel smooth and respect reduced-motion.
+Basic unit/integration tests for critical flows (lead submit, gallery fetch, SEO tags).
+
+## SAMPLE PROMPT USAGE (SHORT VERSION)
+“Build a React + Django website for a professional photographer. Include Home, About, Portfolio with photo categories (wedding, pre-wedding, haldi, mehndi, baby shower, maternity, newborn, family, corporate), Videos page (embeds + self-hosted), Services/Packages with pricing, Testimonials, Blog, and Contact/Booking with date picker, validation, spam protection, WhatsApp CTA, email notifications, and optional Razorpay deposit. Use Tailwind, Framer Motion animations, Masonry gallery with lazy-loading and lightbox, DRF APIs, S3 media storage, image optimization (WebP/AVIF, multiple sizes), SEO (meta tags, Open Graph, JSON-LD), accessibility (WCAG 2.2 AA), and analytics (GA4). Provide Django Admin CMS for uploading and organizing images/videos, tagging, ordering, and featuring albums. Deliver with Docker, Postgres, JWT auth, and CI/CD. Target Lighthouse ≥90/95/95/95.”
+
+## CONTENT PLACEHOLDERS TO REQUEST FROM CLIENT Brand logo (SVG/PNG), color palette, typography preference Bio, awards, press, gear list Service descriptions, package details, add-ons & pricing 50–100 best images (with categories/tags) and 5–10 showcase videos Testimonials (names, event types, photos) Contact email/phone/WhatsApp number Cities/locations served; travel policy Privacy policy text & terms ---
+Deliverables: Source code (frontend & backend), env templates, database schema migrations, API docs (OpenAPI/Swagger), deployment instructions, admin guide, and a sample dataset for demo content.
+
+I want to create a photography portfolio website for Himanshu Chaurasiya using the provided project files (Portfolio-photographer.zip) as a base. The design and layout should be professional, modern, and elegant, similar to the reference website: Candid Shutters Portfolio . 🔹 Key Requirements Profile Information (Replace Dummy Data with Real Data): Name: Himanshu Chaurasiya Phone: +91 7400823680 Address: Dhawari, Lane No. 1, Satna, Madhya Pradesh email - himanshuchaurasiya5811@gmail.com Experience: 4+ years in professional photography instagram link - https://www.instagram.com/himanshu_photography_satna?igsh=MWhoem94b3VocWV0YQ== youtube link - https://youtube.com/@himanshuchaurasiaphotography?si=iWoR5PuoQ_VpWU8v Profile Photo: Use the provided image as the main profile photo. Portfolio Section: Showcase photos and videos from the local project files (not from Google). Save dummy images and videos inside the project structure so that I can replace them later with my real work. Display photos and videos professionally with animations (smooth transitions, hover effects, gallery style). UI/UX & Styling: Minimal, modern, and responsive design. Use elegant typography and balanced color schemes. Smooth scrolling, image sliders, and hover animations for portfolio items. Sections Required: Home (Hero Section): Profile image, name, tagline like “Capturing Moments, Creating Memories”. About Me: Short introduction + experience (4+ years). Portfolio: Grid/gallery of photos and embedded videos with lightbox/animation. Social Media Links: Direct buttons for Instagram & YouTube. Contact: Phone number, address, and a simple contact form. Hosting Setup (Optional): Keep the project structured so that it can be deployed on any hosting platform (local → live).
+
+
+Thought for 7
