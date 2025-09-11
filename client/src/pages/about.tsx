@@ -73,7 +73,7 @@ export default function About() {
                   {hasAnimated ? (
                     <CountUp 
                       start={0} 
-                      end={500} 
+                      end={100} 
                       duration={2.5} 
                       separator="" 
                       suffix="+" 
@@ -120,7 +120,7 @@ export default function About() {
                   {hasAnimated ? (
                     <CountUp 
                       start={0} 
-                      end={200} 
+                      end={100} 
                       duration={2.5} 
                       separator="" 
                       suffix="+" 

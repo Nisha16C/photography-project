@@ -54,8 +54,8 @@ export default function WhyChooseUs() {
           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       ),
-      title: "A Legacy Since 1988",
-      description: "Legacy since 1988, filmmaking & all types of photography under one roof"
+      title: "A Legacy Since 2020",
+      description: "Legacy since 2020, filmmaking & all types of photography under one roof"
     },
     {
       id: "trusted",
