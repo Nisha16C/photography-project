@@ -64,7 +64,7 @@ export default function WhyChooseUs() {
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
         </svg>
       ),
-      title: "Trusted in Indore",
+      title: "Trusted in Satna",
       description: "A reputation as a trusted photographer in Indore with meticulous storytelling and custom direction"
     },
     {

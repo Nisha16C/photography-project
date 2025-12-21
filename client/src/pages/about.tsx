@@ -2,14 +2,8 @@ import { motion, useMotionValue, useTransform, useAnimation } from "framer-motio
 import { Mail, Phone, MapPin, Camera, Award, Users } from "lucide-react";
 import { PHOTOGRAPHER_INFO, LOCAL_IMAGES } from "@/lib/constants";
 import PROFILE_IMG from "@/assets/images/profile/shared-image.jpg";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-
-// Import background images
-import WEDDING_BG from "@/assets/images/portfolio/weddings-Img/indian-bride-and-groom-at-amazing-hindu-wedding-ceremony-photo.jpeg";
-import PREWEDDING_BG from "@/assets/images/portfolio/PreWedding-Img/Capture-Timeless-Moments-Pre-Wedding-Photoshoots-in-Valparai-with-Yabesh-Photography-10.jpeg";
-import FAMILY_BG from "@/assets/images/portfolio/Family-img/happy-indian-family-outdoor-park-candid-portrait-parents-children-having-fun-garden-park-36754546.webp";
-import MEHNDI_BG from "@/assets/images/portfolio/Mehndi-Img/photo-1505932794465-147d1f1b2c97.jpg";
 
 
 export default function About() {
@@ -181,10 +175,11 @@ export default function About() {
               className="flex flex-col justify-center"
             >
               <motion.h1
-                className="text-3xl sm:text-4xl lg:text-5xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                className="text-3xl sm:text-4xl pb-2 py-2 lg:text-5xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
                 data-testid="about-title"
                 variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
+                style={{ fontFamily: "'Great Vibes', cursive" }}
               >
                 Meet {PHOTOGRAPHER_INFO.name}
               </motion.h1>
@@ -241,117 +236,228 @@ export default function About() {
       </section>
 
       {/* Specialties Section */}
-      <section className="py-16 relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden bg-black">
+        {/* Animated Blue Background Grid */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a15_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a15_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 via-background/90 to-background/80 pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Glowing Blue Orbs */}
           <motion.div
-            className="text-center mb-12"
+            className="absolute top-20 left-20 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.4, 0.2],
+              x: [0, 50, 0],
+              y: [0, 30, 0],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute bottom-10 right-20 w-[500px] h-[500px] bg-cyan-500/15 rounded-full blur-3xl"
+            animate={{
+              scale: [1.2, 1, 1.2],
+              opacity: [0.15, 0.3, 0.15],
+              x: [0, -40, 0],
+              y: [0, -50, 0],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          <motion.div
+            className="absolute top-1/2 left-1/2 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.1, 0.25, 0.1],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header */}
+          <motion.div
+            className="text-center mb-20"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Great Vibes', cursive" }}>
+            <motion.h2
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 pb-2  bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
               Our Signature Styles
-            </h2>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            </motion.h2>
+            <motion.p
+              className="text-blue-200/80 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
               Discover our unique approach to wedding storytelling - where luxury meets artistry to create timeless memories.
-            </p>
+            </motion.p>
           </motion.div>
 
+          {/* Diagonal Timeline Layout */}
+          <div className="relative">
+            {/* Central Connecting Line */}
+            <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-transparent via-blue-500/50 to-transparent transform -translate-x-1/2" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PHOTOGRAPHER_INFO.specialties.map((specialty, index) => {
-              let backgroundImage = WEDDING_BG;
+            <div className="space-y-16 lg:space-y-24">
+              {PHOTOGRAPHER_INFO.specialties.map((specialty, index) => {
+                const isEven = index % 2 === 0;
 
-              if (specialty.includes("Cinematic") || specialty.includes("Wedding Films")) {
-                backgroundImage = WEDDING_BG;
-              } else if (specialty.includes("Pre-Wedding")) {
-                backgroundImage = PREWEDDING_BG;
-              } else if (specialty.includes("Candid") || specialty.includes("Traditional")) {
-                backgroundImage = FAMILY_BG;
-              } else if (specialty.includes("Mehndi") || specialty.includes("Sangeet")) {
-                backgroundImage = MEHNDI_BG;
-              } else if (specialty.includes("Destination") || specialty.includes("Drone")) {
-                backgroundImage = WEDDING_BG;
-              }
-
-              return (
-                <motion.div
-                  key={specialty}
-                  className="relative p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden h-96"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{
-                    y: -10,
-                    scale: 1.05,
-                    rotateY: 5,
-                    transition: { duration: 0.4, ease: "easeOut" }
-                  }}
-                  data-testid={`specialty-${index}`}
-                >
-                  {/* बैकग्राउंड इमेज */}
-                  <div className="absolute inset-0 z-0 overflow-hidden">
-                    <motion.img
-                      src={backgroundImage}
-                      alt={specialty}
-                      className="w-full h-full object-cover filter blur-[2px]"
-                      initial={{ scale: 1.0 }}
-                      animate={{
-                        scale: [1, 1.08, 1],
-                      }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 15,
-                        ease: "easeInOut"
-                      }}
-                      whileHover={{
-                        filter: "blur(0px)",
-                        scale: 1.15,
-                        transition: { duration: 0.5 }
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-black/80 to-primary/70"></div>
-                  </div>
-
-                  {/* कंटेंट */}
-                  <div className="relative z-10 h-full flex flex-col justify-between">
-                    <div>
+                return (
+                  <motion.div
+                    key={specialty}
+                    className={`relative flex flex-col lg:flex-row items-center gap-8 ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}
+                    initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    data-testid={`specialty-${index}`}
+                  >
+                    {/* Content Side */}
+                    <div className={`flex-1 ${isEven ? 'lg:text-right lg:pr-12' : 'lg:text-left lg:pl-12'}`}>
                       <motion.div
-                        className="flex items-center justify-center w-16 h-16 bg-accent rounded-xl mb-6 relative overflow-hidden mx-auto"
-                        whileHover={{ scale: 1.2, rotate: 10 }}
-                        transition={{ type: "spring", stiffness: 400 }}
+                        className="group relative inline-block"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-tr from-primary to-accent opacity-50"></div>
-                        <Camera className="w-8 h-8 text-accent-foreground" />
+                        <motion.h3
+                          className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white relative inline-block"
+                          style={{ fontFamily: "'Playfair Display', serif" }}
+                          whileHover={{
+                            textShadow: "0 0 20px rgba(59, 130, 246, 0.5)",
+                          }}
+                        >
+                          {specialty}
+                          <motion.span
+                            className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400"
+                            initial={{ width: 0 }}
+                            whileInView={{ width: "100%" }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            viewport={{ once: true }}
+                          />
+                        </motion.h3>
+
+                        <motion.p
+                          className="text-blue-200/70 text-base sm:text-lg leading-relaxed max-w-md mx-auto lg:mx-0"
+                          style={{ fontFamily: "'Inter', sans-serif" }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ duration: 0.6, delay: 0.4 }}
+                          viewport={{ once: true }}
+                        >
+                          Professional {specialty.toLowerCase()} services with attention to detail and creative storytelling that captures every precious moment.
+                        </motion.p>
                       </motion.div>
-                      <motion.h3
-                        className="text-xl font-bold mb-3 text-center text-white drop-shadow-lg"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        whileHover={{ scale: 1.05, textShadow: "0 0 8px rgba(255,255,255,0.8)" }}
-                      >
-                        {specialty}
-                      </motion.h3>
                     </div>
-                    <motion.p
-                      className="text-sm text-white text-center drop-shadow-md font-medium"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                      whileHover={{ y: -3 }}
-                    >
-                      Professional {specialty.toLowerCase()} services with attention to detail and creative storytelling.
-                    </motion.p>
-                  </div>
-                </motion.div>
-              );
-            })}
+
+                    {/* Center Icon */}
+                    <div className="relative flex-shrink-0">
+                      <motion.div
+                        className="relative w-24 h-24 lg:w-32 lg:h-32"
+                        whileHover={{ rotate: 360, scale: 1.1 }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        {/* Outer Glow Ring */}
+                        <motion.div
+                          className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 opacity-20 blur-xl"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.2, 0.4, 0.2],
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+
+                        {/* Middle Ring */}
+                        <div className="absolute inset-2 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 p-[2px]">
+                          <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
+                            {/* Inner Icon Circle */}
+                            <motion.div
+                              className="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 flex items-center justify-center"
+                              whileHover={{ scale: 1.1 }}
+                            >
+                              <Camera className="w-8 h-8 lg:w-10 lg:h-10 text-black" strokeWidth={2.5} />
+                            </motion.div>
+                          </div>
+                        </div>
+
+                        {/* Rotating Border */}
+                        <motion.div
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            background: "conic-gradient(from 0deg, transparent, #3b82f6, transparent)",
+                          }}
+                          animate={{ rotate: 360 }}
+                          transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "linear"
+                          }}
+                        />
+                      </motion.div>
+
+                      {/* Connecting Line to Center */}
+                      <motion.div
+                        className={`hidden lg:block absolute top-1/2 ${isEven ? 'left-full' : 'right-full'} w-12 h-0.5 bg-gradient-to-r ${isEven ? 'from-blue-500/50 to-transparent' : 'from-transparent to-blue-500/50'}`}
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        transition={{ duration: 0.6, delay: 0.5 }}
+                        viewport={{ once: true }}
+                      />
+                    </div>
+
+                    {/* Number Badge */}
+                    <div className={`flex-1 ${isEven ? 'lg:text-left lg:pl-12' : 'lg:text-right lg:pr-12'}`}>
+                      <motion.div
+                        className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-600/20 to-cyan-500/20 border-2 border-blue-500/30"
+                        initial={{ scale: 0, rotate: -180 }}
+                        whileInView={{ scale: 1, rotate: 0 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 200,
+                          delay: 0.6
+                        }}
+                        viewport={{ once: true }}
+                        whileHover={{
+                          scale: 1.2,
+                          borderColor: "rgba(59, 130, 246, 0.8)",
+                          boxShadow: "0 0 20px rgba(59, 130, 246, 0.4)"
+                        }}
+                      >
+                        <span className="text-2xl font-bold bg-gradient-to-br from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
