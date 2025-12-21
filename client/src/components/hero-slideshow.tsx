@@ -254,7 +254,7 @@ export default function HeroSlideshow() {
                 Capturing Moments,
               </span>
               {/* style={{ fontFamily: "'Brush Script MT', cursive" }} */}
-              <span className="text-accent block mt-4 text-6xl sm:text-7xl lg:text-8xl">Creating Memories</span>
+              <span className="text-blue-400 block mt-4 text-6xl sm:text-7xl lg:text-8xl" style={{ fontFamily: "'Great Vibes', cursive" }}>Creating Memories</span>
             </motion.h1>
 
             <motion.p

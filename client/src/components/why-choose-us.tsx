@@ -88,23 +88,23 @@ export default function WhyChooseUs() {
     <section className="py-16 bg-background relative overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl sm:text-5xl font-playfair font-bold mb-4" data-testid="why-choose-us-title">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }} data-testid="why-choose-us-title">
             Why Choose Us
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="why-choose-us-subtitle">
             Why Premium Couples Choose New Geeta Studio
           </p>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature) => (
             <FeatureCard

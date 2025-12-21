@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Great+Vibes&family=Tangerine:wght@400;700&family=Pacifico&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -154,6 +154,18 @@
 
 .font-inter {
   font-family: "Inter", sans-serif;
+}
+
+.font-script {
+  font-family: "Great Vibes", cursive;
+}
+
+.font-elegant {
+  font-family: "Tangerine", cursive;
+}
+
+.font-handwritten {
+  font-family: "Pacifico", cursive;
 }
 
 /* Custom animations */

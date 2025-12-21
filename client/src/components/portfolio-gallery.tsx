@@ -231,7 +231,7 @@ export default function PortfolioGallery() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className=" text-3xl sm:text-4xl font-playfair font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" data-testid="portfolio-title">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Great Vibes', cursive" }} data-testid="portfolio-title">
             Portfolio Gallery
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8" data-testid="portfolio-subtitle">

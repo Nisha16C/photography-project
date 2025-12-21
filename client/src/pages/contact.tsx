@@ -104,7 +104,7 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-3xl sm:text-4xl font-playfair font-bold mb-4" data-testid="contact-title">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Pacifico', cursive" }} data-testid="contact-title">
               Get In Touch
             </h1>
 
@@ -131,7 +131,7 @@ export default function Contact() {
                     Limited Time Offer
                   </span>
                 </motion.div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mt-4 mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mt-4 mb-2" style={{ fontFamily: "'Pacifico', cursive" }}>
                   Get 10% OFF on Immediate Advance Payment!
                 </h3>
                 <p className="text-white/90 text-lg mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -404,19 +404,28 @@ export default function Contact() {
                               control={form.control}
                               name="eventDate"
                               render={({ field: ctlField }) => (
-                                <DatePicker
-                                  selected={ctlField.value ? new Date(ctlField.value) : null}
-                                  onChange={(d) => {
-                                    // store ISO date (yyyy-mm-dd) in form
-                                    if (!d) return ctlField.onChange("");
-                                    const iso = d.toISOString().slice(0, 10);
-                                    ctlField.onChange(iso);
-                                  }}
-                                  placeholderText="Select event date"
-                                  className="w-full px-3 py-2 border rounded-md"
-                                  dateFormat="dd MMM yyyy"
-                                  data-testid="input-event-date"
-                                />
+                                <div className="relative">
+                                  <DatePicker
+                                    selected={ctlField.value ? new Date(ctlField.value) : null}
+                                    onChange={(d) => {
+                                      // store ISO date (yyyy-mm-dd) in form
+                                      if (!d) return ctlField.onChange("");
+                                      const iso = d.toISOString().slice(0, 10);
+                                      ctlField.onChange(iso);
+                                    }}
+                                    placeholderText="Select event date"
+                                    className="w-full px-4 py-3 bg-gray-800/50 border-2 border-blue-500/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all backdrop-blur-sm"
+                                    dateFormat="dd MMM yyyy"
+                                    data-testid="input-event-date"
+                                    calendarClassName="bg-gray-900 border-2 border-blue-500/30 rounded-lg shadow-2xl"
+                                    wrapperClassName="w-full"
+                                  />
+                                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                  </div>
+                                </div>
                               )}
                             />
                           </FormControl>
@@ -553,10 +562,10 @@ export default function Contact() {
               className="w-full"
               data-testid="google-maps-embed"
             />
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-              <div className="flex items-center text-sm">
-                <MapPin className="w-4 h-4 mr-2 text-accent" />
-                <span className="font-medium">Satna, Madhya Pradesh</span>
+            <div className="absolute top-4 left-4 bg-blue-500 text-white backdrop-blur-sm rounded-lg p-3 shadow-xl border-2 border-blue-400">
+              <div className="flex items-center text-sm font-semibold">
+                <MapPin className="w-5 h-5 mr-2" />
+                <span>Satna, Madhya Pradesh</span>
               </div>
             </div>
           </motion.div>

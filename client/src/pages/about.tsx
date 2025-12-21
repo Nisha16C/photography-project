@@ -253,7 +253,7 @@ export default function About() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: 'Cinzel, serif' }}>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Great Vibes', cursive" }}>
               Our Signature Styles
             </h2>
             <p className="text-white/70 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
@@ -262,18 +262,20 @@ export default function About() {
           </motion.div>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">  {/* 4 कॉलम में बदला */}
-            {[...PHOTOGRAPHER_INFO.specialties, "Mehndi Photography"].map((specialty, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PHOTOGRAPHER_INFO.specialties.map((specialty, index) => {
               let backgroundImage = WEDDING_BG;
 
-              if (specialty === "Wedding Photography") {
+              if (specialty.includes("Cinematic") || specialty.includes("Wedding Films")) {
                 backgroundImage = WEDDING_BG;
-              } else if (specialty === "Pre-Wedding Shoots") {
+              } else if (specialty.includes("Pre-Wedding")) {
                 backgroundImage = PREWEDDING_BG;
-              } else if (specialty === "Event Photography") {
+              } else if (specialty.includes("Candid") || specialty.includes("Traditional")) {
                 backgroundImage = FAMILY_BG;
-              } else if (specialty === "Mehndi Photography") {
+              } else if (specialty.includes("Mehndi") || specialty.includes("Sangeet")) {
                 backgroundImage = MEHNDI_BG;
+              } else if (specialty.includes("Destination") || specialty.includes("Drone")) {
+                backgroundImage = WEDDING_BG;
               }
 
               return (

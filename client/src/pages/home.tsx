@@ -179,7 +179,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 text-blue-400" style={{ fontFamily: 'Cinzel, serif' }} data-testid="services-title">
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }} data-testid="services-title">
               OUR SERVICES
             </h2>
             <div className="w-24 h-1 bg-blue-400 mx-auto mt-6 mb-8"></div>

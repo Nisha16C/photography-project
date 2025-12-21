@@ -242,7 +242,8 @@ export default function Videos() {
             viewport={{ once: true }}
           >
             <motion.h2
-              className="text-4xl sm:text-5xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-blue-400"
+              style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}

@@ -115,7 +115,7 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: 'Cinzel, serif' }} data-testid="testimonials-title">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }} data-testid="testimonials-title">
             What Clients Say
           </h2>
           <p className="text-white/70 text-lg max-w-2xl mx-auto mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }} data-testid="testimonials-subtitle">

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 // import { PHOTOGRAPHER_INFO } from "@/lib/constants"; // unused
-import logo from "@/assets/images/logo.png"; // Import as URL
+import logo from "@/assets/images/logo3.png"; // Import as URL
+// \LensLink\LensLink\client\src\assets\images\logo2.JPG
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -24,7 +25,7 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
-              <img src={logo} alt="Himanshu Photography" className="h-12 mr-2" />
+              <img src={logo} alt="Himanshu Photography" className="h-12 sm:h-10 bg-white/10 backdrop-blur-sm " />
 
             </Link>
           </div>

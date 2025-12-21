@@ -4,7 +4,15 @@ export const PHOTOGRAPHER_INFO = {
   email: "himanshuchaurasiya5811@gmail.com",
   address: "Dhawari, Lane No. 1, Satna, Madhya Pradesh",
   experience: "4+ years",
-  specialties: ["Wedding Photography", "Pre-Wedding Shoots", "Event Photography"],
+  specialties: [
+    "Cinematic Wedding Films",
+    "Candid Moments",
+    "Traditional Ceremonies",
+    "Destination Weddings",
+    "Drone Cinematography",
+    "Pre-Wedding Shoots",
+    "Mehndi & Sangeet"
+  ],
   instagram: "https://www.instagram.com/himanshu_photography_satna?igsh=MWhoem94b3VocWV0YQ==",
   youtube: "https://youtube.com/@himanshuchaurasiaphotography?si=iWoR5PuoQ_VpWU8v",
   whatsapp: "https://wa.me/917400823680"
