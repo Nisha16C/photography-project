@@ -1,0 +1,75 @@
+﻿client/src/components/featured-work.tsx(264,14): error TS2322: Type '{ children: string; jsx: true; global: true; }' is not assignable to type 'DetailedHTMLProps<StyleHTMLAttributes<HTMLStyleElement>, HTMLStyleElement>'.
+  Property 'jsx' does not exist on type 'DetailedHTMLProps<StyleHTMLAttributes<HTMLStyleElement>, HTMLStyleElement>'.
+client/src/components/portfolio-gallery.tsx(11,21): error TS7031: Binding element 'isOpen' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(11,29): error TS7031: Binding element 'imageSrc' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(11,39): error TS7031: Binding element 'imageAlt' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(11,49): error TS7031: Binding element 'onClose' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(11,58): error TS7031: Binding element 'onNext' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(11,66): error TS7031: Binding element 'onPrev' implicitly has an 'any' type.
+client/src/components/portfolio-gallery.tsx(156,22): error TS2339: Property 'addEventListener' does not exist on type 'never'.
+client/src/components/portfolio-gallery.tsx(162,24): error TS2339: Property 'removeEventListener' does not exist on type 'never'.
+client/src/components/portfolio-gallery.tsx(292,40): error TS2339: Property 'scrollBy' does not exist on type 'never'.
+client/src/components/testimonials.tsx(61,33): error TS7006: Parameter 'testimonial' implicitly has an 'any' type.
+client/src/components/testimonials.tsx(61,46): error TS7006: Parameter 'index' implicitly has an 'any' type.
+client/src/pages/contact.tsx(391,30): error TS2322: Type '{ "data-testid": string; onChange: (...event: any[]) => void; onBlur: Noop; value: string | null | undefined; disabled?: boolean | undefined; name: "city"; ref: RefCallBack; placeholder: string; }' is not assignable to type 'Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "ref">'.
+  Types of property 'value' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | number | readonly string[] | undefined'.
+      Type 'null' is not assignable to type 'string | number | readonly string[] | undefined'.
+client/src/pages/contact.tsx(410,29): error TS2322: Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+client/src/pages/contact.tsx(436,28): error TS2322: Type '{ "data-testid": string; onChange: (...event: any[]) => void; onBlur: Noop; value: string | null | undefined; disabled?: boolean | undefined; name: "message"; ref: RefCallBack; rows: number; placeholder: string; }' is not assignable to type 'Omit<DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, "ref">'.
+  Types of property 'value' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | number | readonly string[] | undefined'.
+      Type 'null' is not assignable to type 'string | number | readonly string[] | undefined'.
+client/src/pages/home.tsx(65,24): error TS2339: Property 'date' does not exist on type '{ initial: string; name: string; time: string; rating: number; text: string; }'.
+client/src/pages/home.tsx(65,52): error TS2339: Property 'date' does not exist on type '{ initial: string; name: string; time: string; rating: number; text: string; }'.
+client/src/pages/services.tsx(52,29): error TS7006: Parameter 'service' implicitly has an 'any' type.
+client/src/pages/services.tsx(52,38): error TS7006: Parameter 'index' implicitly has an 'any' type.
+client/src/pages/services.tsx(77,43): error TS7006: Parameter 'feature' implicitly has an 'any' type.
+client/src/pages/services.tsx(77,52): error TS7006: Parameter 'featureIndex' implicitly has an 'any' type.
+client/src/pages/testimonials.tsx(200,38): error TS7006: Parameter 'testimonial' implicitly has an 'any' type.
+client/src/pages/testimonials.tsx(200,51): error TS7006: Parameter 'index' implicitly has an 'any' type.
+client/src/pages/videos.tsx(321,36): error TS2339: Property 'title' does not exist on type '{ id: string; url: string; embedUrl: string; thumbnail: string; }'.
+client/src/pages/videos.tsx(330,36): error TS2339: Property 'title' does not exist on type '{ id: string; url: string; embedUrl: string; thumbnail: string; }'.
+client/src/pages/videos.tsx(371,28): error TS2339: Property 'title' does not exist on type '{ id: string; url: string; embedUrl: string; thumbnail: string; }'.
+client/src/pages/videos.tsx(446,15): error TS2322: Type '{ children: Element; variant: "ghost"; size: "icon"; className: string; onClick: () => void; whileHover: { scale: number; }; whileTap: { scale: number; }; }' is not assignable to type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+  Property 'whileHover' does not exist on type 'IntrinsicAttributes & ButtonProps & RefAttributes<HTMLButtonElement>'.
+server/index.ts(273,14): error TS1252: Function declarations are not allowed inside blocks in strict mode when targeting 'ES5'. Modules are automatically in strict mode.
+server/storage.ts(59,31): error TS2345: Argument of type '{ id: `${string}-${string}-${string}-${string}-${string}`; name: string; slug: string; order?: number | null | undefined; description?: string | null | undefined; coverImage?: string | null | undefined; }' is not assignable to parameter of type '{ id: string; name: string; order: number | null; description: string | null; slug: string; coverImage: string | null; }'.
+  Types of property 'order' are incompatible.
+    Type 'number | null | undefined' is not assignable to type 'number | null'.
+      Type 'undefined' is not assignable to type 'number | null'.
+server/storage.ts(111,29): error TS2345: Argument of type '{ id: `${string}-${string}-${string}-${string}-${string}`; title: string; description: string; slug: string; basePrice: number; order?: number | null | undefined; features?: { [x: number]: string; length: number; ... 39 more ...; readonly [Symbol.unscopables]: { ...; }; } | null | undefined; isPopular?: boolean | .....' is not assignable to parameter of type '{ title: string; id: string; order: number | null; description: string; slug: string; basePrice: number; features: string[] | null; isPopular: boolean | null; }'.
+  Types of property 'order' are incompatible.
+    Type 'number | null | undefined' is not assignable to type 'number | null'.
+      Type 'undefined' is not assignable to type 'number | null'.
+server/storage.ts(144,33): error TS2345: Argument of type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; body: string; clientName: string; eventType: string; rating: number; location?: string | null | undefined; clientImage?: string | null | undefined; eventDate?: string | ... 1 more ... | undefined; isApproved?: boolean | ... 1 more ... | unde...' is not assignable to parameter of type '{ body: string; id: string; location: string | null; createdAt: Date | null; clientName: string; eventType: string; rating: number; clientImage: string | null; eventDate: string | null; isApproved: boolean | null; }'.
+  Types of property 'location' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(154,64): error TS18047: 'a.order' is possibly 'null'.
+server/storage.ts(154,74): error TS18047: 'b.order' is possibly 'null'.
+server/storage.ts(163,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; name: string; slug: string; order?: number | null | undefined; description?: string | null | undefined; coverImage?: string | null | undefined; }' is not assignable to type '{ id: string; name: string; order: number | null; description: string | null; slug: string; coverImage: string | null; }'.
+  Types of property 'order' are incompatible.
+    Type 'number | null | undefined' is not assignable to type 'number | null'.
+      Type 'undefined' is not assignable to type 'number | null'.
+server/storage.ts(180,34): error TS18047: 'a.order' is possibly 'null'.
+server/storage.ts(180,44): error TS18047: 'b.order' is possibly 'null'.
+server/storage.ts(189,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; title: string; image: string; altText: string; caption?: string | null | undefined; order?: number | null | undefined; category?: string | ... 1 more ... | undefined; isFeatured?: boolean | ... 1 more ... | undefined; }' is not assignable to type '{ caption: string | null; title: string; image: string; id: string; order: number | null; altText: string; category: string | null; isFeatured: boolean | null; createdAt: Date | null; }'.
+  Types of property 'caption' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(200,62): error TS18047: 'a.order' is possibly 'null'.
+server/storage.ts(200,72): error TS18047: 'b.order' is possibly 'null'.
+server/storage.ts(209,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; title: string; description: string; slug: string; basePrice: number; order?: number | null | undefined; features?: { [x: number]: string; length: number; ... 39 more ...; readonly [Symbol.unscopables]: { ...; }; } | null | undefined; isPopular?: boolean | .....' is not assignable to type '{ title: string; id: string; order: number | null; description: string; slug: string; basePrice: number; features: string[] | null; isPopular: boolean | null; }'.
+  Types of property 'order' are incompatible.
+    Type 'number | null | undefined' is not assignable to type 'number | null'.
+      Type 'undefined' is not assignable to type 'number | null'.
+server/storage.ts(229,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; createdAt: Date; body: string; clientName: string; eventType: string; rating: number; location?: string | null | undefined; clientImage?: string | null | undefined; eventDate?: string | ... 1 more ... | undefined; isApproved?: boolean | ... 1 more ... | unde...' is not assignable to type '{ body: string; id: string; location: string | null; createdAt: Date | null; clientName: string; eventType: string; rating: number; clientImage: string | null; eventDate: string | null; isApproved: boolean | null; }'.
+  Types of property 'location' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.
+server/storage.ts(247,11): error TS2322: Type '{ id: `${string}-${string}-${string}-${string}-${string}`; status: string; createdAt: Date; name: string; email: string; eventType: string; phone: string; eventDate?: string | null | undefined; city?: string | null | undefined; budget?: string | ... 1 more ... | undefined; message?: string | ... 1 more ... | undefin...' is not assignable to type '{ id: string; name: string; status: string | null; email: string; createdAt: Date | null; eventType: string; eventDate: string | null; phone: string; city: string | null; budget: string | null; message: string | null; }'.
+  Types of property 'eventDate' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | null'.
+      Type 'undefined' is not assignable to type 'string | null'.

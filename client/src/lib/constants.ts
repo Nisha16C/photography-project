@@ -1,5 +1,5 @@
 export const PHOTOGRAPHER_INFO = {
-  name: "Himanshu Chaurasiya",
+  name: "Himanshu Chaurasia",
   phone: "+91 7400823680",
   email: "himanshuchaurasiya5811@gmail.com",
   address: "Dhawari, Lane No. 1, Satna, Madhya Pradesh",
@@ -65,10 +65,10 @@ export const LOCAL_IMAGES = {
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"
   ]
 };
- 
+
 // Keep the old DUMMY_IMAGES for backward compatibility
 export const DUMMY_IMAGES = LOCAL_IMAGES;
- 
+
 // Add a simple export for LOCAL_VIDEOS so imports expecting it won't break.
 // If you later have local videos, replace the empty array with a glob similar to images.
 export const LOCAL_VIDEOS: { src: string; alt?: string }[] = [];

@@ -1,4 +1,4 @@
-import { 
+import {
   type Category, type Photo, type Service, type Testimonial, type Contact,
   type InsertCategory, type InsertPhoto, type InsertService, type InsertTestimonial, type InsertContact
 } from "@shared/schema";
@@ -56,7 +56,14 @@ export class MemStorage implements IStorage {
 
     categoryData.forEach(cat => {
       const id = randomUUID();
-      this.categories.set(id, { ...cat, id });
+      const category: Category = {
+        ...cat,
+        id,
+        description: cat.description ?? null,
+        coverImage: cat.coverImage ?? null,
+        order: cat.order ?? 0
+      };
+      this.categories.set(id, category);
     });
 
     // Seed services
@@ -68,7 +75,7 @@ export class MemStorage implements IStorage {
         basePrice: 45000,
         features: [
           "Pre-wedding shoot",
-          "Haldi & Mehndi coverage", 
+          "Haldi & Mehndi coverage",
           "Wedding ceremony & reception",
           "500+ edited photos",
           "Online gallery & USB drive"
@@ -78,7 +85,7 @@ export class MemStorage implements IStorage {
       },
       {
         title: "Pre-Wedding Shoot",
-        slug: "pre-wedding-shoot", 
+        slug: "pre-wedding-shoot",
         description: "Romantic couple photography session",
         basePrice: 15000,
         features: [
@@ -97,7 +104,7 @@ export class MemStorage implements IStorage {
         basePrice: 12000,
         features: [
           "Baby shower coverage",
-          "Maternity shoots", 
+          "Maternity shoots",
           "Family portraits",
           "Corporate events",
           "Flexible packages"
@@ -108,7 +115,14 @@ export class MemStorage implements IStorage {
 
     serviceData.forEach(service => {
       const id = randomUUID();
-      this.services.set(id, { ...service, id });
+      const serviceObj: Service = {
+        ...service,
+        id,
+        features: service.features ? service.features as unknown as string[] : null,
+        isPopular: service.isPopular ?? false,
+        order: service.order ?? 0
+      };
+      this.services.set(id, serviceObj);
     });
 
     // Seed testimonials
@@ -122,7 +136,7 @@ export class MemStorage implements IStorage {
         isApproved: true
       },
       {
-        clientName: "Sneha Sharma", 
+        clientName: "Sneha Sharma",
         eventType: "Baby Shower",
         rating: 5,
         body: "Amazing work on our baby shower! Himanshu made everyone feel comfortable and captured such natural, beautiful moments. The photos are absolutely perfect and we'll treasure them forever.",
@@ -131,7 +145,7 @@ export class MemStorage implements IStorage {
       },
       {
         clientName: "Anjali & Vikash",
-        eventType: "Pre-Wedding", 
+        eventType: "Pre-Wedding",
         rating: 5,
         body: "Our pre-wedding shoot was absolutely magical! Himanshu's creative vision and guidance helped us feel relaxed and natural. The locations and lighting were perfect.",
         clientImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100",
@@ -141,17 +155,22 @@ export class MemStorage implements IStorage {
 
     testimonialData.forEach(testimonial => {
       const id = randomUUID();
-      this.testimonials.set(id, { 
-        ...testimonial, 
-        id, 
-        createdAt: new Date()
-      });
+      const testimonialObj: Testimonial = {
+        ...testimonial,
+        id,
+        createdAt: new Date(),
+        eventDate: testimonial.eventDate || null,
+        location: testimonial.location || null,
+        clientImage: testimonial.clientImage || null,
+        isApproved: testimonial.isApproved ?? true
+      };
+      this.testimonials.set(id, testimonialObj);
     });
   }
 
   // Categories
   async getCategories(): Promise<Category[]> {
-    return Array.from(this.categories.values()).sort((a, b) => a.order - b.order);
+    return Array.from(this.categories.values()).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 
   async getCategoryBySlug(slug: string): Promise<Category | undefined> {
@@ -160,7 +179,13 @@ export class MemStorage implements IStorage {
 
   async createCategory(insertCategory: InsertCategory): Promise<Category> {
     const id = randomUUID();
-    const category: Category = { ...insertCategory, id };
+    const category: Category = {
+      ...insertCategory,
+      id,
+      coverImage: insertCategory.coverImage || null,
+      description: insertCategory.description || null,
+      order: insertCategory.order ?? 0
+    };
     this.categories.set(id, category);
     return category;
   }
@@ -168,16 +193,16 @@ export class MemStorage implements IStorage {
   // Photos
   async getPhotos(categoryId?: string, featured?: boolean): Promise<Photo[]> {
     let photos = Array.from(this.photos.values());
-    
+
     if (categoryId) {
       photos = photos.filter(photo => photo.category === categoryId);
     }
-    
+
     if (featured !== undefined) {
       photos = photos.filter(photo => photo.isFeatured === featured);
     }
-    
-    return photos.sort((a, b) => a.order - b.order);
+
+    return photos.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 
   async getPhotoById(id: string): Promise<Photo | undefined> {
@@ -186,10 +211,14 @@ export class MemStorage implements IStorage {
 
   async createPhoto(insertPhoto: InsertPhoto): Promise<Photo> {
     const id = randomUUID();
-    const photo: Photo = { 
-      ...insertPhoto, 
-      id, 
-      createdAt: new Date()
+    const photo: Photo = {
+      ...insertPhoto,
+      id,
+      createdAt: new Date(),
+      caption: insertPhoto.caption || null,
+      category: insertPhoto.category || null,
+      isFeatured: insertPhoto.isFeatured ?? false,
+      order: insertPhoto.order ?? 0
     };
     this.photos.set(id, photo);
     return photo;
@@ -197,7 +226,7 @@ export class MemStorage implements IStorage {
 
   // Services
   async getServices(): Promise<Service[]> {
-    return Array.from(this.services.values()).sort((a, b) => a.order - b.order);
+    return Array.from(this.services.values()).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
 
   async getServiceBySlug(slug: string): Promise<Service | undefined> {
@@ -206,7 +235,13 @@ export class MemStorage implements IStorage {
 
   async createService(insertService: InsertService): Promise<Service> {
     const id = randomUUID();
-    const service: Service = { ...insertService, id };
+    const service: Service = {
+      ...insertService,
+      id,
+      features: insertService.features ? [...insertService.features] : null,
+      isPopular: insertService.isPopular ?? false,
+      order: insertService.order ?? 0
+    };
     this.services.set(id, service);
     return service;
   }
@@ -214,22 +249,26 @@ export class MemStorage implements IStorage {
   // Testimonials
   async getTestimonials(approved?: boolean): Promise<Testimonial[]> {
     let testimonials = Array.from(this.testimonials.values());
-    
+
     if (approved !== undefined) {
       testimonials = testimonials.filter(testimonial => testimonial.isApproved === approved);
     }
-    
-    return testimonials.sort((a, b) => 
+
+    return testimonials.sort((a, b) =>
       new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
     );
   }
 
   async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
     const id = randomUUID();
-    const testimonial: Testimonial = { 
-      ...insertTestimonial, 
-      id, 
-      createdAt: new Date()
+    const testimonial: Testimonial = {
+      ...insertTestimonial,
+      id,
+      createdAt: new Date(),
+      eventDate: insertTestimonial.eventDate || null,
+      location: insertTestimonial.location || null,
+      clientImage: insertTestimonial.clientImage || null,
+      isApproved: insertTestimonial.isApproved ?? true
     };
     this.testimonials.set(id, testimonial);
     return testimonial;
@@ -237,18 +276,22 @@ export class MemStorage implements IStorage {
 
   // Contacts
   async getContacts(): Promise<Contact[]> {
-    return Array.from(this.contacts.values()).sort((a, b) => 
+    return Array.from(this.contacts.values()).sort((a, b) =>
       new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
     );
   }
 
   async createContact(insertContact: InsertContact): Promise<Contact> {
     const id = randomUUID();
-    const contact: Contact = { 
-      ...insertContact, 
-      id, 
+    const contact: Contact = {
+      ...insertContact,
+      id,
       status: "new",
-      createdAt: new Date()
+      createdAt: new Date(),
+      eventDate: insertContact.eventDate || null,
+      city: insertContact.city || null,
+      budget: insertContact.budget || null,
+      message: insertContact.message || null
     };
     this.contacts.set(id, contact);
     return contact;

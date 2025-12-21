@@ -8,7 +8,16 @@ import { api } from "@/lib/api";
 import { LOCAL_IMAGES, PORTFOLIO_CATEGORIES } from "@/lib/constants";
 
 // Updated Lightbox component with always-visible navigation
-function Lightbox({ isOpen, imageSrc, imageAlt, onClose, onNext, onPrev }) {
+interface LightboxProps {
+  isOpen: boolean;
+  imageSrc: string;
+  imageAlt: string;
+  onClose: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+}
+
+function Lightbox({ isOpen, imageSrc, imageAlt, onClose, onNext, onPrev }: LightboxProps) {
   if (!isOpen) return null;
 
   return (
@@ -81,7 +90,7 @@ function Lightbox({ isOpen, imageSrc, imageAlt, onClose, onNext, onPrev }) {
 
 export default function PortfolioGallery() {
   const [location, setLocation] = useLocation();
-  const galleryRef = useRef(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
 
   // ensure we correctly extract query string even if routing behavior changes
@@ -149,7 +158,7 @@ export default function PortfolioGallery() {
 
     checkScroll();
     window.addEventListener('resize', checkScroll);
-    
+
     // Add scroll event listener to hide indicator when user scrolls down
     const galleryElement = galleryRef.current;
     if (galleryElement) {
@@ -257,35 +266,27 @@ export default function PortfolioGallery() {
         {/* Scrollable masonry gallery container */}
         <div
           ref={galleryRef}
-          className="masonry-grid-container relative max-h-[70vh] overflow-y-auto scroll-smooth"
-          style={{
-            scrollbarWidth: 'none',  /* Firefox */
-            msOverflowStyle: 'none', /* IE and Edge */
-          }}
+          className="masonry-grid-container relative max-h-[70vh] overflow-y-auto scroll-smooth hide-scrollbar"
         >
-          {/* Hide scrollbar for Chrome, Safari and Opera */}
-          <style>
-            {`.masonry-grid-container::-webkit-scrollbar { display: none; }`}
-          </style>
-          
+
           {/* Scroll indicator */}
           {showScrollIndicator && (
             <div className="sticky top-[50%] z-10 w-full flex justify-center pointer-events-none">
-              <motion.div 
+              <motion.div
                 className="bg-accent/90 backdrop-blur-sm text-accent-foreground px-8 py-4 rounded-full shadow-lg flex items-center gap-3 pointer-events-auto cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: [0, 1, 1, 1, 0.8, 1], 
+                animate={{
+                  opacity: [0, 1, 1, 1, 0.8, 1],
                   y: 0,
                   scale: [1, 1.03, 1, 1.03, 1]
                 }}
-                transition={{ 
+                transition={{
                   opacity: { duration: 3, repeat: Infinity, repeatDelay: 1 },
                   scale: { duration: 2, repeat: Infinity, repeatType: "reverse" }
                 }}
-                whileHover={{ 
-                  scale: 1.1, 
-                  boxShadow: "0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.1)" 
+                whileHover={{
+                  scale: 1.1,
+                  boxShadow: "0 15px 30px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.1)"
                 }}
                 onClick={() => {
                   if (galleryRef.current) {
@@ -301,27 +302,27 @@ export default function PortfolioGallery() {
                 }}
               >
                 {/* Pulsing glow effect */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-full bg-accent/30 z-[-1]"
-                  animate={{ 
-                    scale: [1, 1.3, 1], 
-                    opacity: [0.7, 0.2, 0.7] 
+                  animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.7, 0.2, 0.7]
                   }}
-                  transition={{ 
-                    duration: 2.5, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
                   }}
                 />
-                
+
                 <span className="font-medium text-white text-lg">See More</span>
-                <motion.div 
+                <motion.div
                   className="ml-1"
                   animate={{ y: [0, -8, 0] }}
-                  transition={{ 
-                    repeat: Infinity, 
+                  transition={{
+                    repeat: Infinity,
                     duration: 1.5,
-                    ease: "easeInOut" 
+                    ease: "easeInOut"
                   }}
                 >
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

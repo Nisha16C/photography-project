@@ -22,16 +22,16 @@ export default function About() {
 
   // Stagger controls for sections
   const controls = useAnimation();
-  
+
   // State for count-up animation
   const [hasAnimated, setHasAnimated] = useState(false);
-  
+
   // Start count animation after 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setHasAnimated(true);
     }, 1000); // 2 seconds delay
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -54,7 +54,7 @@ export default function About() {
       <section className="pt-1 bg-gradient-to-br from-primary/5 to-accent/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mt-2">
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <div className="text-center p-6 bg-gradient-to-br from-card to-muted rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <motion.div 
+                <motion.div
                   className="flex justify-center mb-3"
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -71,19 +71,19 @@ export default function About() {
                 </motion.div>
                 <h3 className="text-3xl font-bold text-accent mb-2" data-testid="stat-weddings">
                   {hasAnimated ? (
-                    <CountUp 
-                      start={0} 
-                      end={100} 
-                      duration={2.5} 
-                      separator="" 
-                      suffix="+" 
+                    <CountUp
+                      start={0}
+                      end={100}
+                      duration={2.5}
+                      separator=""
+                      suffix="+"
                       useEasing={true}
                     />
                   ) : "0+"}
                 </h3>
                 <p className="text-muted-foreground">Events Captured</p>
               </div>
-              
+
               <motion.div
                 className="text-center p-6 bg-gradient-to-br from-card to-muted rounded-lg shadow-lg hover:shadow-xl transition-shadow"
                 whileHover={{ scale: 1.04, rotateY: 6 }}
@@ -94,12 +94,12 @@ export default function About() {
                 </div>
                 <h3 className="text-3xl font-bold text-accent mb-2" data-testid="stat-experience">
                   {hasAnimated ? (
-                    <CountUp 
-                      start={0} 
-                      end={4} 
-                      duration={2} 
-                      separator="" 
-                      suffix="+" 
+                    <CountUp
+                      start={0}
+                      end={4}
+                      duration={2}
+                      separator=""
+                      suffix="+"
                       useEasing={true}
                       decimals={0}
                     />
@@ -107,7 +107,7 @@ export default function About() {
                 </h3>
                 <p className="text-muted-foreground">Years Experience</p>
               </motion.div>
-              
+
               <motion.div
                 className="text-center p-6 bg-gradient-to-br from-card to-muted rounded-lg shadow-lg hover:shadow-xl transition-shadow"
                 whileHover={{ scale: 1.04, rotateY: -6 }}
@@ -118,12 +118,12 @@ export default function About() {
                 </div>
                 <h3 className="text-3xl font-bold text-accent mb-2" data-testid="stat-clients">
                   {hasAnimated ? (
-                    <CountUp 
-                      start={0} 
-                      end={100} 
-                      duration={2.5} 
-                      separator="" 
-                      suffix="+" 
+                    <CountUp
+                      start={0}
+                      end={100}
+                      duration={2.5}
+                      separator=""
+                      suffix="+"
                       useEasing={true}
                     />
                   ) : "0+"}
@@ -170,7 +170,7 @@ export default function About() {
                 <Camera className="w-6 h-6 text-accent-foreground" />
               </motion.div>
             </motion.div>
-            
+
             <motion.div
               initial="hidden"
               animate="show"
@@ -180,34 +180,34 @@ export default function About() {
               }}
               className="flex flex-col justify-center"
             >
-              <motion.h1 
-                className="text-3xl sm:text-4xl lg:text-5xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent" 
+              <motion.h1
+                className="text-3xl sm:text-4xl lg:text-5xl font-playfair font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
                 data-testid="about-title"
                 variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
               >
                 Meet {PHOTOGRAPHER_INFO.name}
               </motion.h1>
-              
-              <motion.p 
-                className="text-lg text-muted-foreground mb-6 leading-relaxed" 
+
+              <motion.p
+                className="text-lg text-muted-foreground mb-6 leading-relaxed"
                 data-testid="about-description-1"
                 variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
               >
                 With over 4+ years of experience in wedding and event photography, I specialize in capturing the authentic emotions and beautiful moments that make your special day unforgettable. Based in Satna, Madhya Pradesh, I bring a unique blend of traditional and contemporary styles to every shoot.
               </motion.p>
-              
-              <motion.p 
-                className="text-lg text-muted-foreground mb-8 leading-relaxed" 
+
+              <motion.p
+                className="text-lg text-muted-foreground mb-8 leading-relaxed"
                 data-testid="about-description-2"
                 variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
               >
                 My passion lies in storytelling through photography - whether it's the nervous excitement before a ceremony, the joy of a family celebration, or the intimate moments between couples. Every image I capture is crafted to preserve the emotions and memories that matter most.
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 className="space-y-4"
                 variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0 } }}
                 transition={{ duration: 0.6 }}
@@ -236,36 +236,36 @@ export default function About() {
               </motion.div>
             </motion.div>
           </div>
-        
+
         </div>
       </section>
 
       {/* Specialties Section */}
       <section className="py-16 relative overflow-hidden">
-      
+
         {/* Overlay gradient */}
         <div className="absolute inset-0 via-background/90 to-background/80 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl sm:text-3xl font-playfair font-bold mb-4 text-foreground">
-              Photography Specialties
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-blue-400" style={{ fontFamily: 'Cinzel, serif' }}>
+              Our Signature Styles
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Discover the diverse range of photography services I offer to capture your most precious moments.
+            <p className="text-white/70 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Discover our unique approach to wedding storytelling - where luxury meets artistry to create timeless memories.
             </p>
           </motion.div>
-          
-          
+
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">  {/* 4 कॉलम में बदला */}
             {[...PHOTOGRAPHER_INFO.specialties, "Mehndi Photography"].map((specialty, index) => {
-              let backgroundImage = WEDDING_BG; 
-              
+              let backgroundImage = WEDDING_BG;
+
               if (specialty === "Wedding Photography") {
                 backgroundImage = WEDDING_BG;
               } else if (specialty === "Pre-Wedding Shoots") {
@@ -275,39 +275,39 @@ export default function About() {
               } else if (specialty === "Mehndi Photography") {
                 backgroundImage = MEHNDI_BG;
               }
-              
+
               return (
                 <motion.div
                   key={specialty}
-                  className="relative p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden h-96" 
+                  className="relative p-6 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden h-96"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  whileHover={{ 
+                  whileHover={{
                     y: -10,
                     scale: 1.05,
                     rotateY: 5,
                     transition: { duration: 0.4, ease: "easeOut" }
-                  }} 
+                  }}
                   data-testid={`specialty-${index}`}
                 >
                   {/* बैकग्राउंड इमेज */}
                   <div className="absolute inset-0 z-0 overflow-hidden">
-                    <motion.img 
-                      src={backgroundImage} 
-                      alt={specialty} 
-                      className="w-full h-full object-cover filter blur-[2px]" 
+                    <motion.img
+                      src={backgroundImage}
+                      alt={specialty}
+                      className="w-full h-full object-cover filter blur-[2px]"
                       initial={{ scale: 1.0 }}
-                      animate={{ 
+                      animate={{
                         scale: [1, 1.08, 1],
                       }}
-                      transition={{ 
-                        repeat: Infinity, 
+                      transition={{
+                        repeat: Infinity,
                         duration: 15,
-                        ease: "easeInOut" 
-                      }} 
-                      whileHover={{ 
+                        ease: "easeInOut"
+                      }}
+                      whileHover={{
                         filter: "blur(0px)",
                         scale: 1.15,
                         transition: { duration: 0.5 }
@@ -315,20 +315,20 @@ export default function About() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-br from-black/80 to-primary/70"></div>
                   </div>
-                  
+
                   {/* कंटेंट */}
                   <div className="relative z-10 h-full flex flex-col justify-between">
                     <div>
-                      <motion.div 
-                        className="flex items-center justify-center w-16 h-16 bg-accent rounded-xl mb-6 relative overflow-hidden mx-auto" 
-                        whileHover={{ scale: 1.2, rotate: 10 }} 
+                      <motion.div
+                        className="flex items-center justify-center w-16 h-16 bg-accent rounded-xl mb-6 relative overflow-hidden mx-auto"
+                        whileHover={{ scale: 1.2, rotate: 10 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
                         <div className="absolute inset-0 bg-gradient-to-tr from-primary to-accent opacity-50"></div>
-                        <Camera className="w-8 h-8 text-accent-foreground" /> 
+                        <Camera className="w-8 h-8 text-accent-foreground" />
                       </motion.div>
-                      <motion.h3 
-                        className="text-xl font-bold mb-3 text-center text-white drop-shadow-lg" 
+                      <motion.h3
+                        className="text-xl font-bold mb-3 text-center text-white drop-shadow-lg"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
@@ -337,8 +337,8 @@ export default function About() {
                         {specialty}
                       </motion.h3>
                     </div>
-                    <motion.p 
-                      className="text-sm text-white text-center drop-shadow-md font-medium" 
+                    <motion.p
+                      className="text-sm text-white text-center drop-shadow-md font-medium"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}

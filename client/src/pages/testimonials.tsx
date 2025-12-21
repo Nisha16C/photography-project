@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
 import { LOCAL_IMAGES } from "@/lib/constants";
+import type { Testimonial } from "@shared/schema";
 
 const testimonialData = [
   {
@@ -19,7 +20,7 @@ const testimonialData = [
   },
   {
     id: "2",
-    clientName: "Sneha Sharma", 
+    clientName: "Sneha Sharma",
     eventType: "Baby Shower",
     rating: 5,
     body: "Amazing work on our baby shower! Himanshu made everyone feel comfortable and captured such natural, beautiful moments. The photos are absolutely perfect and we'll treasure them forever.",
@@ -29,7 +30,7 @@ const testimonialData = [
   {
     id: "3",
     clientName: "Anjali & Vikash",
-    eventType: "Pre-Wedding", 
+    eventType: "Pre-Wedding",
     rating: 5,
     body: "Our pre-wedding shoot was absolutely magical! Himanshu's creative vision and guidance helped us feel relaxed and natural. The locations and lighting were perfect.",
     clientImage: LOCAL_IMAGES.testimonials[2],
@@ -54,7 +55,7 @@ export default function TestimonialsPage() {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % testimonialData.length);
     }, 6000);
-    
+
     return () => clearInterval(timer);
   }, []);
 
@@ -76,7 +77,7 @@ export default function TestimonialsPage() {
       {/* Hero Section */}
       <section className="py-16 bg-gradient-to-br from-primary/5 to-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,7 +109,7 @@ export default function TestimonialsPage() {
               >
                 <div className="flex flex-col md:flex-row items-center gap-8">
                   <div className="flex-shrink-0">
-                    <img 
+                    <img
                       src={testimonialData[currentSlide].clientImage}
                       alt={testimonialData[currentSlide].clientName}
                       className="w-24 h-24 rounded-full object-cover shadow-lg"
@@ -148,7 +149,7 @@ export default function TestimonialsPage() {
               <ChevronLeft className="w-5 h-5" />
             </Button>
             <Button
-              variant="ghost" 
+              variant="ghost"
               size="icon"
               onClick={nextSlide}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-card/80 hover:bg-card shadow-lg"
@@ -163,9 +164,8 @@ export default function TestimonialsPage() {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    index === currentSlide ? 'bg-accent' : 'bg-muted-foreground/30'
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-colors ${index === currentSlide ? 'bg-accent' : 'bg-muted-foreground/30'
+                    }`}
                   data-testid={`testimonial-indicator-${index}`}
                 />
               ))}
@@ -177,7 +177,7 @@ export default function TestimonialsPage() {
       {/* All Testimonials Grid */}
       <section className="py-16 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function TestimonialsPage() {
               More Happy Clients
             </h2>
           </motion.div>
-          
+
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -197,7 +197,7 @@ export default function TestimonialsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {apiTestimonials?.map((testimonial, index) => (
+              {apiTestimonials?.map((testimonial: Testimonial, index: number) => (
                 <motion.div
                   key={testimonial.id}
                   className="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
@@ -214,14 +214,14 @@ export default function TestimonialsPage() {
                       ))}
                     </div>
                   </div>
-                  
+
                   <p className="text-muted-foreground mb-4 text-sm" data-testid={`grid-testimonial-body-${index}`}>
                     "{testimonial.body}"
                   </p>
-                  
+
                   <div className="flex items-center">
                     {testimonial.clientImage && (
-                      <img 
+                      <img
                         src={testimonial.clientImage}
                         alt={testimonial.clientName}
                         className="w-10 h-10 rounded-full mr-3 object-cover"

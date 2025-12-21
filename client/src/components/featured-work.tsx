@@ -23,75 +23,75 @@ export default function FeaturedWork() {
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [autoScrollActive, setAutoScrollActive] = useState(true);
   const [scrollDirection, setScrollDirection] = useState(1); // 1 for right, -1 for left
-  
+
   // Auto-scroll functionality
   useEffect(() => {
     if (!autoScrollActive || !scrollContainerRef.current) return;
-    
+
     const scrollContainer = scrollContainerRef.current;
     let animationFrameId: number;
     let lastTimestamp = 0;
-    
+
     const scroll = (timestamp: number) => {
       if (!lastTimestamp) lastTimestamp = timestamp;
       const elapsed = timestamp - lastTimestamp;
-      
+
       if (elapsed > 20) { // Control scroll speed
         lastTimestamp = timestamp;
-        
+
         // Check if we've reached the end or beginning
-        if (scrollDirection > 0 && 
-            scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth - 10) {
+        if (scrollDirection > 0 &&
+          scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth - 10) {
           setScrollDirection(-1);
         } else if (scrollDirection < 0 && scrollContainer.scrollLeft <= 10) {
           setScrollDirection(1);
         }
-        
+
         scrollContainer.scrollLeft += scrollDirection * 3; // Increased scroll speed from 1 to 3
       }
-      
+
       animationFrameId = requestAnimationFrame(scroll);
     };
-    
+
     animationFrameId = requestAnimationFrame(scroll);
-    
+
     return () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
     };
   }, [autoScrollActive, scrollDirection]);
-  
+
   // Handle scroll events to show/hide navigation arrows
   const handleScroll = () => {
     if (!scrollContainerRef.current) return;
-    
+
     const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
     setShowLeftArrow(scrollLeft > 20);
     setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
   };
-  
+
   // Scroll functions for navigation buttons
   const scrollLeft = () => {
     if (!scrollContainerRef.current) return;
     setAutoScrollActive(false);
     scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
   };
-  
+
   const scrollRight = () => {
     if (!scrollContainerRef.current) return;
     setAutoScrollActive(false);
     scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
   };
-  
+
   // Pause auto-scroll when hovering over container
   const handleMouseEnter = () => setAutoScrollActive(false);
   const handleMouseLeave = () => setAutoScrollActive(true);
-  
+
   return (
     <section className="py-16 bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <motion.div 
+        <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ export default function FeaturedWork() {
           >
             <div className="w-16 h-1 bg-accent mx-auto"></div>
           </motion.div>
-          
+
           <h2 className="text-3xl sm:text-4xl font-playfair font-bold mb-4" data-testid="featured-work-title">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -128,9 +128,9 @@ export default function FeaturedWork() {
               Work
             </motion.span>
           </h2>
-          
-          <motion.p 
-            className="text-muted-foreground text-lg max-w-2xl mx-auto" 
+
+          <motion.p
+            className="text-muted-foreground text-lg max-w-2xl mx-auto"
             data-testid="featured-work-subtitle"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -140,7 +140,7 @@ export default function FeaturedWork() {
             A glimpse into some of our most cherished moments captured for couples and families across Madhya Pradesh.
           </motion.p>
         </motion.div>
-        
+
         <div className="relative">
           {/* Navigation arrows */}
           {showLeftArrow && (
@@ -154,7 +154,7 @@ export default function FeaturedWork() {
               <ChevronLeft className="w-6 h-6" />
             </motion.button>
           )}
-          
+
           {showRightArrow && (
             <motion.button
               initial={{ opacity: 0 }}
@@ -166,9 +166,9 @@ export default function FeaturedWork() {
               <ChevronRight className="w-6 h-6" />
             </motion.button>
           )}
-          
+
           {/* Scrollable container */}
-          <div 
+          <div
             ref={scrollContainerRef}
             className="overflow-x-auto hide-scrollbar pb-4 pt-2"
             onScroll={handleScroll}
@@ -222,7 +222,7 @@ export default function FeaturedWork() {
                           </div>
                         </div>
                       </div>
-                      <motion.div 
+                      <motion.div
                         className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         whileHover={{ rotate: [0, 15, 0, -15, 0] }}
                         transition={{ duration: 1, repeat: Infinity }}
@@ -237,9 +237,9 @@ export default function FeaturedWork() {
               ))}
             </div>
           </div>
-          
+
           {/* View all button */}
-          <motion.div 
+          <motion.div
             className="mt-10 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -247,7 +247,7 @@ export default function FeaturedWork() {
             viewport={{ once: true }}
           >
             <Link href="/portfolio">
-              <motion.button 
+              <motion.button
                 className="inline-flex items-center space-x-2 text-accent hover:text-accent/80 font-medium"
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400 }}
@@ -259,17 +259,7 @@ export default function FeaturedWork() {
           </motion.div>
         </div>
       </div>
-      
-      {/* Add some CSS for hiding scrollbar */}
-      <style jsx global>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+
     </section>
   );
 }

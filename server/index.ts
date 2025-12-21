@@ -95,7 +95,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
   'POST /api/contact': async (req) => {
     try {
       const data = await req.json();
-      
+
       // Check honeypot field
       if (data.website) {
         // Likely spam, silently ignore
@@ -107,10 +107,10 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
 
       const validatedData = insertContactSchema.parse(data);
       const contact = await storage.createContact(validatedData);
-      
+
       // TODO: Send email notification to photographer
       // TODO: Send confirmation email to client
-      
+
       return new Response(JSON.stringify({
         message: "Thank you for your inquiry! We'll get back to you within 24 hours.",
         contactId: contact.id
@@ -156,7 +156,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
     const url = new URL(req.url || '', `http://${req.headers.host}`);
     const method = req.method || 'GET';
     const pathname = url.pathname;
-    
+
     // Log API requests
     if (pathname.startsWith('/api')) {
       const start = Date.now();
@@ -181,7 +181,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
             chunks.push(Buffer.from(chunk));
           }
           const body = Buffer.concat(chunks).toString('utf-8');
-          
+
           const request = new Request(url.toString(), {
             method,
             headers: req.headers as any,
@@ -189,13 +189,13 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
           });
 
           const response = await handler(request);
-          
+
           // Convert fetch API Response to Node.js response
           res.statusCode = response.status;
           response.headers.forEach((value, key) => {
             res.setHeader(key, value);
           });
-          
+
           const responseBody = await response.text();
           res.end(responseBody);
         } catch (error) {
@@ -216,7 +216,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
         // If Vite doesn't handle it, serve the SPA index.html
         try {
           const isDev = process.env.NODE_ENV === 'development';
-          
+
           if (isDev) {
             // In development, use the client template and transform it
             const clientTemplate = path.resolve(
@@ -225,7 +225,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
               'client',
               'index.html',
             );
-            
+
             let template = await fs.promises.readFile(clientTemplate, 'utf-8');
             template = template.replace(
               `src="/src/main.tsx"`,
@@ -239,7 +239,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
             // In production, serve the built index.html
             const distPath = path.resolve(import.meta.dirname, '..', 'dist', 'public');
             const indexPath = path.resolve(distPath, 'index.html');
-            
+
             if (fs.existsSync(indexPath)) {
               const content = await fs.promises.readFile(indexPath, 'utf-8');
               res.statusCode = 200;
@@ -263,29 +263,40 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
     }
   });
 
-  // Start listening
-  const port = parseInt(process.env.PORT || '5000', 10);
-  const initialHost = process.env.HOST || '0.0.0.0';
+  // For local development, use port from env or default to 5000
+  // For Vercel deployment, this part will only run during development
+  if (process.env.NODE_ENV !== 'production') {
+    const port = parseInt(process.env.PORT || '5000', 10);
+    const initialHost = process.env.HOST || '0.0.0.0';
 
-  // Helper to start listening
-  function startListening(host: string) {
-    httpServer.listen({ port, host }, () => {
-      log(`Server listening on ${host}:${port} (NODE_ENV=${process.env.NODE_ENV})`);
+    // Helper to start listening
+    const startListening = (host: string) => {
+      httpServer.listen({ port, host }, () => {
+        log(`Server listening on ${host}:${port} (NODE_ENV=${process.env.NODE_ENV})`);
+      });
+    };
+
+    // Handle errors and fallback if binding 0.0.0.0 is not supported (ENOTSUP)
+    httpServer.on('error', (err: NodeJS.ErrnoException) => {
+      if (err && err.code === 'ENOTSUP' && initialHost === '0.0.0.0') {
+        log('ENOTSUP when binding 0.0.0.0 — falling back to 127.0.0.1');
+        // try localhost instead
+        startListening('127.0.0.1');
+        return;
+      } else if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use`);
+        process.exit(1);
+      } else {
+        console.error('Server error:', err);
+        process.exit(1);
+      }
     });
+
+    // Initial attempt
+    startListening(initialHost);
+  } else {
+    // In production on Vercel, we don't need to listen on a port
+    // as Vercel handles the serverless function execution
+    log('Running in production mode');
   }
-
-  // Handle errors and fallback if binding 0.0.0.0 is not supported (ENOTSUP)
-  httpServer.on('error', (err: NodeJS.ErrnoException) => {
-    if (err && err.code === 'ENOTSUP' && initialHost === '0.0.0.0') {
-      log('ENOTSUP when binding 0.0.0.0 — falling back to 127.0.0.1');
-      // try localhost instead
-      startListening('127.0.0.1');
-      return;
-    }
-    console.error('Server error:', err);
-    process.exit(1);
-  });
-
-  // Initial attempt
-  startListening(initialHost);
 })();

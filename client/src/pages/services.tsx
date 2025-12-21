@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { api } from "@/lib/api";
+import type { Service } from "@shared/schema";
 
 export default function Services() {
   const { data: services, isLoading } = useQuery({
@@ -34,7 +35,7 @@ export default function Services() {
     <div className="pt-16">
       <section className="py-16 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,9 +48,9 @@ export default function Services() {
               Comprehensive photography services tailored to capture every special moment of your celebration.
             </p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services?.map((service, index) => (
+            {services?.map((service: Service, index: number) => (
               <motion.div
                 key={service.id}
                 className="bg-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
@@ -72,9 +73,9 @@ export default function Services() {
                     </div>
                   )}
                 </div>
-                
+
                 <ul className="space-y-3 mb-6">
-                  {service.features?.map((feature, featureIndex) => (
+                  {service.features?.map((feature: string, featureIndex: number) => (
                     <li key={featureIndex} className="flex items-center">
                       <Check className="w-5 h-5 text-accent mr-3 flex-shrink-0" />
                       <span className="text-sm" data-testid={`service-feature-${index}-${featureIndex}`}>
@@ -83,9 +84,9 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-                
+
                 <Link href="/contact">
-                  <Button 
+                  <Button
                     className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                     data-testid={`button-book-${index}`}
                   >

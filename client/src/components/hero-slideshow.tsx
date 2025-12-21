@@ -33,7 +33,7 @@ export default function HeroSlideshow() {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
     }, 5000);
-    
+
     return () => clearInterval(timer);
   }, [images.length]);
 
@@ -55,17 +55,17 @@ export default function HeroSlideshow() {
         const duration = 15 + Math.random() * 20;
         const initialX = Math.random() * 100;
         const initialY = Math.random() * 100;
-        
+
         return (
           <motion.div
             key={`float-${index}`}
             className="absolute rounded-lg overflow-hidden shadow-xl z-10 opacity-40"
             style={{ width: size, height: size }}
-            initial={{ 
-              x: `${initialX}vw`, 
+            initial={{
+              x: `${initialX}vw`,
               y: `${initialY}vh`,
               rotate: 0,
-              opacity: 0 
+              opacity: 0
             }}
             animate={{
               x: [`${initialX}vw`, `${(initialX + 30) % 100}vw`, `${(initialX + 60) % 100}vw`, `${initialX}vw`],
@@ -86,7 +86,7 @@ export default function HeroSlideshow() {
       })}
 
       {/* Decorative elements */}
-      <motion.div 
+      <motion.div
         className="absolute top-10 left-10 text-accent/60 z-10"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -94,8 +94,8 @@ export default function HeroSlideshow() {
       >
         <Camera className="w-16 h-16" />
       </motion.div>
-      
-      <motion.div 
+
+      <motion.div
         className="absolute bottom-20 right-10 text-accent/60 z-10"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -103,8 +103,8 @@ export default function HeroSlideshow() {
       >
         <Heart className="w-12 h-12" />
       </motion.div>
-      
-      <motion.div 
+
+      <motion.div
         className="absolute top-40 right-20 text-white/40 z-10"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -119,7 +119,7 @@ export default function HeroSlideshow() {
           <motion.div
             key={currentSlide}
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ 
+            style={{
               backgroundImage: `url('${images[currentSlide]}')`
             }}
             initial={{ opacity: 0, scale: 1.1 }}
@@ -128,11 +128,11 @@ export default function HeroSlideshow() {
             transition={{ duration: 1 }}
           />
         </AnimatePresence>
-        
+
         {/* Subtle gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/50 z-10 lg:block hidden"></div>
       </div>
-      
+
       {/* Dark overlay for mobile view */}
       <div className="absolute inset-0 bg-black/50 z-5 lg:hidden"></div>
 
@@ -183,7 +183,7 @@ export default function HeroSlideshow() {
           </button>
         ))}
       </div>
-      
+
       {/* Mobile slide indicators */}
       <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3 lg:hidden">
         {images.map((_, index) => (
@@ -203,15 +203,15 @@ export default function HeroSlideshow() {
           </button>
         ))}
       </div>
-      
+
       {/* Main content with improved animations - Now on right side */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="w-full lg:grid lg:grid-cols-2 flex flex-col items-center">
           {/* Empty div for image side on large screens */}
           <div className="hidden lg:block"></div>
-          
+
           {/* Content side */}
-          <motion.div 
+          <motion.div
             className="text-white px-4 sm:px-6 lg:px-8 max-w-2xl lg:text-left text-center"
             variants={{
               hidden: { opacity: 0, x: 50 },
@@ -225,7 +225,7 @@ export default function HeroSlideshow() {
               className="mb-6 inline-block"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
+              transition={{
                 duration: 0.8,
                 type: "spring",
                 stiffness: 100
@@ -233,8 +233,8 @@ export default function HeroSlideshow() {
             >
               <div className="w-20 h-1 bg-accent lg:mx-0 mx-auto mb-6"></div>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               className="text-5xl sm:text-6xl lg:text-7xl font-playfair font-bold mb-8"
               variants={{
                 hidden: { opacity: 0, x: 50 },
@@ -242,8 +242,8 @@ export default function HeroSlideshow() {
               }}
               initial="hidden"
               animate={mainControls}
-              transition={{ 
-                duration: 0.8, 
+              transition={{
+                duration: 0.8,
                 delay: 0.4,
                 type: "spring",
                 stiffness: 50
@@ -253,9 +253,10 @@ export default function HeroSlideshow() {
               <span className="bg-gradient-to-r from-white via-accent/80 to-white bg-clip-text text-transparent">
                 Capturing Moments,
               </span>
+              {/* style={{ fontFamily: "'Brush Script MT', cursive" }} */}
               <span className="text-accent block mt-4 text-6xl sm:text-7xl lg:text-8xl">Creating Memories</span>
             </motion.h1>
-            
+
             <motion.p
               className="text-lg sm:text-xl text-white/80 lg:max-w-xl max-w-2xl lg:mx-0 mx-auto mb-10"
               variants={{
@@ -268,8 +269,8 @@ export default function HeroSlideshow() {
             >
               Transforming your precious moments into timeless works of art that tell your unique story
             </motion.p>
-            
-            <motion.div 
+
+            <motion.div
               className="flex flex-col sm:flex-row gap-6 lg:justify-start justify-center mt-10"
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -280,7 +281,7 @@ export default function HeroSlideshow() {
               transition={{ duration: 0.8, delay: 1 }}
             >
               <Link href="/portfolio">
-                <Button 
+                <Button
                   size="lg"
                   className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground hover:from-accent/90 hover:to-accent/70 px-10 py-6 text-lg shadow-xl rounded-full transition-transform hover:scale-105"
                   data-testid="button-view-portfolio"
@@ -289,8 +290,8 @@ export default function HeroSlideshow() {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="lg"
                   className="border-2 border-white/70 bg-transparent text-white hover:bg-white/10 hover:text-white px-10 py-6 text-lg shadow-xl rounded-full transition-transform hover:scale-105"
                   data-testid="button-book-session"
@@ -303,14 +304,14 @@ export default function HeroSlideshow() {
           </motion.div>
         </div>
       </div>
-      
+
       {/* Scroll indicator with improved animation */}
-      <motion.div 
+      <motion.div
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <motion.div 
+        <motion.div
           className="text-white/70 hover:text-accent transition-colors cursor-pointer"
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}

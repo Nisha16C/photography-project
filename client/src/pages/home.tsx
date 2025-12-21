@@ -22,9 +22,9 @@ const servicesData = [
     description: "Candid photography (focusing on natural candid shots of the bride-groom and main family) & traditional photography (coverage of the entire event)."
   },
   {
-    id: "videography",
-    title: "VIDEOGRAPHY",
-    description: "Cinematography (artistic style videography with focus on the bride-groom and main family and their priceless candid moments) & traditional videography (coverage of the entire event)."
+    id: "wedding-films",
+    title: "WEDDING FILMS",
+    description: "Cinematic wedding films (artistic storytelling focused on the bride-groom and main family with their priceless candid moments) & traditional coverage (complete documentation of your entire event)."
   },
   {
     id: "photobooks",
@@ -33,8 +33,8 @@ const servicesData = [
   },
   {
     id: "post-production",
-    title: "POST-PRODUCTION",
-    description: "Editing services in cinematic teaser and short film & traditional video."
+    title: "LUXURY WEDDING FILMS",
+    description: "Premium editing services including cinematic teasers, short films, and traditional videos with a luxury touch."
   }
 ];
 
@@ -46,6 +46,7 @@ export default function Home() {
     time: string;
     rating: number;
     text: string;
+    date?: Date;
   }>>([]);
   const [newReview, setNewReview] = useState({
     name: "",
@@ -57,60 +58,60 @@ export default function Home() {
   // Update review times periodically
   useEffect(() => {
     if (userReviews.length === 0) return;
-    
+
     const updateTimes = () => {
-      setUserReviews(prevReviews => 
-        prevReviews.map(review => ({
+      setUserReviews(prevReviews =>
+        prevReviews.map((review: { initial: string; name: string; time: string; rating: number; text: string; date?: Date }) => ({
           ...review,
           time: review.date ? formatTimeAgo(review.date) : review.time
         }))
       );
     };
-    
+
     // Update times every minute
     const timeUpdateInterval = setInterval(updateTimes, 60000);
-    
+
     return () => clearInterval(timeUpdateInterval);
   }, [userReviews.length]);
 
- 
+
 
   // State for success message
   const [showSuccess, setShowSuccess] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  
+
   // Format time function
   const formatTimeAgo = (date: Date) => {
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) return "Just now";
-    
+
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     if (diffInMinutes < 60) return `${diffInMinutes} ${diffInMinutes === 1 ? 'minute' : 'minutes'} ago`;
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 30) return `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
-    
+
     const diffInMonths = Math.floor(diffInDays / 30);
     if (diffInMonths < 12) return `${diffInMonths} ${diffInMonths === 1 ? 'month' : 'months'} ago`;
-    
+
     const diffInYears = Math.floor(diffInMonths / 12);
     return `${diffInYears} ${diffInYears === 1 ? 'year' : 'years'} ago`;
   };
-  
+
   // Handle review submission
   const handleReviewSubmit = () => {
     if (newReview.name.trim() === "" || newReview.text.trim() === "") {
       return; // Don't submit empty reviews
     }
-    
+
     const currentDate = new Date();
     const timeString = formatTimeAgo(currentDate);
-    
+
     const newUserReview = {
       initial: newReview.name.charAt(0).toUpperCase(),
       name: newReview.name,
@@ -119,25 +120,25 @@ export default function Home() {
       text: newReview.text,
       date: currentDate // Store the actual date for future formatting
     };
-    
+
     setUserReviews(prev => [newUserReview, ...prev]);
     setNewReview({
       name: "",
       rating: 5,
       text: ""
     });
-    
+
     // Show success message and close dialog
     setShowSuccess(true);
     setDialogOpen(false);
-    
+
     // Hide success message after 3 seconds
     setTimeout(() => {
       setShowSuccess(false);
     }, 3000);
   };
-  
-  
+
+
   // Animation for the moving background text
   const backgroundTextVariants = {
     animate: {
@@ -156,7 +157,7 @@ export default function Home() {
   return (
     <div className="pt-16">
       <HeroSlideshow />
-      
+
       {/* Services Section with Moving Background Text */}
       <section className="py-16 relative overflow-hidden bg-black">
         {/* Moving background text */}
@@ -169,26 +170,26 @@ export default function Home() {
             SERVICES SERVICES SERVICES SERVICES SERVICES SERVICES
           </motion.div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl sm:text-6xl font-playfair font-bold mb-4 bg-gradient-to-r from-white via-accent to-white bg-clip-text text-transparent" data-testid="services-title">
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 text-blue-400" style={{ fontFamily: 'Cinzel, serif' }} data-testid="services-title">
               OUR SERVICES
             </h2>
-            <div className="w-24 h-1 bg-accent mx-auto mt-6 mb-8"></div>
+            <div className="w-24 h-1 bg-blue-400 mx-auto mt-6 mb-8"></div>
             <p className="text-white/80 text-lg max-w-3xl mx-auto" data-testid="services-subtitle">
-              We offer a comprehensive range of photography and videography services to capture your special moments
+              We offer a comprehensive range of photography and luxury wedding films services to capture your special moments
             </p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {servicesData.map((service, index) => (
+            {servicesData.map((service: { id: string; title: string; description: string }, index: number) => (
               <motion.div
                 key={service.id}
                 className="bg-gradient-to-b from-black/80 to-black/40 backdrop-blur-sm p-8 rounded-lg border border-white/10 hover:border-accent/30 transition-all group hover:bg-black/60"
@@ -211,13 +212,13 @@ export default function Home() {
           </div>
         </div>
       </section>
-      
+
       <FeaturedWork />
       <WhyChooseUs />
-      <Testimonials/>
-      
-           
-      
+      <Testimonials />
+
+
+
     </div>
   );
 }

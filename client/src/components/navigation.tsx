@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 // import { PHOTOGRAPHER_INFO } from "@/lib/constants"; // unused
-import logo from "@/assets/images/logo.svg"; // Import as URL
+import logo from "@/assets/images/logo.png"; // Import as URL
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About Me", href: "/about" },
   { label: "Portfolio", href: "/portfolio" },
-  { label: "Videos", href: "/videos" },
+  { label: "Films", href: "/videos" },
   { label: "Contact", href: "/contact" }
 ];
 
@@ -19,13 +19,13 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-border z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-black/95 backdrop-blur-md border-b border-blue-500/20 z-50 shadow-lg shadow-blue-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link href="/" className="flex items-center">
               <img src={logo} alt="Himanshu Photography" className="h-12 mr-2" />
-              
+
             </Link>
           </div>
 
@@ -36,8 +36,8 @@ export default function Navigation() {
                 <Link key={item.href} href={item.href}>
                   <span
                     className={`cursor-pointer transition-colors duration-200 ${location === item.href
-                      ? "text-accent"
-                      : "text-foreground hover:text-accent"
+                      ? "text-blue-400"
+                      : "text-white hover:text-blue-400"
                       }`}
                     data-testid={`nav-${item.label.toLowerCase()}`}
                   >
@@ -66,8 +66,8 @@ export default function Navigation() {
                     >
                       <span
                         className={`block px-3 py-2 text-lg cursor-pointer transition-colors ${location === item.href
-                          ? "text-accent"
-                          : "text-foreground hover:text-accent"
+                          ? "text-blue-400"
+                          : "text-white hover:text-blue-400"
                           }`}
                         data-testid={`mobile-nav-${item.label.toLowerCase()}`}
                       >

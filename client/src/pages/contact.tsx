@@ -24,7 +24,7 @@ export default function Contact() {
   const phoneDigits = (PHOTOGRAPHER_INFO.phone || "").replace(/\D/g, "");
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  
+
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
     defaultValues: {
@@ -98,7 +98,7 @@ export default function Contact() {
     <div className="pt-16">
       <section className="py-16 bg-muted relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,12 +107,60 @@ export default function Contact() {
             <h1 className="text-3xl sm:text-4xl font-playfair font-bold mb-4" data-testid="contact-title">
               Get In Touch
             </h1>
-            
+
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto" data-testid="contact-subtitle">
-              Ready to capture your special moments? Let's discuss your photography needs and create something beautiful together.
+              Ready to capture your special moments? Let's discuss your wedding films needs and create something beautiful together.
             </p>
           </motion.div>
-          
+
+          {/* Limited Time Offer Banner */}
+          <motion.div
+            className="mb-12 max-w-4xl mx-auto"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl p-6 shadow-2xl border-2 border-blue-400">
+              <div className="text-center">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="inline-block"
+                >
+                  <span className="bg-yellow-400 text-black px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">
+                    Limited Time Offer
+                  </span>
+                </motion.div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mt-4 mb-2" style={{ fontFamily: 'Cinzel, serif' }}>
+                  Get 10% OFF on Immediate Advance Payment!
+                </h3>
+                <p className="text-white/90 text-lg mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  Pay 20% advance immediately and save 10% on your total booking
+                </p>
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 max-w-md mx-auto">
+                  <p className="text-white text-sm">
+                    <strong>Example:</strong> For a ₹50,000 package:<br />
+                    Advance (20%): ₹10,000 | Final Price with 10% OFF: ₹45,000
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Email & WhatsApp Confirmation Notice */}
+          <motion.div
+            className="mb-8 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="bg-blue-950/30 border border-blue-500/30 rounded-lg p-4 backdrop-blur-sm">
+              <p className="text-white text-center text-sm">
+                📧 <strong>Important:</strong> After submitting this form, you will receive confirmation messages via <strong>Email</strong> and <strong>WhatsApp</strong>. Please check both for booking details and payment information.
+              </p>
+            </div>
+          </motion.div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Information */}
             <motion.div
@@ -123,7 +171,7 @@ export default function Contact() {
               <h2 className="text-2xl font-playfair font-semibold mb-6" data-testid="contact-info-title">
                 Let's Connect
               </h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="bg-accent p-3 rounded-lg mr-4">
@@ -135,7 +183,7 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground">Available 24 X 7</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="bg-accent p-3 rounded-lg mr-4">
                     <Mail className="w-6 h-6 text-accent-foreground" />
@@ -146,7 +194,7 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground">We'll respond within 24 hours</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="bg-accent p-3 rounded-lg mr-4">
                     <MapPin className="w-6 h-6 text-accent-foreground" />
@@ -157,8 +205,8 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground">Serving across Madhya Pradesh</p>
                   </div>
                 </div>
-              </div><br></br>
-              
+              </div><br />
+
               {/* Business Hours */}
               <div className="flex items-start">
                 <div className="bg-accent p-3 rounded-lg mr-4">
@@ -170,11 +218,11 @@ export default function Contact() {
                   <p className="text-sm text-muted-foreground">Sunday: By appointment only</p>
                 </div>
               </div>
-              
+
               {/* Social Media & WhatsApp */}
               <div className="mt-8">
                 <h3 className="font-semibold mb-4">Connect With Us</h3>
-                <motion.div 
+                <motion.div
                   className="flex flex-wrap gap-4"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -236,7 +284,7 @@ export default function Contact() {
                 </motion.div>
               </div>
             </motion.div>
-            
+
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
@@ -246,14 +294,14 @@ export default function Contact() {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="contact-form">
                   {/* Honeypot field for spam protection */}
-                  <input 
-                    type="text" 
-                    name="website" 
-                    className="hidden" 
-                    tabIndex={-1} 
-                    autoComplete="off" 
+                  <input
+                    type="text"
+                    name="website"
+                    className="hidden"
+                    tabIndex={-1}
+                    autoComplete="off"
                   />
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -262,9 +310,9 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Name *</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Your full name" 
-                              {...field} 
+                            <Input
+                              placeholder="Your full name"
+                              {...field}
                               data-testid="input-name"
                             />
                           </FormControl>
@@ -272,7 +320,7 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="phone"
@@ -280,9 +328,9 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>Phone *</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="+91 9876543210" 
-                              {...field} 
+                            <Input
+                              placeholder="+91 9876543210"
+                              {...field}
                               data-testid="input-phone"
                             />
                           </FormControl>
@@ -291,7 +339,7 @@ export default function Contact() {
                       )}
                     />
                   </div>
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -299,10 +347,10 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel>Email *</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="email" 
-                            placeholder="your@email.com" 
-                            {...field} 
+                          <Input
+                            type="email"
+                            placeholder="your@email.com"
+                            {...field}
                             data-testid="input-email"
                           />
                         </FormControl>
@@ -310,7 +358,7 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -318,35 +366,33 @@ export default function Contact() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Event Type *</FormLabel>
-                          <FormControl>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              data-testid="select-event-type"
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select event type" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="wedding">Wedding</SelectItem>
-                                <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
-                                <SelectItem value="engagement">Engagement</SelectItem>
-                                <SelectItem value="haldi">Haldi Ceremony</SelectItem>
-                                <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
-                                <SelectItem value="baby-shower">Baby Shower</SelectItem>
-                                <SelectItem value="maternity">Maternity</SelectItem>
-                                <SelectItem value="newborn">Newborn</SelectItem>
-                                <SelectItem value="family">Family Portrait</SelectItem>
-                                <SelectItem value="corporate">Corporate Event</SelectItem>
-                                <SelectItem value="other">Other</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                            data-testid="select-event-type"
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select event type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="wedding">Wedding</SelectItem>
+                              <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
+                              <SelectItem value="engagement">Engagement</SelectItem>
+                              <SelectItem value="haldi">Haldi Ceremony</SelectItem>
+                              <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
+                              <SelectItem value="baby-shower">Baby Shower</SelectItem>
+                              <SelectItem value="maternity">Maternity</SelectItem>
+                              <SelectItem value="newborn">Newborn</SelectItem>
+                              <SelectItem value="family">Family Portrait</SelectItem>
+                              <SelectItem value="corporate">Corporate Event</SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="eventDate"
@@ -379,7 +425,7 @@ export default function Contact() {
                       )}
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -388,9 +434,10 @@ export default function Contact() {
                         <FormItem>
                           <FormLabel>City</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="Event city" 
-                              {...field} 
+                            <Input
+                              placeholder="Event city"
+                              {...field}
+                              value={field.value || ""}
                               data-testid="input-city"
                             />
                           </FormControl>
@@ -398,7 +445,7 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="budget"
@@ -407,7 +454,7 @@ export default function Contact() {
                           <FormLabel>Budget Range</FormLabel>
                           <Select
                             onValueChange={field.onChange}
-                            value={field.value}
+                            value={field.value || ""}
                             data-testid="select-budget"
                           >
                             <SelectTrigger>
@@ -425,7 +472,7 @@ export default function Contact() {
                       )}
                     />
                   </div>
-                  
+
                   <FormField
                     control={form.control}
                     name="message"
@@ -433,10 +480,11 @@ export default function Contact() {
                       <FormItem>
                         <FormLabel>Message</FormLabel>
                         <FormControl>
-                          <Textarea 
+                          <Textarea
                             rows={4}
                             placeholder="Tell us about your event, special requirements, or any questions you have..."
                             {...field}
+                            value={field.value || ""}
                             data-testid="textarea-message"
                           />
                         </FormControl>
@@ -444,10 +492,10 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-                  
+
                   <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                       disabled={contactMutation.isPending}
                       data-testid="button-submit-contact"
@@ -455,9 +503,12 @@ export default function Contact() {
                       {contactMutation.isPending ? "Sending..." : "Send Message"}
                     </Button>
                   </motion.div>
-                  
+
                   <p className="text-sm text-muted-foreground text-center">
-                    We'll get back to you within 24 hours with a personalized quote.
+                    We'll get back to you within 24 hours with a personalized quote via Email and WhatsApp.
+                  </p>
+                  <p className="text-xs text-blue-400 text-center mt-2">
+                    ✓ Check your Email inbox and WhatsApp messages for confirmation
                   </p>
                 </form>
               </Form>
@@ -469,7 +520,7 @@ export default function Contact() {
       {/* Google Maps Section */}
       <section className="py-16 bg-muted/30 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
+          <motion.div
             className="text-center mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -483,8 +534,8 @@ export default function Contact() {
               Located in the heart of Satna, Madhya Pradesh, we're easily accessible for consultations and meetings.
             </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="relative rounded-2xl overflow-hidden shadow-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
