@@ -74,7 +74,6 @@ export default function Testimonials() {
   const handleReviewSubmit = () => {
     if (newReview.name.trim() && newReview.review.trim()) {
       // In a real app, this would submit to the backend
-      console.log("New review submitted:", newReview);
       setIsDialogOpen(false);
       setNewReview({ name: "", rating: 5, review: "" });
       // Show success message
