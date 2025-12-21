@@ -72,12 +72,12 @@ export class MemStorage implements IStorage {
         title: "Complete Wedding",
         slug: "complete-wedding",
         description: "Full wedding coverage from pre-wedding to reception",
-        basePrice: 45000,
+        basePrice: 50000,
         features: [
           "Pre-wedding shoot",
           "Haldi & Mehndi coverage",
           "Wedding ceremony & reception",
-          "500+ edited photos",
+          "300+ edited photos",
           "Online gallery & USB drive"
         ],
         isPopular: true,
@@ -87,7 +87,7 @@ export class MemStorage implements IStorage {
         title: "Pre-Wedding Shoot",
         slug: "pre-wedding-shoot",
         description: "Romantic couple photography session",
-        basePrice: 15000,
+        basePrice: 20000,
         features: [
           "4-6 hour photo session",
           "Multiple location options",
@@ -101,7 +101,7 @@ export class MemStorage implements IStorage {
         title: "Family & Events",
         slug: "family-events",
         description: "Family portraits and special events",
-        basePrice: 12000,
+        basePrice: 15000,
         features: [
           "Baby shower coverage",
           "Maternity shoots",

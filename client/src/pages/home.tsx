@@ -210,6 +210,25 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+
+          {/* View All Services Button */}
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <a href="/services">
+              <motion.button
+                className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                View All Services & Packages
+              </motion.button>
+            </a>
+          </motion.div>
         </div>
       </section>
 
