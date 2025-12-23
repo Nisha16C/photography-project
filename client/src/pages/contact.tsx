@@ -23,7 +23,10 @@ import type { InsertContact } from "@shared/schema";
 export default function Contact() {
   const phoneDigits = (PHOTOGRAPHER_INFO.phone || "").replace(/\D/g, "");
   const { toast } = useToast();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const queryClient = useQueryClient();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [lastSubmitted, setLastSubmitted] = useState<InsertContact | null>(null);
 
   const form = useForm<InsertContact>({
     resolver: zodResolver(insertContactSchema),
@@ -39,14 +42,36 @@ export default function Contact() {
     },
   });
 
+  const generateWhatsAppLink = (data: InsertContact) => {
+    const msg = `Hello ${PHOTOGRAPHER_INFO.name} 👋
+I have an inquiry from the website.
+
+Name: ${data.name}
+Event: ${data.eventType}
+Date: ${data.eventDate || "TBD"}
+City: ${data.city || "TBD"}
+Budget: ${data.budget || "TBD"}
+
+Could you please share more details?`;
+    return `${PHOTOGRAPHER_INFO.whatsapp}?text=${encodeURIComponent(msg)}`;
+  };
+
   const contactMutation = useMutation({
     mutationFn: api.contact.submit,
-    onSuccess: () => {
+    onSuccess: (_resp, variables) => {
+      setLastSubmitted(variables);
+      setShowSuccess(true);
       toast({
         title: "Message sent successfully!",
-        description: "We'll get back to you within 24 hours.",
+        description: "Please check your email and confirm on WhatsApp.",
       });
       form.reset();
+
+      // Auto-open WhatsApp after a short delay
+      setTimeout(() => {
+        const link = generateWhatsAppLink(variables);
+        window.open(link, '_blank');
+      }, 1500);
     },
     onError: (error: any) => {
       toast({
@@ -58,35 +83,6 @@ export default function Contact() {
   });
 
   const onSubmit = (data: InsertContact) => {
-    // build email body (opens user's mail client with prefilled message; user must press Send)
-    const lines = [
-      "New enquiry from website:",
-      `Name: ${data.name || "-"}`,
-      `Phone: ${data.phone || "-"}`,
-      `Email: ${data.email || "-"}`,
-      `Event Type: ${data.eventType || "-"}`,
-      `Event Date: ${data.eventDate || "-"}`,
-      `City: ${data.city || "-"}`,
-      `Budget: ${data.budget || "-"}`,
-      `Message: ${data.message || "-"}`,
-    ];
-
-    const subject = `Website enquiry — ${data.name || "Visitor"}`;
-    const body = encodeURIComponent(lines.join("\n"));
-    const mailtoUrl = `mailto:${PHOTOGRAPHER_INFO.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
-
-    // Try to open default mail client (works on desktop & mobile). Also keep saving to backend.
-    try {
-      window.location.href = mailtoUrl;
-    } catch (err) {
-      toast({
-        title: "Could not open mail client",
-        description: "Please copy the details and send an email manually.",
-        variant: "destructive",
-      });
-    }
-
-    // still send to backend (keeps record / notifications)
     contactMutation.mutate(data);
   };
 
@@ -144,20 +140,6 @@ export default function Contact() {
                   </p>
                 </div>
               </div>
-            </div>
-          </motion.div>
-
-          {/* Email & WhatsApp Confirmation Notice */}
-          <motion.div
-            className="mb-8 max-w-4xl mx-auto"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <div className="bg-blue-950/30 border border-blue-500/30 rounded-lg p-4 backdrop-blur-sm">
-              <p className="text-white text-center text-sm">
-                📧 <strong>Important:</strong> After submitting this form, you will receive confirmation messages via <strong>Email</strong> and <strong>WhatsApp</strong>. Please check both for booking details and payment information.
-              </p>
             </div>
           </motion.div>
 
@@ -285,242 +267,268 @@ export default function Contact() {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Contact Form OR Success Message */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-testid="contact-form">
-                  {/* Honeypot field for spam protection */}
-                  <input
-                    type="text"
-                    name="website"
-                    className="hidden"
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name *</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Your full name"
-                              {...field}
-                              data-testid="input-name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone *</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="+91 9876543210"
-                              {...field}
-                              data-testid="input-phone"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email *</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="your@email.com"
-                            {...field}
-                            data-testid="input-email"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="eventType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Event Type *</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                            data-testid="select-event-type"
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select event type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="wedding">Wedding Films</SelectItem>
-                              <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
-                              <SelectItem value="engagement">Engagement</SelectItem>
-                              <SelectItem value="haldi">Haldi Ceremony</SelectItem>
-                              <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
-                              <SelectItem value="baby-shower">Baby Shower</SelectItem>
-                              <SelectItem value="maternity">Maternity</SelectItem>
-                              <SelectItem value="newborn">Newborn</SelectItem>
-                              <SelectItem value="family">Family Portrait</SelectItem>
-                              <SelectItem value="corporate">Corporate Event</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="eventDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Event Date</FormLabel>
-                          <FormControl>
-                            <Controller
-                              control={form.control}
-                              name="eventDate"
-                              render={({ field: ctlField }) => (
-                                <div className="relative">
-                                  <DatePicker
-                                    selected={ctlField.value ? new Date(ctlField.value) : null}
-                                    onChange={(d) => {
-                                      // store ISO date (yyyy-mm-dd) in form
-                                      if (!d) return ctlField.onChange("");
-                                      const iso = d.toISOString().slice(0, 10);
-                                      ctlField.onChange(iso);
-                                    }}
-                                    placeholderText="Select event date"
-                                    className="w-full px-4 py-3 bg-gray-800/50 border-2 border-blue-500/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all backdrop-blur-sm"
-                                    dateFormat="dd MMM yyyy"
-                                    data-testid="input-event-date"
-                                    calendarClassName="bg-gray-900 border-2 border-blue-500/30 rounded-lg shadow-2xl"
-                                    wrapperClassName="w-full"
-                                  />
-                                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                                    <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                  </div>
-                                </div>
-                              )}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="city"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>City</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Event city"
-                              {...field}
-                              value={field.value || ""}
-                              data-testid="input-city"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="budget"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Budget Range</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value || ""}
-                            data-testid="select-budget"
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select budget range" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="10000-25000">₹10,000 - ₹25,000</SelectItem>
-                              <SelectItem value="25000-50000">₹25,000 - ₹50,000</SelectItem>
-                              <SelectItem value="50000-100000">₹50,000 - ₹1,00,000</SelectItem>
-                              <SelectItem value="100000+">₹1,00,000+</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Message</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            rows={4}
-                            placeholder="Tell us about your event, special requirements, or any questions you have..."
-                            {...field}
-                            value={field.value || ""}
-                            data-testid="textarea-message"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Button
-                      type="submit"
-                      className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                      disabled={contactMutation.isPending}
-                      data-testid="button-submit-contact"
+              <AnimatePresence mode="wait">
+                {showSuccess && lastSubmitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="bg-green-900/20 border border-green-500/50 rounded-2xl p-8 text-center backdrop-blur-sm"
+                  >
+                    <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <SiWhatsapp className="w-10 h-10 text-green-500" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4 font-playfair text-white">Application Received!</h3>
+                    <p className="text-lg text-gray-300 mb-6">
+                      We have sent a confirmation email to <strong>{lastSubmitted.email}</strong>.
+                    </p>
+                    <div className="bg-white/5 rounded-lg p-6 mb-8 text-left">
+                      <p className="font-semibold text-blue-300 mb-2">Next Step:</p>
+                      <p className="text-sm text-gray-300">
+                        Please confirm your details on WhatsApp to get an immediate response properly.
+                        Your message has been pre-filled for you!
+                      </p>
+                    </div>
+                    <a
+                      href={generateWhatsAppLink(lastSubmitted)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full"
                     >
-                      {contactMutation.isPending ? "Sending..." : "Send Message"}
-                    </Button>
+                      <Button size="lg" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold h-12 text-lg shadow-green-900/50 shadow-lg animate-pulse">
+                        <SiWhatsapp className="mr-2 h-6 w-6" />
+                        Confirm on WhatsApp
+                      </Button>
+                    </a>
+                    <button
+                      onClick={() => setShowSuccess(false)}
+                      className="mt-6 text-sm text-gray-500 hover:text-gray-300 underline"
+                    >
+                      Send another response
+                    </button>
                   </motion.div>
+                ) : (
+                  <div key="form" className="bg-card/30 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-white/10 shadow-xl">
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-semibold mb-2 text-white">Send a Message</h3>
+                      <p className="text-sm text-muted-foreground">Fill in the details below and we'll get back to you shortly.</p>
+                    </div>
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" data-testid="contact-form">
+                        <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
-                  <p className="text-sm text-muted-foreground text-center">
-                    We'll get back to you within 24 hours with a personalized quote via Email and WhatsApp.
-                  </p>
-                  <p className="text-xs text-blue-400 text-center mt-2">
-                    ✓ Check your Email inbox and WhatsApp messages for confirmation
-                  </p>
-                </form>
-              </Form>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Name *</FormLabel>
+                                <FormControl>
+                                  <div className="relative">
+                                    <Input placeholder="Your full name" {...field} className="pl-10 bg-black/40 border-white/10 focus-visible:ring-blue-500" data-testid="input-name" />
+                                    <div className="absolute left-3 top-2.5 text-gray-400">
+                                      <span role="img" aria-label="user">👤</span>
+                                    </div>
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Phone *</FormLabel>
+                                <FormControl>
+                                  <div className="relative">
+                                    <Input placeholder="+91 9876543210" {...field} className="pl-10 bg-black/40 border-white/10 focus-visible:ring-blue-500" data-testid="input-phone" />
+                                    <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Email *</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Input type="email" placeholder="your@email.com" {...field} className="pl-10 bg-black/40 border-white/10 focus-visible:ring-blue-500" data-testid="input-email" />
+                                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                          <FormField
+                            control={form.control}
+                            name="eventType"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Event Type *</FormLabel>
+                                <Select onValueChange={field.onChange} value={field.value} data-testid="select-event-type">
+                                  <SelectTrigger className="bg-black/40 border-white/10 focus:ring-blue-500">
+                                    <SelectValue placeholder="Select event type" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="wedding">Wedding Films</SelectItem>
+                                    <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
+                                    <SelectItem value="engagement">Engagement</SelectItem>
+                                    <SelectItem value="haldi">Haldi Ceremony</SelectItem>
+                                    <SelectItem value="mehndi">Mehndi Ceremony</SelectItem>
+                                    <SelectItem value="baby-shower">Baby Shower</SelectItem>
+                                    <SelectItem value="maternity">Maternity</SelectItem>
+                                    <SelectItem value="newborn">Newborn</SelectItem>
+                                    <SelectItem value="family">Family Portrait</SelectItem>
+                                    <SelectItem value="corporate">Corporate Event</SelectItem>
+                                    <SelectItem value="other">Other</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="eventDate"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Event Date</FormLabel>
+                                <FormControl>
+                                  <Controller
+                                    control={form.control}
+                                    name="eventDate"
+                                    render={({ field: ctlField }) => (
+                                      <div className="relative">
+                                        <DatePicker
+                                          selected={ctlField.value ? new Date(ctlField.value) : null}
+                                          onChange={(d) => {
+                                            if (!d) return ctlField.onChange("");
+                                            const iso = d.toISOString().slice(0, 10);
+                                            ctlField.onChange(iso);
+                                          }}
+                                          placeholderText="Select event date"
+                                          className="w-full pl-10 pr-4 py-2 text-sm bg-black/40 border border-white/10 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                          dateFormat="dd MMM yyyy"
+                                          data-testid="input-event-date"
+                                          calendarClassName="bg-gray-900 border border-gray-700 rounded-lg shadow-xl"
+                                          wrapperClassName="w-full"
+                                        />
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                          <span role="img" aria-label="calendar">📅</span>
+                                        </div>
+                                      </div>
+                                    )}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                          <FormField
+                            control={form.control}
+                            name="city"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">City</FormLabel>
+                                <FormControl>
+                                  <div className="relative">
+                                    <Input placeholder="Event city" {...field} value={field.value || ""} className="pl-10 bg-black/40 border-white/10 focus-visible:ring-blue-500" data-testid="input-city" />
+                                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                                  </div>
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="budget"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel className="text-gray-300">Budget Range</FormLabel>
+                                <Select onValueChange={field.onChange} value={field.value || ""} data-testid="select-budget">
+                                  <SelectTrigger className="bg-black/40 border-white/10 focus:ring-blue-500">
+                                    <SelectValue placeholder="Select budget range" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="10000-25000">₹10,000 - ₹25,000</SelectItem>
+                                    <SelectItem value="25000-50000">₹25,000 - ₹50,000</SelectItem>
+                                    <SelectItem value="50000-100000">₹50,000 - ₹1,00,000</SelectItem>
+                                    <SelectItem value="100000+">₹1,00,000+</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <FormField
+                          control={form.control}
+                          name="message"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Message</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  rows={4}
+                                  placeholder="Tell us about your event..."
+                                  {...field}
+                                  value={field.value || ""}
+                                  className="bg-black/40 border-white/10 focus-visible:ring-blue-500"
+                                  data-testid="textarea-message"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
+                          <Button
+                            type="submit"
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold h-11 text-lg"
+                            disabled={contactMutation.isPending}
+                            data-testid="button-submit-contact"
+                          >
+                            {contactMutation.isPending ? "Sending..." : "Send Message"}
+                          </Button>
+                        </motion.div>
+
+                        <p className="text-xs text-muted-foreground text-center">
+                          By clicking send, you agree to receive messages on WhatsApp and Email.
+                        </p>
+                      </form>
+                    </Form>
+                  </div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </div>

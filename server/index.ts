@@ -139,8 +139,14 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
       const validatedData = insertContactSchema.parse(data);
       const contact = await storage.createContact(validatedData);
 
-      // TODO: Send email notification to photographer
-      // TODO: Send confirmation email to client
+      // Send email notifications (async, don't block response extensively but usually good to wait or fire-and-forget)
+      // We will wait for it to ensure it attempts sending, but catch errors so we don't fail the request if email fails (optional strategy)
+      try {
+        const { sendContactEmails } = await import('./email');
+        sendContactEmails(validatedData).catch(err => console.error("Email sending failed background:", err));
+      } catch (emailErr) {
+        console.error("Failed to load email service:", emailErr);
+      }
 
       return new Response(JSON.stringify({
         message: "Thank you for your inquiry! We'll get back to you within 24 hours.",
