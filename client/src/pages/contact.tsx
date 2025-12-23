@@ -375,7 +375,7 @@ export default function Contact() {
                               <SelectValue placeholder="Select event type" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="wedding">Wedding</SelectItem>
+                              <SelectItem value="wedding">Wedding Films</SelectItem>
                               <SelectItem value="pre-wedding">Pre-Wedding</SelectItem>
                               <SelectItem value="engagement">Engagement</SelectItem>
                               <SelectItem value="haldi">Haldi Ceremony</SelectItem>

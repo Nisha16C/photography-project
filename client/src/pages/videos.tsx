@@ -1,9 +1,6 @@
-import { useState, useRef, memo } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X, Sparkles, Heart, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-// Import a wedding image for the background
 import WEDDING_BG from "@/assets/images/portfolio/weddings-Img/indian-bride-and-groom-at-amazing-hindu-wedding-ceremony-photo.jpeg";
 
 const VIDEOS = [
