@@ -8,6 +8,20 @@ import WEDDING_BG from "@/assets/images/portfolio/weddings-Img/indian-bride-and-
 
 const VIDEOS = [
   {
+    id: "new-video-1",
+    title: "Cinematic Highlights",
+    url: "https://youtu.be/85gXY1PQF3I?si=4248fZjyLzQcL6ui",
+    embedUrl: "https://www.youtube.com/embed/85gXY1PQF3I?autoplay=1&mute=1",
+    thumbnail: "https://img.youtube.com/vi/85gXY1PQF3I/maxresdefault.jpg",
+  },
+  {
+    id: "new-video-2",
+    title: "Wedding Teaser",
+    url: "https://youtu.be/8YjmTQU9pfo?si=Lp1Q6mDNFAkJuP1m",
+    embedUrl: "https://www.youtube.com/embed/8YjmTQU9pfo?autoplay=1&mute=1",
+    thumbnail: "https://img.youtube.com/vi/8YjmTQU9pfo/maxresdefault.jpg",
+  },
+  {
     id: "video-1",
     title: "Wedding Highlights",
     url: "https://youtu.be/v7_41JK2i-Q?si=GSY3ptGGmohhEUn-",
