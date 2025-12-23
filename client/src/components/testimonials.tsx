@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Star, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/api";
@@ -9,12 +9,36 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import type { Testimonial } from "@shared/schema";
 
 export default function Testimonials() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: testimonials, isLoading } = useQuery({
     queryKey: ["/api/testimonials"],
     queryFn: api.testimonials.getAll,
+  });
+
+  const submitReviewMutation = useMutation({
+    mutationFn: api.testimonials.submit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/testimonials"] });
+      setIsDialogOpen(false);
+      setNewReview({ name: "", rating: 5, review: "", eventType: "" });
+      toast({
+        title: "Review Submitted!",
+        description: "Thank you for your review! It will be published after moderation.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to submit review. Please try again.",
+        variant: "destructive",
+      });
+    },
   });
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,7 +47,8 @@ export default function Testimonials() {
   const [newReview, setNewReview] = useState({
     name: "",
     rating: 5,
-    review: ""
+    review: "",
+    eventType: ""
   });
 
   // Auto-play carousel
@@ -73,11 +98,13 @@ export default function Testimonials() {
 
   const handleReviewSubmit = () => {
     if (newReview.name.trim() && newReview.review.trim()) {
-      // In a real app, this would submit to the backend
-      setIsDialogOpen(false);
-      setNewReview({ name: "", rating: 5, review: "" });
-      // Show success message
-      alert("Thank you for your review! It will be published after moderation.");
+      submitReviewMutation.mutate(newReview);
+    } else {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -141,7 +168,19 @@ export default function Testimonials() {
                     value={newReview.name}
                     onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
                     placeholder="Enter your name"
-                    className="bg-gray-800 border-blue-500/30 text-white"
+                    className="bg-gray-800 border-blue-500/30 text-white focus:border-blue-400 transition-colors"
+                    disabled={submitReviewMutation.isPending}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="eventType" className="text-white/90">Event Type (Optional)</Label>
+                  <Input
+                    id="eventType"
+                    value={newReview.eventType}
+                    onChange={(e) => setNewReview({ ...newReview, eventType: e.target.value })}
+                    placeholder="e.g., Wedding, Baby Shower, etc."
+                    className="bg-gray-800 border-blue-500/30 text-white focus:border-blue-400 transition-colors"
+                    disabled={submitReviewMutation.isPending}
                   />
                 </div>
                 <div>
@@ -150,9 +189,9 @@ export default function Testimonials() {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star
                         key={star}
-                        className={`w-8 h-8 cursor-pointer transition-colors ${star <= newReview.rating ? "fill-blue-400 text-blue-400" : "text-gray-600"
-                          }`}
-                        onClick={() => setNewReview({ ...newReview, rating: star })}
+                        className={`w-8 h-8 cursor-pointer transition-all duration-200 hover:scale-110 ${star <= newReview.rating ? "fill-blue-400 text-blue-400" : "text-gray-600 hover:text-gray-500"
+                          } ${submitReviewMutation.isPending ? "opacity-50 cursor-not-allowed" : ""}`}
+                        onClick={() => !submitReviewMutation.isPending && setNewReview({ ...newReview, rating: star })}
                       />
                     ))}
                   </div>
@@ -165,14 +204,16 @@ export default function Testimonials() {
                     onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
                     placeholder="Share your experience with us..."
                     rows={4}
-                    className="bg-gray-800 border-blue-500/30 text-white"
+                    className="bg-gray-800 border-blue-500/30 text-white focus:border-blue-400 transition-colors resize-none"
+                    disabled={submitReviewMutation.isPending}
                   />
                 </div>
                 <Button
                   onClick={handleReviewSubmit}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/50"
+                  disabled={submitReviewMutation.isPending}
                 >
-                  Submit Review
+                  {submitReviewMutation.isPending ? "Submitting..." : "Submit Review"}
                 </Button>
               </div>
             </DialogContent>
@@ -209,36 +250,40 @@ export default function Testimonials() {
                 className="absolute w-full"
                 data-testid={`testimonial-${currentIndex}`}
               >
-                <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 shadow-2xl border border-blue-500/20">
+                <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-3xl p-10 shadow-2xl border border-blue-500/30 backdrop-blur-sm hover:border-blue-500/50 transition-all duration-300">
                   {/* Rating */}
-                  <div className="flex justify-center mb-6">
-                    <div className="flex text-blue-400">
+                  <div className="flex justify-center mb-8">
+                    <div className="flex gap-1 text-blue-400">
                       {Array.from({ length: testimonials[currentIndex].rating || 5 }).map((_, i) => (
-                        <Star key={i} className="w-6 h-6 fill-current" />
+                        <Star key={i} className="w-7 h-7 fill-current drop-shadow-lg" />
                       ))}
                     </div>
                   </div>
 
                   {/* Review */}
-                  <p className="text-white/90 text-lg text-center mb-8 italic" style={{ fontFamily: 'Cormorant Garamond, serif' }} data-testid={`testimonial-body-${currentIndex}`}>
-                    "{testimonials[currentIndex].body}"
-                  </p>
+                  <div className="relative">
+                    <div className="absolute -top-4 -left-2 text-6xl text-blue-400/20 font-serif">"</div>
+                    <p className="text-white/95 text-xl text-center mb-10 italic leading-relaxed px-6" style={{ fontFamily: 'Cormorant Garamond, serif' }} data-testid={`testimonial-body-${currentIndex}`}>
+                      {testimonials[currentIndex].body}
+                    </p>
+                    <div className="absolute -bottom-6 -right-2 text-6xl text-blue-400/20 font-serif">"</div>
+                  </div>
 
                   {/* Client Info */}
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-center mt-4">
                     {testimonials[currentIndex].clientImage && (
                       <img
                         src={testimonials[currentIndex].clientImage}
                         alt={testimonials[currentIndex].clientName}
-                        className="w-16 h-16 rounded-full mr-4 object-cover border-2 border-blue-400"
+                        className="w-20 h-20 rounded-full mr-5 object-cover border-3 border-blue-400 shadow-lg shadow-blue-400/30 ring-2 ring-blue-400/20 ring-offset-2 ring-offset-gray-900"
                         data-testid={`testimonial-image-${currentIndex}`}
                       />
                     )}
                     <div className="text-center">
-                      <h4 className="font-semibold text-white text-lg" data-testid={`testimonial-name-${currentIndex}`}>
+                      <h4 className="font-bold text-white text-xl mb-1" data-testid={`testimonial-name-${currentIndex}`}>
                         {testimonials[currentIndex].clientName}
                       </h4>
-                      <p className="text-sm text-blue-400" data-testid={`testimonial-event-${currentIndex}`}>
+                      <p className="text-sm text-blue-400 font-medium tracking-wide" data-testid={`testimonial-event-${currentIndex}`}>
                         {testimonials[currentIndex].eventType}
                       </p>
                     </div>
@@ -251,14 +296,14 @@ export default function Testimonials() {
           {/* Navigation Arrows */}
           <button
             onClick={() => paginate(-1)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-blue-500/20 hover:bg-blue-500/40 text-white p-3 rounded-full backdrop-blur-sm transition-all"
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-blue-500/20 hover:bg-blue-500/50 text-white p-4 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 border border-blue-400/30"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <button
             onClick={() => paginate(1)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-500/20 hover:bg-blue-500/40 text-white p-3 rounded-full backdrop-blur-sm transition-all"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-500/20 hover:bg-blue-500/50 text-white p-4 rounded-full backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-blue-500/50 border border-blue-400/30"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-6 h-6" />

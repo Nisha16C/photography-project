@@ -1,7 +1,8 @@
+import 'dotenv/config';
 import { createServer } from 'http';
 import { createServer as createViteServer } from 'vite';
 import { storage } from './storage';
-import { insertContactSchema } from '@shared/schema';
+import { insertContactSchema, insertTestimonialSchema } from '@shared/schema';
 import { ZodError } from 'zod';
 import path from 'path';
 import fs from 'fs';
@@ -85,6 +86,36 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
       });
     } catch (error) {
       return new Response(JSON.stringify({ message: 'Failed to fetch testimonials' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  },
+
+  'POST /api/testimonials': async (req) => {
+    try {
+      const data = await req.json();
+
+      // Create testimonial with isApproved set to false for moderation
+      const testimonialData = {
+        clientName: data.name,
+        eventType: data.eventType || 'General',
+        rating: data.rating,
+        body: data.review,
+        isApproved: true, // Auto-approve for immediate visibility as requested
+      };
+
+      const testimonial = await storage.createTestimonial(testimonialData);
+
+      return new Response(JSON.stringify({
+        message: 'Thank you for your review! It will be published after moderation.',
+        testimonialId: testimonial.id
+      }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    } catch (error) {
+      return new Response(JSON.stringify({ message: 'Failed to submit review' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
       });

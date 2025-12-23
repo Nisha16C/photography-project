@@ -298,4 +298,128 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database Storage Implementation
+export class DbStorage implements IStorage {
+  private db: any;
+
+  constructor() {
+    // Lazy load db to avoid circular dependencies
+    this.initDb();
+  }
+
+  private async initDb() {
+    try {
+      const { db } = await import('./db');
+      this.db = db;
+    } catch (error) {
+      console.error('Failed to initialize database:', error);
+      throw error;
+    }
+  }
+
+  // Categories
+  async getCategories(): Promise<Category[]> {
+    const { categories } = await import('@shared/schema');
+    const { desc } = await import('drizzle-orm');
+    return await this.db.select().from(categories).orderBy(categories.order);
+  }
+
+  async getCategoryBySlug(slug: string): Promise<Category | undefined> {
+    const { categories } = await import('@shared/schema');
+    const { eq } = await import('drizzle-orm');
+    const result = await this.db.select().from(categories).where(eq(categories.slug, slug));
+    return result[0];
+  }
+
+  async createCategory(insertCategory: InsertCategory): Promise<Category> {
+    const { categories } = await import('@shared/schema');
+    const result = await this.db.insert(categories).values(insertCategory).returning();
+    return result[0];
+  }
+
+  // Photos
+  async getPhotos(categoryId?: string, featured?: boolean): Promise<Photo[]> {
+    const { photos } = await import('@shared/schema');
+    const { eq, and } = await import('drizzle-orm');
+
+    let query = this.db.select().from(photos);
+
+    const conditions = [];
+    if (categoryId) conditions.push(eq(photos.category, categoryId));
+    if (featured !== undefined) conditions.push(eq(photos.isFeatured, featured));
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+
+    return await query.orderBy(photos.order);
+  }
+
+  async getPhotoById(id: string): Promise<Photo | undefined> {
+    const { photos } = await import('@shared/schema');
+    const { eq } = await import('drizzle-orm');
+    const result = await this.db.select().from(photos).where(eq(photos.id, id));
+    return result[0];
+  }
+
+  async createPhoto(insertPhoto: InsertPhoto): Promise<Photo> {
+    const { photos } = await import('@shared/schema');
+    const result = await this.db.insert(photos).values(insertPhoto).returning();
+    return result[0];
+  }
+
+  // Services
+  async getServices(): Promise<Service[]> {
+    const { services } = await import('@shared/schema');
+    return await this.db.select().from(services).orderBy(services.order);
+  }
+
+  async getServiceBySlug(slug: string): Promise<Service | undefined> {
+    const { services } = await import('@shared/schema');
+    const { eq } = await import('drizzle-orm');
+    const result = await this.db.select().from(services).where(eq(services.slug, slug));
+    return result[0];
+  }
+
+  async createService(insertService: InsertService): Promise<Service> {
+    const { services } = await import('@shared/schema');
+    const result = await this.db.insert(services).values(insertService).returning();
+    return result[0];
+  }
+
+  // Testimonials
+  async getTestimonials(approved?: boolean): Promise<Testimonial[]> {
+    const { testimonials } = await import('@shared/schema');
+    const { eq, desc } = await import('drizzle-orm');
+
+    let query = this.db.select().from(testimonials);
+
+    if (approved !== undefined) {
+      query = query.where(eq(testimonials.isApproved, approved));
+    }
+
+    return await query.orderBy(desc(testimonials.createdAt));
+  }
+
+  async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
+    const { testimonials } = await import('@shared/schema');
+    const result = await this.db.insert(testimonials).values(insertTestimonial).returning();
+    return result[0];
+  }
+
+  // Contacts
+  async getContacts(): Promise<Contact[]> {
+    const { contacts } = await import('@shared/schema');
+    const { desc } = await import('drizzle-orm');
+    return await this.db.select().from(contacts).orderBy(desc(contacts.createdAt));
+  }
+
+  async createContact(insertContact: InsertContact): Promise<Contact> {
+    const { contacts } = await import('@shared/schema');
+    const result = await this.db.insert(contacts).values(insertContact).returning();
+    return result[0];
+  }
+}
+
+// Use DbStorage if DATABASE_URL is set, otherwise use MemStorage
+export const storage = process.env.DATABASE_URL ? new DbStorage() : new MemStorage();
