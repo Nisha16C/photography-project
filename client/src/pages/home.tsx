@@ -1,7 +1,7 @@
 import HeroSlideshow from "@/components/hero-slideshow";
 import FeaturedWork from "@/components/featured-work";
 import WhyChooseUs from "@/components/why-choose-us";
-import Testimonials from "@/components/testimonials";
+import TestimonialsSlider from "@/components/testimonials-slider";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
@@ -234,7 +234,27 @@ export default function Home() {
 
       <FeaturedWork />
       <WhyChooseUs />
-      <Testimonials />
+      <TestimonialsSlider />
+
+      {/* View More Client Stories Button */}
+      <motion.div
+        className="mt-12 text-center pb-10 py-0"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        viewport={{ once: true }}
+      >
+        <a href="/testimonials">
+          <motion.button
+            className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            View More Client Stories          </motion.button>
+        </a>
+      </motion.div>
+
+
 
 
 

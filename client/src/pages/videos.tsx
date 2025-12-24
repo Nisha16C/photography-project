@@ -200,7 +200,7 @@ export default function Videos() {
         </motion.div>
 
         <motion.h1
-          className="text-6xl md:text-8xl font-playfair font-bold text-white tracking-wider text-center mb-6"
+          className="text-4xl sm:text-6xl md:text-8xl font-playfair font-bold text-white tracking-wider text-center mb-6 px-4"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
@@ -253,7 +253,7 @@ export default function Videos() {
             viewport={{ once: true }}
           >
             <motion.h2
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-blue-400"
+              className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 text-blue-400 px-2"
               style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -351,7 +351,7 @@ export default function Videos() {
                 }}
               >
                 <motion.div
-                  className="text-4xl md:text-5xl font-bold text-accent mb-2"
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold text-accent mb-2"
                   initial={{ scale: 0.8 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
