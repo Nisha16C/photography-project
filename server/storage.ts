@@ -421,5 +421,69 @@ export class DbStorage implements IStorage {
   }
 }
 
-// Use DbStorage if DATABASE_URL is set, otherwise use MemStorage
-export const storage = process.env.DATABASE_URL ? new DbStorage() : new MemStorage();
+// ─── Storage Factory ─────────────────────────────────────────────────────────
+// Creates a storage implementation that tries DbStorage first, then permanently
+// falls back to MemStorage on the first error (e.g. DB not running locally).
+// Uses an explicit delegation wrapper — NO Proxy — to avoid this-binding bugs.
+
+function createStorage(): IStorage {
+  const mem = new MemStorage();
+
+  if (!process.env.DATABASE_URL) {
+    console.log('[storage] No DATABASE_URL — using in-memory storage');
+    return mem;
+  }
+
+  console.log('[storage] DATABASE_URL found — attempting DbStorage with MemStorage fallback');
+
+  let db: DbStorage | null = null;
+  let useMem = false;
+
+  // Lazy-initialise DbStorage so import errors don't crash the process at startup
+  function getDb(): DbStorage {
+    if (!db) db = new DbStorage();
+    return db;
+  }
+
+  // Generic delegation helper — tries DB, falls back to mem on any error
+  async function delegate<T>(method: keyof IStorage, ...args: any[]): Promise<T> {
+    if (useMem) {
+      return (mem as any)[method](...args);
+    }
+    try {
+      return await ((getDb() as any)[method] as Function).apply(getDb(), args);
+    } catch (err) {
+      const msg = (err instanceof Error) ? err.message : String(err);
+      console.warn(`[storage] DbStorage.${method} failed (${msg}) — switching to MemStorage for all future calls`);
+      useMem = true;
+      return (mem as any)[method](...args);
+    }
+  }
+
+  // Explicit wrapper — every IStorage method listed to avoid any proxy/this issues
+  const wrapper: IStorage = {
+    // Categories
+    getCategories:     ()         => delegate('getCategories'),
+    getCategoryBySlug: (slug)     => delegate('getCategoryBySlug', slug),
+    createCategory:    (cat)      => delegate('createCategory', cat),
+    // Photos
+    getPhotos:         (cat, ft)  => delegate('getPhotos', cat, ft),
+    getPhotoById:      (id)       => delegate('getPhotoById', id),
+    createPhoto:       (photo)    => delegate('createPhoto', photo),
+    // Services
+    getServices:       ()         => delegate('getServices'),
+    getServiceBySlug:  (slug)     => delegate('getServiceBySlug', slug),
+    createService:     (svc)      => delegate('createService', svc),
+    // Testimonials
+    getTestimonials:   (approved) => delegate('getTestimonials', approved),
+    createTestimonial: (t)        => delegate('createTestimonial', t),
+    // Contacts
+    getContacts:       ()         => delegate('getContacts'),
+    createContact:     (c)        => delegate('createContact', c),
+  };
+
+  return wrapper;
+}
+
+export const storage = createStorage();
+

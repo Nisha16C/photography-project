@@ -71,13 +71,13 @@ export default function ReviewDialog({ children }: ReviewDialogProps) {
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="bg-black/95 border border-white/10 text-white backdrop-blur-xl sm:max-w-[600px] shadow-2xl">
+            <DialogContent className="bg-black/95 border border-[hsl(38,92%,58%)]/20 text-white backdrop-blur-xl sm:max-w-[600px] shadow-2xl">
                 <DialogHeader className="mb-2">
-                    <div className="mx-auto w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center mb-2 border border-blue-500/20">
-                        <Star className="w-6 h-6 text-blue-400 fill-blue-400" />
+                    <div className="mx-auto w-12 h-12 bg-[hsl(38,92%,58%)]/10 rounded-full flex items-center justify-center mb-2 border border-[hsl(38,92%,58%)]/30">
+                        <Star className="w-6 h-6 text-[hsl(38,92%,58%)] fill-[hsl(38,92%,58%)]" />
                     </div>
-                    <DialogTitle className="text-2xl text-center text-white mb-1" style={{ fontFamily: "'Tangerine', cursive" }}>Share Your Experience</DialogTitle>
-                    <DialogDescription className="text-center text-gray-400">
+                    <DialogTitle className="text-3xl text-center gradient-text-gold mb-1" style={{ fontFamily: "'Tangerine', cursive" }}>Share Your Experience</DialogTitle>
+                    <DialogDescription className="text-center text-white/40">
                         We'd love to hear about your experience with us.
                     </DialogDescription>
                 </DialogHeader>
@@ -85,70 +85,70 @@ export default function ReviewDialog({ children }: ReviewDialogProps) {
                 <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name" className="text-gray-300">Your Name</Label>
+                            <Label htmlFor="name" className="text-white/60 text-sm">Your Name</Label>
                             <div className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 rounded-lg opacity-20 blur transition-opacity group-hover:opacity-40" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-[hsl(38,92%,58%)] to-[hsl(30,70%,45%)] rounded-lg opacity-10 blur transition-opacity group-hover:opacity-20" />
                                 <Input
                                     id="name"
                                     value={newReview.name}
                                     onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
                                     placeholder="John Doe"
-                                    className="bg-gray-900/80 border-white/10 text-white placeholder:text-gray-600 focus:border-blue-500/50 transition-all relative z-10"
+                                    className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus:border-[hsl(38,92%,58%)]/50 transition-all relative z-10"
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="eventType" className="text-gray-300">Event Type <span className="text-gray-500 text-xs">(Optional)</span></Label>
+                            <Label htmlFor="eventType" className="text-white/60 text-sm">Event Type <span className="text-white/25 text-xs">(Optional)</span></Label>
                             <Input
                                 id="eventType"
                                 value={newReview.eventType}
                                 onChange={(e) => setNewReview({ ...newReview, eventType: e.target.value })}
                                 placeholder="e.g. Wedding"
-                                className="bg-gray-900/80 border-white/10 text-white placeholder:text-gray-600 focus:border-blue-500/50 transition-all"
+                                className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus:border-[hsl(38,92%,58%)]/50 transition-all"
                             />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label className="text-gray-300">Rating</Label>
-                        <div className="flex justify-center gap-2 p-3 bg-gray-900/50 rounded-xl border border-white/5">
+                        <Label className="text-white/60 text-sm">Rating</Label>
+                        <div className="flex justify-center gap-2 p-3 bg-white/5 rounded-xl border border-white/5">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <motion.button
                                     key={star}
                                     whileHover={{ scale: 1.2 }}
                                     whileTap={{ scale: 0.9 }}
                                     onClick={() => setNewReview({ ...newReview, rating: star })}
-                                    className={`focus:outline-none transition-colors ${star <= newReview.rating ? "text-yellow-400" : "text-gray-700"
+                                    className={`focus:outline-none transition-colors ${star <= newReview.rating ? "text-[hsl(38,92%,58%)]" : "text-white/20"
                                         }`}
                                 >
-                                    <Star className={`w-6 h-6 ${star <= newReview.rating ? "fill-current" : ""}`} />
+                                    <Star className={`w-7 h-7 ${star <= newReview.rating ? "fill-current" : ""}`} />
                                 </motion.button>
                             ))}
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="review" className="text-gray-300">Your Review</Label>
+                        <Label htmlFor="review" className="text-white/60 text-sm">Your Review</Label>
                         <Textarea
                             id="review"
                             value={newReview.review}
                             onChange={(e) => setNewReview({ ...newReview, review: e.target.value })}
                             placeholder="Tell us what you liked..."
-                            className="bg-gray-900/80 border-white/10 text-white placeholder:text-gray-600 focus:border-blue-500/50 transition-all h-[100px] resize-none"
+                            className="bg-white/5 border-white/10 text-white placeholder:text-white/25 focus:border-[hsl(38,92%,58%)]/50 transition-all h-[100px] resize-none"
                         />
                     </div>
 
                     <Button
                         onClick={handleReviewSubmit}
                         disabled={submitReviewMutation.isPending}
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 text-lg rounded-xl transition-all shadow-lg hover:shadow-blue-600/30"
+                        className="btn-gold w-full py-4 text-base rounded-xl transition-all shadow-lg"
                     >
                         {submitReviewMutation.isPending ? (
-                            <span className="flex items-center gap-2">
-                                <span className="w-2 h-2 bg-white rounded-full animate-bounce" />
-                                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-100" />
-                                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-200" />
+                            <span className="flex items-center justify-center gap-1.5">
+                                <span className="w-2 h-2 bg-black/60 rounded-full animate-bounce" />
+                                <span className="w-2 h-2 bg-black/60 rounded-full animate-bounce [animation-delay:0.1s]" />
+                                <span className="w-2 h-2 bg-black/60 rounded-full animate-bounce [animation-delay:0.2s]" />
                             </span>
                         ) : (
                             "Submit Review"

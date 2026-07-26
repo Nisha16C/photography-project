@@ -8,12 +8,13 @@ import type { Testimonial } from "@shared/schema";
 import ReviewDialog from "@/components/review-dialog";
 
 export default function TestimonialsPage() {
-  const { data: testimonials, isLoading } = useQuery({
+  const { data: testimonials, isLoading, isError } = useQuery({
     queryKey: ["/api/testimonials"],
     queryFn: api.testimonials.getAll,
   });
 
-  const validTestimonials = testimonials || [];
+  // Guard: ensure it's always a real array even if server returns error object
+  const validTestimonials = Array.isArray(testimonials) ? testimonials : [];
 
   return (
     <div className="pt-24 min-h-screen bg-black text-white relative overflow-hidden">
@@ -32,7 +33,7 @@ export default function TestimonialsPage() {
               Love Notes
             </h2> */}
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-8 text-white tracking-tight leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Stories of <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Connection</span>
+              Stories of <span className="gradient-text-gold">Connection</span>
             </h1>
             <div className="w-1 h-20 bg-gradient-to-b from-blue-500/50 to-transparent mx-auto rounded-full mb-8" />
 
@@ -60,6 +61,20 @@ export default function TestimonialsPage() {
                   <div className="w-full h-32 bg-gray-800/50 rounded-lg" />
                 </div>
               ))
+            ) : isError || validTestimonials.length === 0 ? (
+              <div className="col-span-2 text-center py-20">
+                <Quote className="w-16 h-16 text-white/10 mx-auto mb-4" />
+                <p className="text-white/40 text-lg font-cormorant italic">
+                  {isError ? "Unable to load stories right now. Please try again later." : "No stories yet — be the first to share yours!"}
+                </p>
+                <div className="mt-6">
+                  <ReviewDialog>
+                    <Button className="btn-gold px-8 py-3 rounded-full text-sm font-semibold">
+                      Write a Review
+                    </Button>
+                  </ReviewDialog>
+                </div>
+              </div>
             ) : (
               validTestimonials.map((testimonial: Testimonial, index: number) => (
                 <motion.div
@@ -72,7 +87,7 @@ export default function TestimonialsPage() {
                 >
                   {/* Image with Glow */}
                   <div className="relative mb-8">
-                    <div className="absolute inset-0 bg-blue-500 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-700" />
+                    <div className="absolute inset-0 bg-[hsl(38,92%,58%)] rounded-full blur-2xl opacity-10 group-hover:opacity-25 transition-opacity duration-700" />
                     <div className="w-32 h-32 rounded-full p-1.5 border border-white/10 relative z-10 backdrop-blur-sm group-hover:scale-105 transition-transform duration-700">
                       <img
                         src={testimonial.clientImage || LOCAL_IMAGES.testimonials[index % LOCAL_IMAGES.testimonials.length]}
@@ -85,7 +100,7 @@ export default function TestimonialsPage() {
                   {/* Rating */}
                   <div className="flex items-center gap-1 mb-6 justify-center">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-blue-400 fill-current opacity-70" />
+                      <Star key={i} className="w-4 h-4 text-[hsl(38,92%,58%)] fill-current" />
                     ))}
                   </div>
 

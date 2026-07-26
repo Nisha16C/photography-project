@@ -96,13 +96,21 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
     try {
       const data = await req.json();
 
-      // Create testimonial with isApproved set to false for moderation
+      // Validate required fields
+      if (!data.name || !data.review) {
+        return new Response(JSON.stringify({ message: 'Name and review are required' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Create testimonial with isApproved set to true for immediate visibility
       const testimonialData = {
-        clientName: data.name,
-        eventType: data.eventType || 'General',
-        rating: data.rating,
-        body: data.review,
-        isApproved: true, // Auto-approve for immediate visibility as requested
+        clientName: String(data.name),
+        eventType: String(data.eventType || 'General'),
+        rating: Number(data.rating) || 5,
+        body: String(data.review),
+        isApproved: true,
       };
 
       const testimonial = await storage.createTestimonial(testimonialData);
@@ -115,6 +123,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error('[POST /api/testimonials] Error:', error);
       return new Response(JSON.stringify({ message: 'Failed to submit review' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -129,7 +138,6 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
 
       // Check honeypot field
       if (data.website) {
-        // Likely spam, silently ignore
         return new Response(JSON.stringify({ message: 'Thank you for your message' }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' },
@@ -139,13 +147,12 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
       const validatedData = insertContactSchema.parse(data);
       const contact = await storage.createContact(validatedData);
 
-      // Send email notifications (async, don't block response extensively but usually good to wait or fire-and-forget)
-      // We will wait for it to ensure it attempts sending, but catch errors so we don't fail the request if email fails (optional strategy)
+      // Fire-and-forget email notifications
       try {
         const { sendContactEmails } = await import('./email');
-        sendContactEmails(validatedData).catch(err => console.error("Email sending failed background:", err));
+        sendContactEmails(validatedData).catch(err => console.error('[email] Sending failed:', err));
       } catch (emailErr) {
-        console.error("Failed to load email service:", emailErr);
+        console.error('[email] Failed to load email service:', emailErr);
       }
 
       return new Response(JSON.stringify({
@@ -156,6 +163,7 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+      console.error('[POST /api/contact] Error:', error);
       if (error instanceof ZodError) {
         return new Response(JSON.stringify({
           message: 'Validation failed',
@@ -164,12 +172,11 @@ const apiHandlers: Record<string, (req: Request) => Promise<Response>> = {
           status: 400,
           headers: { 'Content-Type': 'application/json' },
         });
-      } else {
-        return new Response(JSON.stringify({ message: 'Failed to submit contact form' }), {
-          status: 500,
-          headers: { 'Content-Type': 'application/json' },
-        });
       }
+      return new Response(JSON.stringify({ message: 'Failed to submit contact form' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
   },
 };

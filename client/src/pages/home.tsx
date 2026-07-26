@@ -3,231 +3,174 @@ import FeaturedWork from "@/components/featured-work";
 import WhyChooseUs from "@/components/why-choose-us";
 import TestimonialsSlider from "@/components/testimonials-slider";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LOCAL_IMAGES } from "@/lib/constants";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { motion } from "framer-motion";
+import { Camera, Film, BookImage, Sparkles, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 
-
-
-// Services data for the services section
 const servicesData = [
   {
     id: "photography",
-    title: "PHOTOGRAPHY",
-    description: "Candid photography (focusing on natural candid shots of the bride-groom and main family) & traditional photography (coverage of the entire event)."
+    icon: Camera,
+    title: "Photography",
+    description:
+      "Candid photography focusing on natural candid shots of the bride-groom and main family, plus traditional coverage of the entire event.",
+    gradient: "from-[hsl(38,92%,58%)] to-[hsl(30,70%,45%)]",
   },
   {
     id: "wedding-films",
-    title: "WEDDING FILMS",
-    description: "Cinematic wedding films (artistic storytelling focused on the bride-groom and main family with their priceless candid moments) & traditional coverage (complete documentation of your entire event)."
+    icon: Film,
+    title: "Wedding Films",
+    description:
+      "Cinematic wedding films with artistic storytelling focused on the bride-groom and main family, plus traditional full-event coverage.",
+    gradient: "from-[hsl(30,70%,45%)] to-[hsl(20,65%,40%)]",
   },
   {
     id: "photobooks",
-    title: "PHOTOBOOKS & ALBUMS",
-    description: "Handcrafted custom designed wedding photo books and albums to cater to every taste and preference."
+    icon: BookImage,
+    title: "Photobooks & Albums",
+    description:
+      "Handcrafted, custom-designed wedding photo books and albums to cater to every taste and preference.",
+    gradient: "from-[hsl(45,100%,60%)] to-[hsl(38,92%,50%)]",
   },
   {
     id: "post-production",
-    title: "LUXURY WEDDING FILMS",
-    description: "Premium editing services including cinematic teasers, short films, and traditional videos with a luxury touch."
-  }
+    icon: Sparkles,
+    title: "Luxury Wedding Films",
+    description:
+      "Premium editing services including cinematic teasers, short films, and traditional videos with a luxury touch.",
+    gradient: "from-[hsl(38,92%,58%)] to-[hsl(45,100%,65%)]",
+  },
 ];
 
 export default function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [userReviews, setUserReviews] = useState<Array<{
-    initial: string;
-    name: string;
-    time: string;
-    rating: number;
-    text: string;
-    date?: Date;
-  }>>([]);
-  const [newReview, setNewReview] = useState({
-    name: "",
-    rating: 5,
-    text: ""
-  });
-
-
-  // Update review times periodically
-  useEffect(() => {
-    if (userReviews.length === 0) return;
-
-    const updateTimes = () => {
-      setUserReviews(prevReviews =>
-        prevReviews.map((review: { initial: string; name: string; time: string; rating: number; text: string; date?: Date }) => ({
-          ...review,
-          time: review.date ? formatTimeAgo(review.date) : review.time
-        }))
-      );
-    };
-
-    // Update times every minute
-    const timeUpdateInterval = setInterval(updateTimes, 60000);
-
-    return () => clearInterval(timeUpdateInterval);
-  }, [userReviews.length]);
-
-
-
-  // State for success message
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  // Format time function
-  const formatTimeAgo = (date: Date) => {
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) return "Just now";
-
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) return `${diffInMinutes} ${diffInMinutes === 1 ? 'minute' : 'minutes'} ago`;
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours} ${diffInHours === 1 ? 'hour' : 'hours'} ago`;
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 30) return `${diffInDays} ${diffInDays === 1 ? 'day' : 'days'} ago`;
-
-    const diffInMonths = Math.floor(diffInDays / 30);
-    if (diffInMonths < 12) return `${diffInMonths} ${diffInMonths === 1 ? 'month' : 'months'} ago`;
-
-    const diffInYears = Math.floor(diffInMonths / 12);
-    return `${diffInYears} ${diffInYears === 1 ? 'year' : 'years'} ago`;
-  };
-
-  // Handle review submission
-  const handleReviewSubmit = () => {
-    if (newReview.name.trim() === "" || newReview.text.trim() === "") {
-      return; // Don't submit empty reviews
-    }
-
-    const currentDate = new Date();
-    const timeString = formatTimeAgo(currentDate);
-
-    const newUserReview = {
-      initial: newReview.name.charAt(0).toUpperCase(),
-      name: newReview.name,
-      time: timeString,
-      rating: newReview.rating,
-      text: newReview.text,
-      date: currentDate // Store the actual date for future formatting
-    };
-
-    setUserReviews(prev => [newUserReview, ...prev]);
-    setNewReview({
-      name: "",
-      rating: 5,
-      text: ""
-    });
-
-    // Show success message and close dialog
-    setShowSuccess(true);
-    setDialogOpen(false);
-
-    // Hide success message after 3 seconds
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 3000);
-  };
-
-
-  // Animation for the moving background text
-  const backgroundTextVariants = {
-    animate: {
-      x: ["-100%", "0%"],
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 20,
-          ease: "linear",
-        },
-      },
-    },
-  };
-
   return (
     <div className="pt-16">
       <HeroSlideshow />
 
-      {/* Services Section with Moving Background Text */}
-      <section className="py-16 relative overflow-hidden bg-black">
-        {/* Moving background text */}
-        <div className="absolute inset-0 overflow-hidden opacity-5 select-none pointer-events-none">
-          <motion.div
-            className="whitespace-nowrap text-[20rem] font-bold text-white"
-            variants={backgroundTextVariants}
-            animate="animate"
-          >
-            SERVICES SERVICES SERVICES SERVICES SERVICES SERVICES
-          </motion.div>
-        </div>
+      {/* ── Services Section ─────────────────────────── */}
+      <section className="py-20 relative overflow-hidden bg-black">
+        {/* Diagonal gold lines background */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.025]"
+          style={{
+            backgroundImage: `repeating-linear-gradient(
+              45deg,
+              hsl(38,92%,58%) 0px,
+              hsl(38,92%,58%) 1px,
+              transparent 1px,
+              transparent 50px
+            )`,
+          }}
+        />
+        {/* Ambient glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-40 bg-[hsl(38,92%,58%)]/5 blur-[80px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header */}
           <motion.div
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 text-blue-400" style={{ fontFamily: "'Tangerine', cursive", fontWeight: 700 }} data-testid="services-title">
-              OUR SERVICES
+            <motion.p
+              className="text-[hsl(38,92%,58%)] text-xs font-cinzel tracking-[0.35em] uppercase mb-4"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              What We Offer
+            </motion.p>
+            <h2
+              className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-4 gradient-text-animated"
+              style={{ fontFamily: "'Tangerine', cursive" }}
+              data-testid="services-title"
+            >
+              Our Services
             </h2>
-            <div className="w-24 h-1 bg-blue-400 mx-auto mt-6 mb-8"></div>
-            <p className="text-white/80 text-lg max-w-3xl mx-auto" data-testid="services-subtitle">
-              We offer a comprehensive range of photography and luxury wedding films services to capture your special moments
+            <div className="section-divider mb-5 mt-3" />
+            <p
+              className="text-white/50 text-base max-w-2xl mx-auto font-cormorant italic"
+              data-testid="services-subtitle"
+            >
+              A comprehensive range of photography and luxury wedding film services to capture your special moments.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {servicesData.map((service: { id: string; title: string; description: string }, index: number) => (
-              <motion.div
-                key={service.id}
-                className="bg-gradient-to-b from-black/80 to-black/40 backdrop-blur-sm p-8 rounded-lg border border-white/10 hover:border-accent/30 transition-all group hover:bg-black/60"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-                data-testid={`service-card-${index}`}
-              >
-                <h3 className="text-xl font-playfair font-semibold mb-4 text-white group-hover:text-accent transition-colors" data-testid={`service-title-${index}`}>
-                  {service.title}
-                </h3>
-                <div className="w-12 h-0.5 bg-accent mb-4 transition-all group-hover:w-16"></div>
-                <p className="text-white/70 group-hover:text-white/90 transition-colors" data-testid={`service-description-${index}`}>
-                  {service.description}
-                </p>
-              </motion.div>
-            ))}
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {servicesData.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <motion.div
+                  key={service.id}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  data-testid={`service-card-${index}`}
+                >
+                  <motion.div
+                    className="glass-gold rounded-2xl p-7 h-full flex flex-col relative overflow-hidden border border-[hsl(38,92%,58%)]/10 hover:border-[hsl(38,92%,58%)]/30 transition-all duration-500"
+                    whileHover={{ y: -6, scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                  >
+                    {/* Inner glow on hover */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+                      style={{
+                        background:
+                          "radial-gradient(ellipse at 50% 0%, hsla(38,92%,58%,0.10) 0%, transparent 70%)",
+                      }}
+                    />
+
+                    {/* Icon */}
+                    <div className={`w-14 h-14 rounded-xl mb-5 flex items-center justify-center bg-gradient-to-br ${service.gradient} shadow-lg flex-shrink-0`}>
+                      <Icon className="w-7 h-7 text-black" strokeWidth={1.8} />
+                    </div>
+
+                    <h3
+                      className="text-base font-cinzel font-semibold mb-3 text-white group-hover:text-[hsl(38,92%,58%)] transition-colors duration-300 tracking-wide"
+                      data-testid={`service-title-${index}`}
+                    >
+                      {service.title}
+                    </h3>
+
+                    <div className="w-8 h-0.5 bg-gradient-to-r from-[hsl(38,92%,58%)] to-transparent mb-4 transition-all duration-300 group-hover:w-14" />
+
+                    <p
+                      className="text-white/50 text-sm leading-relaxed group-hover:text-white/75 transition-colors duration-300 flex-1"
+                      data-testid={`service-description-${index}`}
+                    >
+                      {service.description}
+                    </p>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
           </div>
 
-          {/* View All Services Button */}
+          {/* CTA */}
           <motion.div
             className="mt-12 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
             viewport={{ once: true }}
           >
-            <a href="/services">
-              <motion.button
-                className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-                whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
-                whileTap={{ scale: 0.95 }}
+            <Link href="/services">
+              <motion.span
+                className="btn-gold inline-flex items-center gap-3 px-10 py-4 rounded-full font-semibold text-base cursor-pointer shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
               >
                 View All Services & Packages
-              </motion.button>
-            </a>
+                <ArrowRight className="w-4 h-4" />
+              </motion.span>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -236,28 +179,27 @@ export default function Home() {
       <WhyChooseUs />
       <TestimonialsSlider />
 
-      {/* View More Client Stories Button */}
-      <motion.div
-        className="mt-12 text-center pb-10 py-0"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        viewport={{ once: true }}
-      >
-        <a href="/testimonials">
-          <motion.button
-            className="px-10 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View More Client Stories          </motion.button>
-        </a>
-      </motion.div>
-
-
-
-
-
+      {/* ── View More Client Stories CTA ─── */}
+      <div className="bg-black py-12 text-center relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[hsl(38,92%,58%)]/30 to-transparent" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <Link href="/testimonials">
+            <motion.span
+              className="btn-gold inline-flex items-center gap-3 px-10 py-4 rounded-full font-semibold text-base cursor-pointer shadow-xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.96 }}
+            >
+              View More Client Stories
+              <ArrowRight className="w-4 h-4" />
+            </motion.span>
+          </Link>
+        </motion.div>
+      </div>
     </div>
   );
 }
